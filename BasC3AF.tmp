@@ -1,0 +1,162 @@
+[gd_scene load_steps=11 format=3 uid="uid://c4c2nsbfenrnl"]
+
+[ext_resource type="Script" path="res://basic_player.gd" id="1_tj0o3"]
+[ext_resource type="Script" path="res://flashlight_node.gd" id="2_cear0"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ni7be"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_kn71c"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mt81q"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_5e8e2"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ju561"]
+
+[sub_resource type="Animation" id="Animation_qauii"]
+resource_name = "crouching_animation"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:shape:height")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 1.5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 0.75, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraController:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.5, 0), Vector3(0, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_qo0mb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:shape:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraController:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wpsm1"]
+_data = {
+"RESET": SubResource("Animation_qo0mb"),
+"crouching_animation": SubResource("Animation_qauii")
+}
+
+[node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "CrouchCollisionDetect")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+script = ExtResource("1_tj0o3")
+CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
+CrouchCollisionDetect = NodePath("CrouchCollisionShapeCast")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_ni7be")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0276853, 0)
+mesh = SubResource("CapsuleMesh_kn71c")
+surface_material_override/0 = SubResource("StandardMaterial3D_mt81q")
+
+[node name="CameraController" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraController"]
+
+[node name="FlashlightNode" type="Node3D" parent="CameraController/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.440142, -0.375938, -0.56255)
+script = ExtResource("2_cear0")
+
+[node name="Flashlight Model" type="MeshInstance3D" parent="CameraController/Camera3D/FlashlightNode"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+mesh = SubResource("SphereMesh_5e8e2")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="CameraController/Camera3D/FlashlightNode"]
+light_energy = 0.0
+light_indirect_energy = 0.0
+
+[node name="BatteryBar" type="ProgressBar" parent="CameraController/Camera3D/FlashlightNode"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -111.0
+offset_top = 422.0
+offset_right = 112.0
+offset_bottom = 449.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.983317, 0.798216)
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 1
+max_value = 1000.0
+step = 1.0
+value = 1000.0
+
+[node name="CrouchCollisionShapeCast" type="ShapeCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("SphereShape3D_ju561")
+target_position = Vector3(0, 0, 0)
+debug_shape_custom_color = Color(1.29953e-06, 0.670053, 0.480873, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wpsm1")
+}

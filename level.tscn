@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://bfd4htvattvv6"]
+
+[ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://First Person & Phone Essentials.tscn" id="1_85pv0"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_mf6y0"]
+
+[sub_resource type="Sky" id="Sky_uupd2"]
+sky_material = SubResource("PanoramaSkyMaterial_mf6y0")
+
+[sub_resource type="Environment" id="Environment_t3f4f"]
+background_mode = 2
+sky = SubResource("Sky_uupd2")
+ambient_light_color = Color(0.703692, 0.391771, 0.428583, 1)
+ambient_light_energy = 3.22
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wtufp"]
+size = Vector2(30, 30)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_kxiiv"]
+data = PackedVector3Array(15, 0, 15, -15, 0, 15, 15, 0, -15, -15, 0, 15, -15, 0, -15, 15, 0, -15)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_t3f4f")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 4.16717, 4.9061, -4.53395)
+light_energy = 0.238
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_wtufp")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D2"]
+shape = SubResource("ConcavePolygonShape3D_kxiiv")
+
+[node name="Protagonist" parent="." instance=ExtResource("1_85pv0")]
