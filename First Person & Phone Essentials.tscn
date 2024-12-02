@@ -352,7 +352,7 @@ _data = {
 }
 
 [node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "CrouchCollisionDetect")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0571494, -0.236924, -0.111399)
 script = ExtResource("1_2u6ml")
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
 CrouchCollisionDetect = NodePath("CollisionShape3D/CrouchCollisionShapeCast")
