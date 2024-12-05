@@ -17,6 +17,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+#TODO: Spawn and delete enemy nodes when necessary
+
 func on_player_state_change(new_state):
 	for e in enemies:
 		match e.type:
