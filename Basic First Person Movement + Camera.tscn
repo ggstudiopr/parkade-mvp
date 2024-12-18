@@ -296,12 +296,11 @@ _data = {
 "stand": SubResource("Animation_d5j1e")
 }
 
-[node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "AnimPlay", "CrouchCollisionDetect")]
+[node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "CrouchCollisionDetect")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 script = ExtResource("1_tj0o3")
 SPRINT_MULT = 5.0
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
-AnimPlay = NodePath("CameraController/Camera3D/CrouchAnimationPlayer")
 CrouchCollisionDetect = NodePath("CollisionShape3D/CrouchCollisionShapeCast")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

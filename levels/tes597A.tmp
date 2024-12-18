@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://heeroj1isx3v"]
+
+[ext_resource type="Script" path="res://levels/level.gd" id="1_x571v"]
+[ext_resource type="Script" path="res://enemy/enemy_manager.gd" id="2_xtr1i"]
+[ext_resource type="PackedScene" uid="uid://c4c2nsbfenrnl" path="res://Basic First Person Movement + Camera.tscn" id="3_i83gm"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_beetp"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dr2xo"]
+
+[node name="Level" type="Node3D"]
+script = ExtResource("1_x571v")
+
+[node name="Collisions" type="Node" parent="."]
+
+[node name="Floor" type="MeshInstance3D" parent="Collisions"]
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 50, 0, -1, 0)
+mesh = SubResource("BoxMesh_beetp")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Collisions"]
+transform = Transform3D(5.15568, 0, 0, 0, 7.22, 0, 0, 0, 6.35047, -10.9031, 3.75338, -12.26)
+mesh = SubResource("CapsuleMesh_dr2xo")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Collisions"]
+transform = Transform3D(5.15568, 0, 0, 0, 7.22, 0, 0, 0, 6.35047, -10.7071, 3.75338, 12.0383)
+mesh = SubResource("CapsuleMesh_dr2xo")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Collisions"]
+transform = Transform3D(5.15568, 0, 0, 0, 7.22, 0, 0, 0, 6.35047, 12.9945, 3.75338, 11.7465)
+mesh = SubResource("CapsuleMesh_dr2xo")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Collisions"]
+transform = Transform3D(5.15568, 0, 0, 0, 7.22, 0, 0, 0, 6.35047, 12.135, 3.75338, -11.5503)
+mesh = SubResource("CapsuleMesh_dr2xo")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+
+[node name="EnemyManager" type="Node" parent="."]
+script = ExtResource("2_xtr1i")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("3_i83gm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.3683, -0.0398866, 0)

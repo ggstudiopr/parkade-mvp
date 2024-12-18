@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name Player
 
 #THIS SCRIPT CONTAINS BASIC CHARACTER MOVEMENT, ANIMATIONS AND CAMERA CONTROL
 #this script does not contain input logic tied to phone, just individual movement inputs
@@ -61,7 +62,7 @@ func _input(event):
 func crouch_animation():
 	#reads previous _is_crouching bool, swaps values for toggle functionality
 	if is_on_floor() and _is_crouching == false:
-		BODY_ANIMATOR.play ("crouch")
+		BODY_ANIMATOR.play("crouch")
 		_speed = SPEED_CROUCH
 	elif is_on_floor() and _is_crouching == true:
 		BODY_ANIMATOR.play("stand")
@@ -84,6 +85,11 @@ func _update_camera(delta):
 	
 	_rotation_input = 0
 	_tilt_input = 0
+
+func _process(delta) -> void:
+	print(Global.player_position)
+	print(global_position)
+	Global.player_position = global_position
 
 func _physics_process(delta: float) -> void:
 	#UPDATE CAM
