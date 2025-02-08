@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c1bj0xv2vi4yo"]
+
+[sub_resource type="GDScript" id="GDScript_ydggp"]
+script/source = "extends Resource
+class_name EnemyData
+
+"
+
+[resource]
+script = SubResource("GDScript_ydggp")

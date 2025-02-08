@@ -40,8 +40,16 @@ var _is_sprinting : bool
 #PENDING USE, JUST TO CHECK IF CAN UNCROUCH
 @export var CrouchCollisionDetect : Node3D
 
+<<<<<<< HEAD
 #Instantiate Health bar
 @onready var HEALTH := $HealthBar
+=======
+#USED BY OTHER CLASSES
+enum PLAYER_STATE {
+	WALKING,
+	DRIVING
+}
+>>>>>>> c42a1ed015c47d75d44d5544547e1e93417c6ee0
 
 #INITIALIZE
 func _ready():
@@ -104,8 +112,11 @@ func _update_camera(delta):
 	_tilt_input = 0
 
 func _process(delta) -> void:
+<<<<<<< HEAD
 	#(Global.player_position)
 	#(global_position)
+=======
+>>>>>>> c42a1ed015c47d75d44d5544547e1e93417c6ee0
 	Global.player_position = global_position
 
 func _physics_process(delta: float) -> void:
