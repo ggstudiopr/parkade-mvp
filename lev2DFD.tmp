@@ -45,12 +45,6 @@ mesh = SubResource("PlaneMesh_wtufp")
 shape = SubResource("ConcavePolygonShape3D_kxiiv")
 
 [node name="Protagonist" parent="." instance=ExtResource("1_85pv0")]
-SPEED_DEFAULT = null
-SPEED_CROUCH = null
-SPRINT_MULT = null
-TILT_LOWER_LIMIT = null
-TILT_UPPER_LIMIT = null
-MOUSE_SENSITIVITY = null
 
 [node name="Vehicle" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.6784)

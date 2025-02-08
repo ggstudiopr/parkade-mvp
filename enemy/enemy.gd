@@ -38,7 +38,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	print(type, current_state, position)
+	#print(type, current_state, position)
+	#target = $"../../Protagonist"
 	if target and target.has_method("hurt"):
 		target.hurt(hurt_rate)
 
@@ -74,3 +75,14 @@ func change_state(new_state: ENEMY_STATE):
 #func on_body_exited(body: Node3D):
 	#if body.name == target.name:
 		#target = null
+
+
+func _on_interactable_area_body_entered(body: Node3D) -> void:
+	if body is Player:
+		target = body
+
+func _on_interactable_area_body_exited(body: Node3D) -> void:
+	if body is Player:
+		target = null
+		
+		

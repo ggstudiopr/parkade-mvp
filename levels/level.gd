@@ -29,7 +29,7 @@ enum LEVEL_STATE {
 }
 
 var PLAYER_COUNT = 1 #TODO: Initialize player amount based on Game node/singleton
-const MAX_ENEMY_COUNT = 2
+const MAX_ENEMY_COUNT = 0
 
 var current_state : LEVEL_STATE
 

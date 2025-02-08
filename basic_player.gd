@@ -28,6 +28,11 @@ var _camera_rotation : Vector3
 @onready var BODY_ANIMATOR := $CameraController/BodyAnimationPlayer #transforms parent body on crouch/stand
 @onready var HEAD_ANIMATOR := $CameraController/Camera3D/HeadAnimationPlayer  #headbobbing animations
 
+#VEHICLE RELATED NODE DECLARATIONS
+@onready var VEHICLE := $"../Vehicle"
+@onready var VEHICLE_LABEL := $"../Vehicle/VehicleLabel"
+var _is_near_car : bool
+
 #BOOLS FOR MOVEMENT/ANIMATION LOGIC
 var _is_crouching : bool
 var _is_sprinting : bool
@@ -35,20 +40,25 @@ var _is_sprinting : bool
 #PENDING USE, JUST TO CHECK IF CAN UNCROUCH
 @export var CrouchCollisionDetect : Node3D
 
+#Instantiate Health bar
+@onready var HEALTH := $HealthBar
+
 #INITIALIZE
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_is_crouching = false
 	_is_sprinting = false
 	_speed = SPEED_DEFAULT
-	
+
+func hurt(hurt_rate):
+	#update health bar, called when enemy area3d signal is emitted and it is this class that entered it
+	HEALTH.value -= hurt_rate
 #FUNCTION ON MOUSE INPUT
 func _unhandled_input(event):
 	_mouse_input = event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
 	if _mouse_input:
 		_rotation_input = -event.relative.x * MOUSE_SENSITIVITY
 		_tilt_input = -event.relative.y * MOUSE_SENSITIVITY
-
 #FUNCTION ON GENERIC INPUT
 func _input(event):
 	#kill game
@@ -57,7 +67,8 @@ func _input(event):
 	#call crouch animation
 	if event.is_action_pressed("crouch_toggle"):
 		crouch_animation()
-
+	if event.is_action_pressed("interact"):
+		check_interact()
 #FUNCTION CALLED ON ACTIVATING CROUCH TOGGLE
 func crouch_animation():
 	#reads previous _is_crouching bool, swaps values for toggle functionality
@@ -70,6 +81,12 @@ func crouch_animation():
 		
 	_is_crouching = !_is_crouching
 
+func check_interact():
+	#If E was pressed while boolean is true for car proximity
+	if _is_near_car == true:
+		VEHICLE_LABEL.text = str("ENTERED")
+		#Player.change_state(DRIVING)
+		#Do Vehicle.Thing()
 #Rotates Camera Controller based on mouse input
 func _update_camera(delta):
 	_mouse_rotation.x += _tilt_input * delta
@@ -87,8 +104,8 @@ func _update_camera(delta):
 	_tilt_input = 0
 
 func _process(delta) -> void:
-	print(Global.player_position)
-	print(global_position)
+	#(Global.player_position)
+	#(global_position)
 	Global.player_position = global_position
 
 func _physics_process(delta: float) -> void:
@@ -135,3 +152,15 @@ func _physics_process(delta: float) -> void:
 		HEAD_ANIMATOR.play("headbob_crouching")
 	
 	move_and_slide()
+
+#VEHICLE SIGNALS
+func _on_vehicle_proximity_detect_body_entered(body: Node3D) -> void:
+	_is_near_car = true
+	VEHICLE_LABEL.text= str("Press E to enter Vehicle")
+
+func _on_vehicle_proximity_detect_body_exited(body: Node3D) -> void:
+	_is_near_car = false
+	VEHICLE_LABEL.text= str("")
+
+
+	

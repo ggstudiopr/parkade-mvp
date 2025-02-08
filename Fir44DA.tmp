@@ -354,13 +354,7 @@ _data = {
 [node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "CrouchCollisionDetect")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 script = ExtResource("1_2u6ml")
-SPEED_DEFAULT = null
-SPEED_CROUCH = null
-SPRINT_MULT = null
-TILT_LOWER_LIMIT = null
-TILT_UPPER_LIMIT = null
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
-MOUSE_SENSITIVITY = null
 CrouchCollisionDetect = NodePath("CollisionShape3D/CrouchCollisionShapeCast")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
