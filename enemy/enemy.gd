@@ -45,10 +45,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	#print(type, current_state, position)
-<<<<<<< HEAD
 	#target = $"../../Protagonist"
-=======
->>>>>>> c42a1ed015c47d75d44d5544547e1e93417c6ee0
 	if target and target.has_method("hurt"):
 		target.hurt(hurt_rate)
 

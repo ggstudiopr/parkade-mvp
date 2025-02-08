@@ -354,13 +354,7 @@ _data = {
 [node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "CrouchCollisionDetect")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 script = ExtResource("1_2u6ml")
-SPEED_DEFAULT = null
-SPEED_CROUCH = null
-SPRINT_MULT = null
-TILT_LOWER_LIMIT = null
-TILT_UPPER_LIMIT = null
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
-MOUSE_SENSITIVITY = null
 CrouchCollisionDetect = NodePath("CollisionShape3D/CrouchCollisionShapeCast")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -382,6 +376,7 @@ debug_shape_custom_color = Color(1.29953e-06, 0.670053, 0.480873, 1)
 transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871558, 0, 0.0871558, 0.996195, 0, 1.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraController"]
+cull_mask = 1047553
 
 [node name="PhoneNode" type="Node3D" parent="CameraController/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.440142, -0.375938, -0.56255)
@@ -441,7 +436,7 @@ texture = ExtResource("6_k5v50")
 region_enabled = true
 region_rect = Rect2(80, 0, 344, 512)
 
-[node name="SubViewport" type="SubViewport" parent="CameraController/Camera3D/PhoneNode"]
+[node name="SubViewport" type="SubViewport" parent="CameraController/Camera3D/PhoneNode" groups=["CameraViewport"]]
 physics_interpolation_mode = 1
 handle_input_locally = false
 gui_disable_input = true
@@ -451,6 +446,7 @@ render_target_update_mode = 4
 [node name="PhoneCamera" type="Camera3D" parent="CameraController/Camera3D/PhoneNode/SubViewport"]
 physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.44, 1.04579, -0.563)
+cull_mask = 1047553
 fov = 50.0
 script = ExtResource("7_cs3jm")
 
