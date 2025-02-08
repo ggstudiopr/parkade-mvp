@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://heeroj1isx3v"]
+[gd_scene load_steps=8 format=3 uid="uid://heeroj1isx3v"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_x571v"]
 [ext_resource type="Script" path="res://enemy/enemy_manager.gd" id="2_xtr1i"]
-[ext_resource type="PackedScene" uid="uid://dfg3xoqxo8tr7" path="res://enemy/enemy.tscn" id="3_1012a"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://First Person & Phone Essentials.tscn" id="4_iaw5e"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_yw2b2"]
@@ -22,7 +21,7 @@ enemy_manager = NodePath("EnemyManager")
 players = [null]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.856267, -0.516533, -2.25784e-08, 0, -4.37114e-08, 1, -0.516533, 0.856267, 3.74286e-08, 0, 0, 0)
+transform = Transform3D(-0.856267, -0.516533, -2.25784e-08, 0, -4.37114e-08, 1, -0.516533, 0.856267, 3.74286e-08, 0, 0.933587, 11.8233)
 shadow_enabled = true
 
 [node name="Collisions" type="NavigationRegion3D" parent="."]
@@ -58,13 +57,13 @@ shape = SubResource("BoxShape3D_jtvp2")
 [node name="EnemyManager" type="Node" parent="."]
 script = ExtResource("2_xtr1i")
 
-[node name="Enemy" parent="EnemyManager" instance=ExtResource("3_1012a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.909048, 17.78)
-current_state = 0
-
-[node name="Enemy2" parent="EnemyManager" instance=ExtResource("3_1012a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.2459, 3.05511, 0.470057)
-type = 1
-
 [node name="Protagonist" parent="." instance=ExtResource("4_iaw5e")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, -19.3217)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.1, -19.3217)
+
+[node name="SpawnPoints" type="Node" parent="."]
+
+[node name="Node3D" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.4359, 0.948817, 10.1459)
+
+[node name="Node3D2" type="Node3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689984, 17.6658)

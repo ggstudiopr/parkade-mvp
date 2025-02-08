@@ -5,6 +5,9 @@ class_name Enemy
 #TODO: Should be used later on, either state machine or behaviour tree implementation
 @export var behaviour = null
 
+#TODO: Add all BaseEnemy data to Resource
+var data : EnemyData
+
 enum ENEMY_STATE {
 	SEARCHING,
 	WAITING,
@@ -17,7 +20,8 @@ enum ENEMY_TYPE {
 	VIBER
 }
 
-var mesh_instance : MeshInstance3D
+var text_mesh_instance : MeshInstance3D
+var enemy_mesh_instance : MeshInstance3D
 
 @export var acceleration = 750
 
@@ -29,16 +33,18 @@ var target : Node3D #: Player
 @onready var navigation_agent : NavigationAgent3D = $NavigationAgent3D
 
 func _ready() -> void:
-	mesh_instance = $MeshInstance3D2
+	text_mesh_instance = $MeshInstance3D2
 	var text_mesh := TextMesh.new()
 	text_mesh.text = "CHASER" if type == ENEMY_TYPE.CHASER else "VIBER"
-	mesh_instance.mesh = text_mesh
+	text_mesh_instance.mesh = text_mesh
+	
+		
 	#$InteractableArea.connect("body_entered", on_body_entered)
 	#$InteractableArea.connect("body_exited", on_body_exited)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	print(type, current_state, position)
+	#print(type, current_state, position)
 	if target and target.has_method("hurt"):
 		target.hurt(hurt_rate)
 

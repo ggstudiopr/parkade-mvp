@@ -35,6 +35,12 @@ var _is_sprinting : bool
 #PENDING USE, JUST TO CHECK IF CAN UNCROUCH
 @export var CrouchCollisionDetect : Node3D
 
+#USED BY OTHER CLASSES
+enum PLAYER_STATE {
+	WALKING,
+	DRIVING
+}
+
 #INITIALIZE
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -87,8 +93,6 @@ func _update_camera(delta):
 	_tilt_input = 0
 
 func _process(delta) -> void:
-	print(Global.player_position)
-	print(global_position)
 	Global.player_position = global_position
 
 func _physics_process(delta: float) -> void:
