@@ -65,7 +65,7 @@ func _ready() -> void:
 		
 	#players.append(car.get_children() as Array[Player])
 	
-	spawn_points = enemy_spawns.get_children() as Array[Node3D]
+	#spawn_points = enemy_spawns.get_children() as Array[Node3D]
 	
 	#TODO: Should probably let enemy_manager handle this, or not. Who knows.
 	var index = -1

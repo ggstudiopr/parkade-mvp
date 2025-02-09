@@ -42,6 +42,7 @@ var _is_sprinting : bool
 #Instantiate Health bar
 @onready var HEALTH := $HealthBar
 #USED BY OTHER CLASSES
+var state = PLAYER_STATE.WALKING
 enum PLAYER_STATE {
 	WALKING,
 	DRIVING
@@ -69,7 +70,7 @@ func _input(event):
 	if event.is_action_pressed("exit"):
 		get_tree().quit()
 	#call crouch animation
-	if event.is_action_pressed("crouch_toggle"):
+	if event.is_action_pressed("crouch_toggle") and state == PLAYER_STATE.WALKING:
 		crouch_animation()
 	if event.is_action_pressed("interact"):
 		check_interact()
@@ -82,20 +83,32 @@ func crouch_animation():
 	elif is_on_floor() and _is_crouching == true:
 		BODY_ANIMATOR.play("stand")
 		_speed = SPEED_DEFAULT
-		
 	_is_crouching = !_is_crouching
 
 func check_interact():
 	#If E was pressed while boolean is true for car proximity
 	if _is_near_car == true:
-		VEHICLE_LABEL.text = str("ENTERED")
-		#Player.change_state(DRIVING)
-		#Do Vehicle.Thing()
+		state = PLAYER_STATE.DRIVING if state == PLAYER_STATE.WALKING else PLAYER_STATE.WALKING
+		if state == PLAYER_STATE.DRIVING:
+			#get up if u were crouching before entering
+			if _is_crouching == true:
+				crouch_animation()
+				await get_tree().create_timer(1.0).timeout
+			#global_rotation = VEHICLE.global_rotation
+			VEHICLE_LABEL.text = str("ENTERED")
+		elif state == PLAYER_STATE.WALKING:
+			VEHICLE_LABEL.text = str("EXITED")
+			
 #Rotates Camera Controller based on mouse input
 func _update_camera(delta):
 	_mouse_rotation.x += _tilt_input * delta
-	_mouse_rotation.x = clamp(_mouse_rotation.x, TILT_LOWER_LIMIT, TILT_UPPER_LIMIT)
 	_mouse_rotation.y += _rotation_input * delta
+	if state == PLAYER_STATE.WALKING: 
+		_mouse_rotation.x = clamp(_mouse_rotation.x, TILT_LOWER_LIMIT, TILT_UPPER_LIMIT)
+	#elif state == PLAYER_STATE.DRIVING: #limited camera control when sitting in car
+		#_mouse_rotation.x = clamp(_mouse_rotation.x, deg_to_rad(-60), deg_to_rad(60))
+		#_mouse_rotation.y = clamp(_mouse_rotation.y, deg_to_rad(-45), deg_to_rad(45))
+		
 	_player_rotation = Vector3(0, _mouse_rotation.y, 0)
 	_camera_rotation = Vector3(_mouse_rotation.x, 0, 0)
 	
@@ -113,39 +126,55 @@ func _process(delta) -> void:
 func _physics_process(delta: float) -> void:
 	#UPDATE CAM
 	_update_camera(delta)
-	
 	#JUMP
-	if not is_on_floor():
+	if not is_on_floor() and state ==  PLAYER_STATE.WALKING:
 		velocity += get_gravity() * delta
-	if Input.is_action_just_pressed("jump") and is_on_floor() and _is_crouching == false:
+	if Input.is_action_just_pressed("jump") and is_on_floor() and _is_crouching == false and state ==  PLAYER_STATE.WALKING:
 		velocity.y = JUMP_VELOCITY
-
 	#WASD MOVE + SPRINT
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
+	if direction and state == PLAYER_STATE.WALKING: #movement input for walking
 		velocity.x = direction.x * _speed
 		velocity.z = direction.z * _speed
 		#simple sprint speed mult only when standing and not mid jump, check headbobbing for auditory/visual cues
-		if Input.is_action_pressed("sprint") and is_on_floor() and _is_crouching == false:
+		if Input.is_action_pressed("sprint") and is_on_floor() and _is_crouching == false and  state ==  PLAYER_STATE.WALKING:
 			velocity.z *= SPRINT_MULT
 			_is_sprinting = true
 		else:
 			_is_sprinting = false 
-	else:
+	elif state == PLAYER_STATE.WALKING: #deccel for walking
 		velocity.x = move_toward(velocity.x, 0, _speed)
 		velocity.z = move_toward(velocity.z, 0, _speed)
+	
+	if state == PLAYER_STATE.DRIVING:
+		#turn car left and right when moving forward/backward
+		if (Input.is_action_pressed("move_right") and Input.is_action_pressed("move_forward")) or (Input.is_action_pressed("move_left") and Input.is_action_pressed("move_backward")):
+			VEHICLE.rotate_y(-1*delta)
+		elif (Input.is_action_pressed("move_left") and Input.is_action_pressed("move_forward")) or ( Input.is_action_pressed("move_right") and Input.is_action_pressed("move_backward")):
+			VEHICLE.rotate_y(1*delta)
+		#move back/forth
+		if direction and Input.is_action_pressed("move_forward"):
+			VEHICLE.velocity += -(VEHICLE.transform.basis.z) * _speed * 0.1
+		elif direction and Input.is_action_pressed("move_backward"):
+			VEHICLE.velocity += (VEHICLE.transform.basis.z) * _speed * 0.1
+		#stop car when input release
+		else: #stops car movement
+			VEHICLE.velocity.x = move_toward(VEHICLE.velocity.x, 0, _speed)
+			VEHICLE.velocity.z = move_toward(VEHICLE.velocity.z, 0, _speed)
+	
+		VEHICLE.move_and_slide()
+		global_position = VEHICLE.global_position #clamp player to car as it moves
 
 	#HEADBOB ANIM, HARDCODED LEFT RIGHT SWAY
-	if input_dir.x>0:
-		rotation.z = lerp_angle(rotation.z, deg_to_rad(-3), 0.05)
-	elif input_dir.x<0:
-		rotation.z = lerp_angle(rotation.z, deg_to_rad(3), 0.05)
-	else:
-		rotation.z = lerp_angle(rotation.z, deg_to_rad(0), 0.05)
-	
+	#if input_dir.x>0:
+		#rotation.z = lerp_angle(rotation.z, deg_to_rad(-3), 0.05)
+	#elif input_dir.x<0:
+		#rotation.z = lerp_angle(rotation.z, deg_to_rad(3), 0.05)
+	#else:
+		#rotation.z = lerp_angle(rotation.z, deg_to_rad(0), 0.05)
 	#GENERIC HEADBOB ANIM ON MOVEMENT W/ CONDITIONAL ON BOOLS
-	if (input_dir.y>0 or input_dir.y<0) and _is_crouching == false:
+	if (input_dir.y>0 or input_dir.y<0) and _is_crouching == false and state == PLAYER_STATE.WALKING:
 		if _is_sprinting == true:
 			HEAD_ANIMATOR.play("headbob_sprinting")
 		else:
