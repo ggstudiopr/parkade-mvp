@@ -1,7 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://ykg03vys3buy"]
+[gd_scene load_steps=26 format=3 uid="uid://ykg03vys3buy"]
 
 [ext_resource type="AudioStream" uid="uid://c6qx0cojqsd0m" path="res://vehicle/sounds/Car Starting Sound Effect.mp3" id="1_0rxcn"]
 [ext_resource type="Script" path="res://vehicle/CarAudio.gd" id="2_echwb"]
+[ext_resource type="AudioStream" uid="uid://jksouwbnj23u" path="res://vehicle/sounds/Miku.mp3" id="3_1681n"]
+[ext_resource type="Script" path="res://vehicle/RadioAudio.gd" id="3_i0utq"]
+[ext_resource type="Script" path="res://vehicle/MirrorReflectionLeft.gd" id="3_xmco5"]
+[ext_resource type="Script" path="res://vehicle/MirrorReflectioRight.gd" id="4_gxq1t"]
+[ext_resource type="Script" path="res://vehicle/MirrorReflectionRear.gd" id="5_lm5gg"]
+[ext_resource type="Texture2D" uid="uid://dgxaed0whgfeo" path="res://vehicle/piku.jpg" id="8_cb2dy"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qacrj"]
 
@@ -15,13 +21,49 @@ size = Vector3(1.2, 0.7, 3)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_inspg"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_53o7v"]
+[sub_resource type="BoxMesh" id="BoxMesh_0pe3b"]
+size = Vector3(1.5, 1, 0.1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_w6b14"]
-size = Vector3(2.19067, 1.89137, 1)
+size = Vector3(2.19067, 1.83083, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_k3wbg"]
+viewport_path = NodePath("LeftMirror/SubViewportLeft")
+
+[sub_resource type="BoxMesh" id="BoxMesh_wc4vm"]
+size = Vector3(1.5, 1, 0.1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_mok6m"]
+viewport_path = NodePath("RightMirror/SubViewportRight")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7hwei"]
+viewport_path = NodePath("RearMirror/SubViewportRear")
+
+[sub_resource type="SphereMesh" id="SphereMesh_7arhk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ipret"]
+albedo_color = Color(0.264504, 0.639223, 1.92523e-07, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_63ipq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ok67h"]
+albedo_color = Color(1, 0.176471, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2d5d8"]
+albedo_color = Color(1, 1, 0.0235294, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_5gjb7"]
+text = "BASE"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7o0w8"]
 
 [node name="Vehicle" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.194263, -6.6784)
+
+[node name="Front" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.806649, -3.75572)
+
+[node name="Back" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.806649, 1.68009)
 
 [node name="CarCollisionShape" type="CollisionShape3D" parent="."]
 visibility_parent = NodePath("VehicleBaseMesh")
@@ -33,7 +75,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.533309, 0)
 mesh = SubResource("BoxMesh_4jrxk")
 skeleton = NodePath("../..")
 
-[node name="VehicleProximityDetect" type="Area3D" parent="." groups=["CarSignals"]]
+[node name="VehicleProximityDetect" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.611662, -0.0815697)
 
 [node name="VehicleProxCollision" type="CollisionShape3D" parent="VehicleProximityDetect"]
@@ -56,26 +98,128 @@ script = ExtResource("2_echwb")
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -2.3, 0.5, -1)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LeftMirror"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.326383, 1.03598, -1.44386)
-mesh = SubResource("SphereMesh_53o7v")
+transform = Transform3D(-0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, -0.984808, 1.8, 1.3, -1.25)
+mesh = SubResource("BoxMesh_0pe3b")
 
 [node name="LookBoundary" type="Area3D" parent="LeftMirror" groups=["CarViewBoundaries"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06753, -1.44804)
 
 [node name="LookBoundaryShape" type="CollisionShape3D" parent="LeftMirror/LookBoundary" groups=["CarViewBoundaries"]]
-transform = Transform3D(0.0120395, 1.71589, 0.469631, 2.9998, -0.0584675, 2.14304e-08, 0.0329498, 4.69599, -0.1716, 1.79038, 1.41932, 4.16527)
+transform = Transform3D(0.0262208, 3.737, 0.332159, 2.9998, -0.0584675, 2.17667e-08, 0.0233047, 3.32136, -0.373725, 2.75609, 1.43198, 5.61384)
 shape = SubResource("BoxShape3D_w6b14")
 
+[node name="MirrorScreenLeft" type="Sprite3D" parent="LeftMirror"]
+transform = Transform3D(-0.295442, 0, -0.0520945, 0, 0.3, 0, 0.0520945, 0, -0.295442, 1.8, 1.3, -1.15)
+texture = SubResource("ViewportTexture_k3wbg")
+region_enabled = true
+region_rect = Rect2(65, 140, 400, 250)
+
+[node name="SubViewportLeft" type="SubViewport" parent="LeftMirror"]
+render_target_update_mode = 4
+
+[node name="MirrorReflectionLeft" type="Camera3D" parent="LeftMirror/SubViewportLeft"]
+transform = Transform3D(-0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, -0.984808, -1.3, 0.9, -2.4)
+fov = 90.0
+script = ExtResource("3_xmco5")
+
 [node name="RightMirror" type="Node3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2, 0.5, -1)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2.58521, 0.5, -1)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RightMirror"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.326383, 1.03598, -1.44386)
-mesh = SubResource("SphereMesh_53o7v")
+transform = Transform3D(-0.939693, 0, 0.34202, 0, 1, 0, -0.34202, 0, -0.939693, -0.5, 1.4, -1.25)
+mesh = SubResource("BoxMesh_wc4vm")
 
 [node name="LookBoundary" type="Area3D" parent="RightMirror" groups=["CarViewBoundaries"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06753, -1.44804)
 
 [node name="LookBoundaryShape2" type="CollisionShape3D" parent="RightMirror/LookBoundary" groups=["CarViewBoundaries"]]
-transform = Transform3D(0.0121126, 1.89612, 0.462648, -2.99983, 0.0532317, -2.18545e-08, -0.0295531, -4.62622, 0.189623, -1.49149, 0.394449, 4.3018)
+transform = Transform3D(0.0173371, 2.71396, 0.419924, -2.99983, 0.0532317, -2.17081e-08, -0.026824, -4.19901, 0.271411, -1.38961, 0.386356, 5.00191)
 shape = SubResource("BoxShape3D_w6b14")
+
+[node name="MirrorScreenRight" type="Sprite3D" parent="RightMirror"]
+transform = Transform3D(-0.281908, 0, 0.102606, 0, 0.3, 0, -0.102606, 0, -0.281908, -0.5, 1.4, -1.15)
+texture = SubResource("ViewportTexture_mok6m")
+region_enabled = true
+region_rect = Rect2(65, 140, 400, 250)
+
+[node name="SubViewportRight" type="SubViewport" parent="RightMirror"]
+render_target_update_mode = 4
+
+[node name="MirrorReflectionRight" type="Camera3D" parent="RightMirror/SubViewportRight"]
+transform = Transform3D(-0.939693, 0, 0.34202, 0, 1, 0, -0.34202, 0, -0.939693, 2.3, 0.9, -2.4)
+fov = 90.0
+script = ExtResource("4_gxq1t")
+
+[node name="RearMirror" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.826714, 1.13619, -0.811646)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RearMirror"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -0.5, 1.4, -1.25)
+mesh = SubResource("BoxMesh_wc4vm")
+
+[node name="MirrorScreenRear" type="Sprite3D" parent="RearMirror"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.5, 1.4, -1.15)
+texture = SubResource("ViewportTexture_7hwei")
+region_enabled = true
+region_rect = Rect2(65, 140, 400, 250)
+
+[node name="SubViewportRear" type="SubViewport" parent="RearMirror"]
+render_target_update_mode = 4
+
+[node name="MirrorReflectionRear" type="Camera3D" parent="RearMirror/SubViewportRear"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.6, 1.6, -2.26736)
+fov = 90.0
+script = ExtResource("5_lm5gg")
+
+[node name="InnerDoorHandle" type="Node3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -1.09173, 1.76533, -2.411)
+
+[node name="NodeMesh" type="MeshInstance3D" parent="InnerDoorHandle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -2.86953, 4.57686)
+mesh = SubResource("SphereMesh_7arhk")
+surface_material_override/0 = SubResource("StandardMaterial3D_ipret")
+
+[node name="NodeArea" type="Area3D" parent="InnerDoorHandle/NodeMesh" groups=["CarInteractColliders"]]
+
+[node name="NodeCollision" type="CollisionShape3D" parent="InnerDoorHandle/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+shape = SubResource("SphereShape3D_63ipq")
+
+[node name="Radio" type="Node3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.0236183, 1.10632, -2.5869)
+
+[node name="NodeMesh" type="MeshInstance3D" parent="Radio"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.54305)
+mesh = SubResource("SphereMesh_7arhk")
+surface_material_override/0 = SubResource("StandardMaterial3D_ok67h")
+
+[node name="NodeArea" type="Area3D" parent="Radio/NodeMesh" groups=["CarInteractColliders"]]
+
+[node name="NodeCollision" type="CollisionShape3D" parent="Radio/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+shape = SubResource("SphereShape3D_63ipq")
+
+[node name="RadioAudio" type="AudioStreamPlayer3D" parent="Radio"]
+stream = ExtResource("3_1681n")
+volume_db = -0.2
+script = ExtResource("3_i0utq")
+
+[node name="RadioScreen" type="Sprite3D" parent="Radio"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0.820259, 0.0109594, 4.1266)
+texture = ExtResource("8_cb2dy")
+
+[node name="GearShift" type="Node3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.538623, 1.0372, -1.94105)
+
+[node name="NodeMesh" type="MeshInstance3D" parent="GearShift"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.54305)
+mesh = SubResource("SphereMesh_7arhk")
+surface_material_override/0 = SubResource("StandardMaterial3D_2d5d8")
+
+[node name="NodeArea" type="Area3D" parent="GearShift/NodeMesh" groups=["CarInteractColliders"]]
+
+[node name="NodeCollision" type="CollisionShape3D" parent="GearShift/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+shape = SubResource("SphereShape3D_63ipq")
+
+[node name="TransmissionTextMesh" type="MeshInstance3D" parent="GearShift"]
+transform = Transform3D(0.798709, 0, -0.601717, 0, 1, 0, 0.601717, 0, 0.798709, 0.950862, 0.227104, 3.63123)
+mesh = SubResource("TextMesh_5gjb7")
+surface_material_override/0 = SubResource("StandardMaterial3D_7o0w8")

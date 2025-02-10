@@ -28,8 +28,8 @@ window/size/mode=2
 [global_group]
 
 CarViewBoundaries="read the name bro"
-CarSignals="read name, bro"
 PlayerCollider=""
+CarInteractColliders="read name, bro"
 
 [input]
 

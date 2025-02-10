@@ -1,0 +1,69 @@
+[gd_scene load_steps=11 format=3 uid="uid://bfd4htvattvv6"]
+
+[ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_c7pc3"]
+[ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="2_t6p8l"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_mf6y0"]
+
+[sub_resource type="Sky" id="Sky_uupd2"]
+sky_material = SubResource("PanoramaSkyMaterial_mf6y0")
+
+[sub_resource type="Environment" id="Environment_t3f4f"]
+background_mode = 2
+sky = SubResource("Sky_uupd2")
+ambient_light_color = Color(0.703692, 0.391771, 0.428583, 1)
+ambient_light_energy = 3.22
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wtufp"]
+size = Vector2(30, 30)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_kxiiv"]
+data = PackedVector3Array(15, 0, 15, -15, 0, 15, 15, 0, -15, -15, 0, 15, -15, 0, -15, 15, 0, -15)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yuyw2"]
+viewport_path = NodePath("LeftMirror/SubViewportLeft")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_kjpaq"]
+viewport_path = NodePath("RightMirror/SubViewportRight")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_f1k15"]
+viewport_path = NodePath("RearMirror/SubViewportRear")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_t3f4f")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 4.16717, 4.9061, -4.53395)
+light_energy = 0.238
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_wtufp")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D2"]
+shape = SubResource("ConcavePolygonShape3D_kxiiv")
+
+[node name="Protagonist" parent="." instance=ExtResource("1_c7pc3")]
+
+[node name="Vehicle" parent="." instance=ExtResource("2_t6p8l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.294263, -0.837847)
+
+[node name="MirrorScreenLeft" parent="Vehicle/LeftMirror" index="2"]
+texture = SubResource("ViewportTexture_yuyw2")
+
+[node name="MirrorScreenRight" parent="Vehicle/RightMirror" index="2"]
+texture = SubResource("ViewportTexture_kjpaq")
+
+[node name="MirrorScreenRear" parent="Vehicle/RearMirror" index="1"]
+texture = SubResource("ViewportTexture_f1k15")
+
+[connection signal="body_entered" from="Vehicle/VehicleProximityDetect" to="Protagonist" method="_on_vehicle_proximity_detect_body_entered"]
+[connection signal="body_exited" from="Vehicle/VehicleProximityDetect" to="Protagonist" method="_on_vehicle_proximity_detect_body_exited"]
+
+[editable path="Vehicle"]

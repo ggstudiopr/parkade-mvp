@@ -66,5 +66,5 @@ func _physics_process(_delta:float) -> void:
 	if PHONE_BATTERY.value <= 0:
 		PHONE_LIGHT.flashlightOff() #idk why the sound doesnt play when the battery dies but it works out ig
 		PHONE_CAM.CameraBool = false
-		PHONE_SCREEN.texture = load("res://batteryImage.png")
+		PHONE_SCREEN.texture = load("res://protag/phone/batteryImage.png")
 	

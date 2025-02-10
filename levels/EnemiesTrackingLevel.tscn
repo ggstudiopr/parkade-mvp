@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://heeroj1isx3v"]
+[gd_scene load_steps=13 format=3 uid="uid://heeroj1isx3v"]
 
 [ext_resource type="Script" path="res://levels/level.gd" id="1_7p2q1"]
 [ext_resource type="Script" path="res://enemy/enemy_manager.gd" id="2_lxvaa"]
@@ -16,6 +16,15 @@ polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(0, 3, 2), PackedInt32Arr
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jtvp2"]
 size = Vector3(50, 1, 50)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_klosj"]
+viewport_path = NodePath("LeftMirror/SubViewportLeft")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_htnir"]
+viewport_path = NodePath("RightMirror/SubViewportRight")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_0cap8"]
+viewport_path = NodePath("RearMirror/SubViewportRear")
 
 [node name="Level" type="Node3D" node_paths=PackedStringArray("enemy_manager")]
 script = ExtResource("1_7p2q1")
@@ -74,6 +83,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689984, 17.6658)
 
 [node name="Vehicle" parent="." instance=ExtResource("5_bbmln")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.258584, -6.6784)
+
+[node name="MirrorScreenLeft" parent="Vehicle/LeftMirror" index="2"]
+texture = SubResource("ViewportTexture_klosj")
+
+[node name="MirrorScreenRight" parent="Vehicle/RightMirror" index="2"]
+texture = SubResource("ViewportTexture_htnir")
+
+[node name="MirrorScreenRear" parent="Vehicle/RearMirror" index="1"]
+texture = SubResource("ViewportTexture_0cap8")
 
 [connection signal="body_entered" from="Vehicle/VehicleProximityDetect" to="Protagonist" method="_on_vehicle_proximity_detect_body_entered"]
 [connection signal="body_exited" from="Vehicle/VehicleProximityDetect" to="Protagonist" method="_on_vehicle_proximity_detect_body_exited"]
