@@ -5,7 +5,7 @@ class_name Player
 
 '''
 GAR
-2/10/2025 7AM
+2/10/2025 7:30AM
 
 	-Vehicle "complete"
 	-Vehicle saved to seperate scene
@@ -16,6 +16,7 @@ GAR
 		>radio
 		>door exit
 		>mirrors
+		>unparked car drifts away lmfao
 	
 	-Other recent changes from last break:
 		>health bar added which decreases when in proximity to enemy entity
@@ -269,22 +270,16 @@ func _physics_process(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0, _speed)
 			velocity.z = move_toward(velocity.z, 0, _speed)
 		
-		'''
-		#if walking and left car unparked lmfao
-		below block works conceptually but is iffy in certain angles
-		only proof of concept of gameplay mechanic
-		'''
 		if gear_shift!= CAR_TRANSMISSION.PARK: 
 			_car_unparked_speed_curve += 0.00001
 			if gear_shift == CAR_TRANSMISSION.DRIVE:
-				VEHICLE.global_position.x = move_toward(VEHICLE.global_position.x, VEHICLE_FRONT.global_position.x, _car_unparked_speed_curve)	
-				VEHICLE.global_position.z = move_toward(VEHICLE.global_position.z, VEHICLE_FRONT.global_position.z, _car_unparked_speed_curve)
+				VEHICLE.velocity += -(VEHICLE.transform.basis.z) * _car_unparked_speed_curve
 			elif gear_shift == CAR_TRANSMISSION.REVERSE:
-				VEHICLE.global_position.x = move_toward(VEHICLE.global_position.x, VEHICLE_BACK.global_position.x, _car_unparked_speed_curve)	
-				VEHICLE.global_position.z = move_toward(VEHICLE.global_position.z, VEHICLE_BACK.global_position.z, _car_unparked_speed_curve)
+				VEHICLE.velocity += (VEHICLE.transform.basis.z) * _car_unparked_speed_curve
+			VEHICLE.move_and_slide()
 		else:
 			_car_unparked_speed_curve = 0
-	
+		
 	'''
 	Car turning logic + Car transmission to condition how the movement inputs
 	transform the car's orientation and position
