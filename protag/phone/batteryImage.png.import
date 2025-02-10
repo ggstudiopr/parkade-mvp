@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdt3eychbninn"
-path.s3tc="res://.godot/imported/camOffIcon.png-7d3f444c14ff666e5aaa268a8c0977a3.s3tc.ctex"
+uid="uid://dwbq1qx24p16l"
+path.s3tc="res://.godot/imported/batteryImage.png-6490d2f822101ef996009e997977d4e0.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://camOffIcon.png"
-dest_files=["res://.godot/imported/camOffIcon.png-7d3f444c14ff666e5aaa268a8c0977a3.s3tc.ctex"]
+source_file="res://protag/phone/batteryImage.png"
+dest_files=["res://.godot/imported/batteryImage.png-6490d2f822101ef996009e997977d4e0.s3tc.ctex"]
 
 [params]
 

@@ -23,7 +23,9 @@ var _camera_rotation : Vector3
 @export var TILT_UPPER_LIMIT := deg_to_rad(90)
 @export var CAMERA_CONTROLLER := Camera3D
 @export var MOUSE_SENSITIVITY : float = 0.15
-
+@onready var LOOK_DIR_RAY := $CameraController/Camera3D/LookDirectionTrigger
+@onready var LEFT_BND_AREA := $"../Vehicle/LeftMirror/LookBoundary"
+@onready var RIGHT_BND_AREA :=$"../Vehicle/RightMirror/LookBoundary"
 #ANIMATION RELATED NODE DECLARATIONS
 @onready var BODY_ANIMATOR := $CameraController/BodyAnimationPlayer #transforms parent body on crouch/stand
 @onready var HEAD_ANIMATOR := $CameraController/Camera3D/HeadAnimationPlayer  #headbobbing animations
@@ -31,16 +33,15 @@ var _camera_rotation : Vector3
 #VEHICLE RELATED NODE DECLARATIONS
 @onready var VEHICLE := $"../Vehicle"
 @onready var VEHICLE_LABEL := $"../Vehicle/VehicleLabel"
+@onready var VEHICLE_ENGINE_SOUND := $"../Vehicle/CarEngineStart"
 var _is_near_car : bool
-@export var CAR_CAM_TURN_UPPER_LIMIT := deg_to_rad(30)
-@export var CAR_CAM_TURN_LOWER_LIMIT := deg_to_rad(-30)
 @export var CAR_CAM_TILT_UPPER_LIMIT := deg_to_rad(15)
 @export var CAR_CAM_TILT_LOWER_LIMIT := deg_to_rad(-25)
 @export var CAR_SPEED_DEFAULT = 7
 @export var CAR_BRAKE_RATE = 0.4
 @export var CAR_SPEED_ACCEL = 10
 @export var CAR_TURN_SPEED = 0.7
-
+var CURVE : float
 #BOOLS FOR MOVEMENT/ANIMATION LOGIC
 var _is_crouching : bool
 var _is_sprinting : bool
@@ -62,7 +63,7 @@ func _ready():
 	_is_crouching = false
 	_is_sprinting = false
 	_speed = SPEED_DEFAULT
-
+	
 func hurt(hurt_rate):
 	#update health bar, called when enemy area3d signal is emitted and it is this class that entered it
 	HEALTH.value -= hurt_rate
@@ -102,6 +103,7 @@ func check_interact():
 			if _is_crouching == true:
 				crouch_animation()
 				await get_tree().create_timer(1.0).timeout
+			VEHICLE_ENGINE_SOUND._play_audio()
 			VEHICLE_LABEL.text = str("ENTERED")
 		elif state == PLAYER_STATE.WALKING:
 			VEHICLE_LABEL.text = str("EXITED")
@@ -113,46 +115,38 @@ func _update_camera(delta):
 		_mouse_rotation.x = clamp(_mouse_rotation.x, TILT_LOWER_LIMIT, TILT_UPPER_LIMIT)
 		
 	elif state == PLAYER_STATE.DRIVING: #limited camera control when sitting in car	
+		#global_position = VEHICLE.global_position
 		_mouse_rotation.x = clamp(_mouse_rotation.x, CAR_CAM_TILT_LOWER_LIMIT, CAR_CAM_TILT_UPPER_LIMIT)
-		'''
-		the below code is in_progress to control y-axix (left-right) while in vehicle
-		a basic clamp wont work because rotation is in radians and when the values 
-		cross from -3.14>3.14, the clamp just kills itself in logic
+			
+		var RIGHT_BOUND = RIGHT_BND_AREA.get_instance_id()
+		var LEFT_BOUND = LEFT_BND_AREA.get_instance_id()
 		
-		an alternative that helps keep limited control of camera based on vehicle orientation
-		remains to be made or figured out
 		
-		heres a reddit link that kinda has the same issue 
-		https://www.reddit.com/r/godot/comments/188rlpf/help_with_limiting_rotation_within_two_angles/
-		
-		it is 7:30am and i cant be fucked anymore 
-		
-		-GAR	2/9/2025
-		
-		var RIGHT_LIM = CAR_CAM_TURN_LOWER_LIMIT + VEHICLE.rotation.y 
-		RIGHT_LIM = RIGHT_LIM  - 2 * PI * floor(RIGHT_LIM  / (2 * PI))
-		var LEFT_LIM = CAR_CAM_TURN_UPPER_LIMIT + VEHICLE.rotation.y 
-		LEFT_LIM = LEFT_LIM  - 2 * PI * floor(LEFT_LIM / (2 * PI))
-		var MOUSE_ROT = _mouse_rotation.y  - 2 * PI * floor(_mouse_rotation.y  / (2 * PI))
-		
-		RIGHT_LIM += 10
-		LEFT_LIM += 10
-		MOUSE_ROT += 10
-		
-		print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
-		print("L: ",LEFT_LIM)
-		print("m: ",MOUSE_ROT)
-		print("R: ",RIGHT_LIM)
-		if ((MOUSE_ROT > LEFT_LIM or MOUSE_ROT < RIGHT_LIM)):
+		if(LOOK_DIR_RAY.is_colliding()):
+			if(LOOK_DIR_RAY.get_collider().is_in_group("CarViewBoundaries")):
+				CURVE += 0.002
+				if (LOOK_DIR_RAY.get_collider().get_instance_id() == RIGHT_BOUND):
+					_mouse_rotation.y += CURVE
+					if (_rotation_input * delta > 0):
+						_mouse_rotation.y += _rotation_input * delta
+				elif(LOOK_DIR_RAY.get_collider().get_instance_id() == LEFT_BOUND):
+					_mouse_rotation.y -= CURVE
+					if (_rotation_input * delta < 0):
+						_mouse_rotation.y += _rotation_input * delta
+		else:
+			CURVE = 0.01
 			_mouse_rotation.y += _rotation_input * delta
-		#figure out above
-		_mouse_rotation.x = clamp(_mouse_rotation.x, CAR_CAM_TILT_LOWER_LIMIT, CAR_CAM_TILT_UPPER_LIMIT)
-		'''
+		
 	_player_rotation = Vector3(0, _mouse_rotation.y, 0)
 	_camera_rotation = Vector3(_mouse_rotation.x, 0, 0)
 	CAMERA_CONTROLLER.transform.basis = Basis.from_euler(_camera_rotation)
 	CAMERA_CONTROLLER.rotation.z = 0
-	global_transform.basis = Basis.from_euler(_player_rotation)
+	
+	var a = Quaternion(global_transform.basis)
+	var b = Quaternion(Basis.from_euler(_player_rotation))
+	var c = a.slerp(b,0.5)
+	global_transform.basis = Basis(c)
+	#global_transform.basis = Basis.from_euler(_player_rotation)
 	_rotation_input = 0
 	_tilt_input = 0
 	

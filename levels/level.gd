@@ -5,8 +5,8 @@ class_name Level
 ##TODO: Detailed Level Description
 ##Level Needs SpawnPoints to function, and EnemyManager
 
-var player_scene = preload("res://First Person & Phone Essentials.tscn")
-#var car_scene = preload("res://Basic First Person Movement + Camera.tscn")
+var player_scene = preload("res://protag/Protag_Root_Scene.tscn")
+var car_scene = preload("res://vehicle/Vehicle_Root_Scene.tscn")
 var enemy_scene = preload("res://enemy/enemy.tscn")
 
 @export_subgroup("Enemies")

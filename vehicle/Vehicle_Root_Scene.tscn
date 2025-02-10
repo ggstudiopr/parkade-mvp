@@ -1,0 +1,81 @@
+[gd_scene load_steps=9 format=3 uid="uid://ykg03vys3buy"]
+
+[ext_resource type="AudioStream" uid="uid://c6qx0cojqsd0m" path="res://vehicle/sounds/Car Starting Sound Effect.mp3" id="1_0rxcn"]
+[ext_resource type="Script" path="res://vehicle/CarAudio.gd" id="2_echwb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qacrj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rahdc"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.612157, 0, 0.00571375, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4jrxk"]
+material = SubResource("StandardMaterial3D_rahdc")
+size = Vector3(1.2, 0.7, 3)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_inspg"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_53o7v"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w6b14"]
+size = Vector3(2.19067, 1.89137, 1)
+
+[node name="Vehicle" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.194263, -6.6784)
+
+[node name="CarCollisionShape" type="CollisionShape3D" parent="."]
+visibility_parent = NodePath("VehicleBaseMesh")
+shape = SubResource("BoxShape3D_qacrj")
+disabled = true
+
+[node name="VehicleBaseMesh" type="MeshInstance3D" parent="CarCollisionShape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.533309, 0)
+mesh = SubResource("BoxMesh_4jrxk")
+skeleton = NodePath("../..")
+
+[node name="VehicleProximityDetect" type="Area3D" parent="." groups=["CarSignals"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.611662, -0.0815697)
+
+[node name="VehicleProxCollision" type="CollisionShape3D" parent="VehicleProximityDetect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.31916, 0)
+shape = SubResource("SphereShape3D_inspg")
+
+[node name="VehicleLabel" type="Label" parent="."]
+offset_left = 878.0
+offset_top = 489.0
+offset_right = 1064.0
+offset_bottom = 512.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CarEngineStart" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("1_0rxcn")
+script = ExtResource("2_echwb")
+
+[node name="LeftMirror" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -2.3, 0.5, -1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LeftMirror"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.326383, 1.03598, -1.44386)
+mesh = SubResource("SphereMesh_53o7v")
+
+[node name="LookBoundary" type="Area3D" parent="LeftMirror" groups=["CarViewBoundaries"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06753, -1.44804)
+
+[node name="LookBoundaryShape" type="CollisionShape3D" parent="LeftMirror/LookBoundary" groups=["CarViewBoundaries"]]
+transform = Transform3D(0.0120395, 1.71589, 0.469631, 2.9998, -0.0584675, 2.14304e-08, 0.0329498, 4.69599, -0.1716, 1.79038, 1.41932, 4.16527)
+shape = SubResource("BoxShape3D_w6b14")
+
+[node name="RightMirror" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 2, 0.5, -1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RightMirror"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.326383, 1.03598, -1.44386)
+mesh = SubResource("SphereMesh_53o7v")
+
+[node name="LookBoundary" type="Area3D" parent="RightMirror" groups=["CarViewBoundaries"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06753, -1.44804)
+
+[node name="LookBoundaryShape2" type="CollisionShape3D" parent="RightMirror/LookBoundary" groups=["CarViewBoundaries"]]
+transform = Transform3D(0.0121126, 1.89612, 0.462648, -2.99983, 0.0532317, -2.18545e-08, -0.0295531, -4.62622, 0.189623, -1.49149, 0.394449, 4.3018)
+shape = SubResource("BoxShape3D_w6b14")

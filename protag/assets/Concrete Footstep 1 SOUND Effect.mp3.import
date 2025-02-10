@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cf3ky2gprqugr"
+path="res://.godot/imported/Concrete Footstep 1 SOUND Effect.mp3-324d5529974ca4d7f9b13a4fc1c7abd1.mp3str"
+
+[deps]
+
+source_file="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3"
+dest_files=["res://.godot/imported/Concrete Footstep 1 SOUND Effect.mp3-324d5529974ca4d7f9b13a4fc1c7abd1.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

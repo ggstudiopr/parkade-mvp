@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Parkade Test"
-run/main_scene="res://levels/test_level.tscn"
+config/name="Parkade MVP"
+run/main_scene="res://levels/EnemiesTrackingLevel.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -24,6 +24,12 @@ Global="*res://global.gd"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=2
+
+[global_group]
+
+CarViewBoundaries="read the name bro"
+CarSignals="read name, bro"
+PlayerCollider=""
 
 [input]
 

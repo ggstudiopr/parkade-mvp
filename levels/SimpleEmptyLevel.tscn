@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://bfd4htvattvv6"]
 
-[ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://First Person & Phone Essentials.tscn" id="1_85pv0"]
-[ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle.tscn" id="2_7og62"]
+[ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_c7pc3"]
+[ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="2_t6p8l"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_mf6y0"]
 
@@ -40,9 +40,9 @@ mesh = SubResource("PlaneMesh_wtufp")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D2"]
 shape = SubResource("ConcavePolygonShape3D_kxiiv")
 
-[node name="Protagonist" parent="." instance=ExtResource("1_85pv0")]
+[node name="Protagonist" parent="." instance=ExtResource("1_c7pc3")]
 
-[node name="Vehicle" parent="." instance=ExtResource("2_7og62")]
+[node name="Vehicle" parent="." instance=ExtResource("2_t6p8l")]
 
 [connection signal="body_entered" from="Vehicle/VehicleProximityDetect" to="Protagonist" method="_on_vehicle_proximity_detect_body_entered"]
 [connection signal="body_exited" from="Vehicle/VehicleProximityDetect" to="Protagonist" method="_on_vehicle_proximity_detect_body_exited"]

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d3s448a0plbr6"
+path="res://.godot/imported/Flashlight Sound Effect sfx.mp3-e0bade4e27285a11564685de6fe51310.mp3str"
+
+[deps]
+
+source_file="res://protag/phone/Flashlight Sound Effect sfx.mp3"
+dest_files=["res://.godot/imported/Flashlight Sound Effect sfx.mp3-e0bade4e27285a11564685de6fe51310.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

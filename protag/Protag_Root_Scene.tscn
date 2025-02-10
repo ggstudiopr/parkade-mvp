@@ -1,14 +1,14 @@
-[gd_scene load_steps=28 format=3 uid="uid://dusc4j8u3m1vg"]
+[gd_scene load_steps=28 format=3 uid="uid://dl60tvwy1elkf"]
 
-[ext_resource type="Script" path="res://basic_player.gd" id="1_v2cog"]
-[ext_resource type="Script" path="res://MainPhoneNode.gd" id="2_e0cb7"]
-[ext_resource type="Script" path="res://Flashlight.gd" id="3_a0akl"]
-[ext_resource type="AudioStream" uid="uid://d3s448a0plbr6" path="res://Flashlight Sound Effect sfx.mp3" id="3_v326w"]
-[ext_resource type="Script" path="res://FlashlightAudioPlayer.gd" id="4_a2bqj"]
-[ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://Concrete Footstep 1 SOUND Effect.mp3" id="5_gtkok"]
-[ext_resource type="Texture2D" uid="uid://bdt3eychbninn" path="res://camOffIcon.png" id="6_e4j1w"]
-[ext_resource type="Script" path="res://FootstepAudioPlayer.gd" id="6_gcfk1"]
-[ext_resource type="Script" path="res://PhoneCameraUpdate.gd" id="7_dumbr"]
+[ext_resource type="Script" path="res://protag/scripts/basic_player.gd" id="1_yvqfv"]
+[ext_resource type="Script" path="res://protag/phone/MainPhoneNode.gd" id="2_cd73r"]
+[ext_resource type="Script" path="res://protag/phone/Flashlight.gd" id="3_jr8mw"]
+[ext_resource type="AudioStream" uid="uid://d3s448a0plbr6" path="res://protag/phone/Flashlight Sound Effect sfx.mp3" id="4_gwrdj"]
+[ext_resource type="Script" path="res://protag/phone/FlashlightAudioPlayer.gd" id="5_1rg5o"]
+[ext_resource type="Texture2D" uid="uid://bdt3eychbninn" path="res://protag/phone/camOffIcon.png" id="6_o3t3n"]
+[ext_resource type="Script" path="res://protag/phone/PhoneCameraUpdate.gd" id="7_853cm"]
+[ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3" id="8_bhrfm"]
+[ext_resource type="Script" path="res://protag/scripts/FootstepAudioPlayer.gd" id="9_f878c"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ni7be"]
 
@@ -351,14 +351,13 @@ _data = {
 "stand": SubResource("Animation_d5j1e")
 }
 
-[node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "CrouchCollisionDetect")]
+[node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "CrouchCollisionDetect")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
-script = ExtResource("1_v2cog")
-SPRINT_MULT = 5.0
+script = ExtResource("1_yvqfv")
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
 CrouchCollisionDetect = NodePath("CollisionShape3D/CrouchCollisionShapeCast")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." groups=["PlayerCollider"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_ni7be")
 
@@ -377,10 +376,11 @@ debug_shape_custom_color = Color(1.29953e-06, 0.670053, 0.480873, 1)
 transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871558, 0, 0.0871558, 0.996195, 0, 1.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraController"]
+cull_mask = 1047553
 
 [node name="PhoneNode" type="Node3D" parent="CameraController/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.440142, -0.375938, -0.56255)
-script = ExtResource("2_e0cb7")
+script = ExtResource("2_cd73r")
 
 [node name="PhoneModel" type="MeshInstance3D" parent="CameraController/Camera3D/PhoneNode"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
@@ -396,12 +396,12 @@ distance_fade_length = 5.0
 spot_range = 25.0
 spot_attenuation = 0.81
 spot_angle = 20.0
-script = ExtResource("3_a0akl")
+script = ExtResource("3_jr8mw")
 
 [node name="FlashlightClick" type="AudioStreamPlayer3D" parent="CameraController/Camera3D/PhoneNode/SpotLight3D"]
-stream = ExtResource("3_v326w")
+stream = ExtResource("4_gwrdj")
 volume_db = -30.27
-script = ExtResource("4_a2bqj")
+script = ExtResource("5_1rg5o")
 
 [node name="BatteryBar" type="ProgressBar" parent="CameraController/Camera3D/PhoneNode"]
 anchors_preset = 8
@@ -432,11 +432,11 @@ libraries = {
 [node name="PhoneScreen" type="Sprite3D" parent="CameraController/Camera3D/PhoneNode"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 double_sided = false
-texture = ExtResource("6_e4j1w")
+texture = ExtResource("6_o3t3n")
 region_enabled = true
 region_rect = Rect2(80, 0, 344, 512)
 
-[node name="SubViewport" type="SubViewport" parent="CameraController/Camera3D/PhoneNode"]
+[node name="SubViewport" type="SubViewport" parent="CameraController/Camera3D/PhoneNode" groups=["CameraViewport"]]
 physics_interpolation_mode = 1
 handle_input_locally = false
 gui_disable_input = true
@@ -446,8 +446,9 @@ render_target_update_mode = 4
 [node name="PhoneCamera" type="Camera3D" parent="CameraController/Camera3D/PhoneNode/SubViewport"]
 physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.44, 1.04579, -0.563)
+cull_mask = 1047553
 fov = 50.0
-script = ExtResource("7_dumbr")
+script = ExtResource("7_853cm")
 
 [node name="HeadAnimationPlayer" type="AnimationPlayer" parent="CameraController/Camera3D"]
 libraries = {
@@ -456,12 +457,31 @@ libraries = {
 
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="CameraController/Camera3D/HeadAnimationPlayer"]
 transform = Transform3D(0.999991, 0.00418878, 0, -0.00418878, 0.999991, 0, 0, 0, 1, -0.00389556, -0.0299919, 0)
-stream = ExtResource("5_gtkok")
+stream = ExtResource("8_bhrfm")
 volume_db = -17.042
-script = ExtResource("6_gcfk1")
+script = ExtResource("9_f878c")
+
+[node name="LookDirectionTrigger" type="RayCast3D" parent="CameraController/Camera3D"]
+transform = Transform3D(10, 0, 0, 0, -4.37114e-07, -10, 0, 10, -4.37114e-07, 0, 0, -0.580195)
+hit_from_inside = true
+collide_with_areas = true
+collide_with_bodies = false
+debug_shape_custom_color = Color(0, 1, 0, 1)
 
 [node name="BodyAnimationPlayer" type="AnimationPlayer" parent="CameraController"]
 root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_wpsm1")
 }
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = 112.0
+offset_top = 1011.0
+offset_right = 1809.0
+offset_bottom = 1038.0
+max_value = 1000.0
+value = 1000.0
+
+[node name="ForwardRayCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.10739, -1.13561)
+debug_shape_custom_color = Color(0.0577591, 0.35715, 1, 1)
