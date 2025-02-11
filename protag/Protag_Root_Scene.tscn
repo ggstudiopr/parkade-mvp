@@ -351,11 +351,10 @@ _data = {
 "stand": SubResource("Animation_d5j1e")
 }
 
-[node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "CrouchCollisionDetect")]
+[node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 script = ExtResource("1_yvqfv")
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
-CrouchCollisionDetect = NodePath("CollisionShape3D/CrouchCollisionShapeCast")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." groups=["PlayerCollider"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -377,6 +376,7 @@ transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871558, 0, 0.0871558, 0.996195
 
 [node name="Camera3D" type="Camera3D" parent="CameraController"]
 cull_mask = 1047553
+fov = 90.0
 
 [node name="PhoneNode" type="Node3D" parent="CameraController/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.440142, -0.375938, -0.56255)

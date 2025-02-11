@@ -1,13 +1,17 @@
-[gd_scene load_steps=26 format=3 uid="uid://ykg03vys3buy"]
+[gd_scene load_steps=31 format=3 uid="uid://ykg03vys3buy"]
 
 [ext_resource type="AudioStream" uid="uid://c6qx0cojqsd0m" path="res://vehicle/sounds/Car Starting Sound Effect.mp3" id="1_0rxcn"]
+[ext_resource type="Script" path="res://vehicle/vehicle_base.gd" id="1_elk10"]
 [ext_resource type="Script" path="res://vehicle/CarAudio.gd" id="2_echwb"]
+[ext_resource type="Script" path="res://vehicle/CarHeadlights.gd" id="2_hg1yu"]
 [ext_resource type="AudioStream" uid="uid://jksouwbnj23u" path="res://vehicle/sounds/Miku.mp3" id="3_1681n"]
 [ext_resource type="Script" path="res://vehicle/RadioAudio.gd" id="3_i0utq"]
 [ext_resource type="Script" path="res://vehicle/MirrorReflectionLeft.gd" id="3_xmco5"]
 [ext_resource type="Script" path="res://vehicle/MirrorReflectioRight.gd" id="4_gxq1t"]
+[ext_resource type="Script" path="res://vehicle/BackCam.gd" id="5_0k2mh"]
 [ext_resource type="Script" path="res://vehicle/MirrorReflectionRear.gd" id="5_lm5gg"]
 [ext_resource type="Texture2D" uid="uid://dgxaed0whgfeo" path="res://vehicle/piku.jpg" id="8_cb2dy"]
+[ext_resource type="Script" path="res://vehicle/EngineAudio.gd" id="10_e2wr3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qacrj"]
 
@@ -49,6 +53,9 @@ albedo_color = Color(0.264504, 0.639223, 1.92523e-07, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ok67h"]
 albedo_color = Color(1, 0.176471, 1, 1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4fosd"]
+albedo_color = Color(0, 1, 1, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2d5d8"]
 albedo_color = Color(1, 1, 0.0235294, 1)
 
@@ -58,12 +65,30 @@ text = "BASE"
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7o0w8"]
 
 [node name="Vehicle" type="CharacterBody3D"]
+script = ExtResource("1_elk10")
 
 [node name="Front" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.806649, -3.75572)
 
+[node name="Headlight" type="SpotLight3D" parent="Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.388498, 1.90135)
+spot_range = 5.34411
+spot_angle = 45.276
+script = ExtResource("2_hg1yu")
+
+[node name="CarEngine" type="AudioStreamPlayer3D" parent="Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.806649, 3.75572)
+stream = ExtResource("1_0rxcn")
+script = ExtResource("2_echwb")
+
 [node name="Back" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.806649, 1.68009)
+
+[node name="SubViewportBackCam" type="SubViewport" parent="Back"]
+
+[node name="BackCam" type="Camera3D" parent="Back/SubViewportBackCam"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.122, 0.723955)
+script = ExtResource("5_0k2mh")
 
 [node name="CarCollisionShape" type="CollisionShape3D" parent="."]
 visibility_parent = NodePath("VehicleBaseMesh")
@@ -79,7 +104,7 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.611662, -0.0815697)
 
 [node name="VehicleProxCollision" type="CollisionShape3D" parent="VehicleProximityDetect"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.31916, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0141625, 0.308237, 0.017293)
 shape = SubResource("SphereShape3D_inspg")
 
 [node name="VehicleLabel" type="Label" parent="."]
@@ -89,10 +114,6 @@ offset_right = 1064.0
 offset_bottom = 512.0
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="CarEngineStart" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("1_0rxcn")
-script = ExtResource("2_echwb")
 
 [node name="LeftMirror" type="Node3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -2.3, 0.5, -1)
@@ -199,12 +220,32 @@ shape = SubResource("SphereShape3D_63ipq")
 
 [node name="RadioAudio" type="AudioStreamPlayer3D" parent="Radio"]
 stream = ExtResource("3_1681n")
-volume_db = -0.2
+volume_db = -26.105
 script = ExtResource("3_i0utq")
 
 [node name="RadioScreen" type="Sprite3D" parent="Radio"]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0.820259, 0.0109594, 4.1266)
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.820259, 0.0109594, 4.1266)
 texture = ExtResource("8_cb2dy")
+region_enabled = true
+region_rect = Rect2(65, 240, 400, 250)
+
+[node name="Ignition" type="Node3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.331107, 1.00831, -2.26539)
+
+[node name="NodeMesh" type="MeshInstance3D" parent="Ignition"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.54305)
+mesh = SubResource("SphereMesh_7arhk")
+surface_material_override/0 = SubResource("StandardMaterial3D_4fosd")
+
+[node name="NodeArea" type="Area3D" parent="Ignition/NodeMesh" groups=["CarInteractColliders"]]
+
+[node name="NodeCollision" type="CollisionShape3D" parent="Ignition/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+shape = SubResource("SphereShape3D_63ipq")
+
+[node name="EngineAudio" type="AudioStreamPlayer3D" parent="Ignition"]
+stream = ExtResource("3_1681n")
+volume_db = -0.2
+script = ExtResource("10_e2wr3")
 
 [node name="GearShift" type="Node3D" parent="."]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.538623, 1.0372, -1.94105)
