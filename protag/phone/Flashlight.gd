@@ -23,3 +23,9 @@ func flashlightOff():
 
 func _process(delta: float) -> void:
 	pass
+
+func isOn():
+	if LightBool == true:
+		return true
+	if LightBool == false:
+		return false

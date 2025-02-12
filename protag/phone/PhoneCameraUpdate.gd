@@ -21,3 +21,9 @@ func CamOn():
 func CamOff():
 		PHONE_SCREEN.texture = load("res://protag/phone/camOffIcon.png")
 		CameraBool = false
+
+func isOn():
+	if CameraBool == true:
+		return true
+	if CameraBool == false:
+		return false

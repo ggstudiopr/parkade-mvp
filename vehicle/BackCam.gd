@@ -20,4 +20,10 @@ func CamOn():
 	RADIO_SCREEN.texture = SUBVIEW_DISPLAY_LEFT.get_texture()
 func CamOff():
 	CamBool = false
-	RADIO_SCREEN.texture = load("res://protag/phone/camOffIcon.png")
+	RADIO_SCREEN.hide()
+
+func isOn():
+	if CamBool == true:
+		return true
+	if CamBool == false:
+		return false

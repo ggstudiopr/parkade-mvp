@@ -1,44 +1,75 @@
 extends CharacterBody3D
 class_name Player
 
-#var car_scene = preload("res://vehicle/Vehicle_Root_Scene.tscn")
-
 '''
 GAR
-2/11/2025 2AM
+2/11/2025 10PM
 	
-	-reorganized logic into seperate functions for readability
+	-reorganized logic and added check functions for readability in player_base.gd, vehicle_base.gd, and phone_base.gd
 	-restructured/renamed project files for readability
-	-Vehicle "finished" and saved to seperate scene, vehicle functionalities moved to vehicle_base.gd
-		-Multiple features added to vehicle:
-			>kinetic movement
-			>transmission
-			>radio
-			>door exit
-			>mirrors
-			>unparked car drifts away lmfao
-			>rear view cam when reversing
+	-player functions present:
+		>free movement
+		>jump
+		>crouch
+		>sprint
+		>Phone
+			>light
+			>camera
+	-vehicle functions present:
+		>kinematic movement
+		>car "sprint" (accelerates)
+		>transmission interact
+		>radio interact
+		>door exit interact
+		>car horn interact
+		>car engine ignition interact
+		>mirrors (left, right, rear)
+		>car reversing back camera on radio display in logic
+		>unparked car drifts away in logic lmfao
+		>car headlights&brakelights in logic
+	
 	-vehicle_base.gd issues:
-		>gearShift() needs tweaking, particularly reverse, can be rewritten to support other transmissions
-		>radioInteract() not working as intended
-	-basic_player.gd issues:
-		need to fix signals (bottom of script) for knowing when u can enter the car
-
+		A>gearShift() can be rewritten to support other transmissions
+			-will require rewriting parts of _driving_car_movement(delta)
+			-editing gearShift to this degree will also involve adjusting the 3D node and creating childs
+		B>vehicle needs revised player exit logic, particularly the signal for when the player enters fucks w stuff
+			-this item is particularly noticeable when exiting car while its moving. check playerExitCar() 
+			-check player_base.gd item A
+		C>car sometimes drifts ever so slightly left/right by an inch when stopping
+		D>player interact ray cast doesnt work as intended when other entities block view
+			-noticeable when driving through enemies in EnemiesTrackingLevel, re-eval
+			-will likely affect _player_look_interact_prompts() 
+	-player_base.gd issues:
+		A>need to fix signals (bottom of script) for knowing when u can enter the car
+			-check vehicle_base.gd item B
+		
 	-Other recent changes from last break:
 		>health bar added which decreases when in proximity to enemy entity
 		>restructured file dir
 	-Planned additions pending:
+		>car gas/battery meter
+			-will work identical to phone battery, just drain it when car is on
+			-probably make it MUCH more subtle than phone battery in final implementation, a subtle UI element in car
 		>Hold Q (bring phone up) to bring it to face
+			-probably only add some logic in phoneToggle + an animation, likely an extra bool
+				-consider Outlast full screen cam idea instead of hovering camera in front of face
+				-consider Content Warning hovering face cam idea as base concept
 		>Phone gallery? maybe 1 additional app?
-		>Car doors/locking
+			-input key 3 still unassinged
+		>Scroll input
+			-could be useful for phone camera
+		>Right click input
+			-there is literally no right clicking in this game? maybe change car E interacts to click?
+		>Car doors/locking?
+			-car keys
+			-car doors
 		>Car collision box when hitting walls
-		>Car animation + sound when above collision triggers
-		
+			-animation + sound when above collision triggers
+		>consolidate all enums into one resource? especially for eventManager
 	notes:
 		Vehicle node has several mini scripts made with the intention of giving more 
 		direct control of those elements for enemy events later. Try to develop
 		with this in mind.
-		
 '''
 #SPEED VALUES
 var _speed : float

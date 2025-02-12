@@ -1,10 +1,11 @@
-[gd_scene load_steps=28 format=3 uid="uid://dl60tvwy1elkf"]
+[gd_scene load_steps=29 format=3 uid="uid://dl60tvwy1elkf"]
 
-[ext_resource type="Script" path="res://protag/scripts/basic_player.gd" id="1_yvqfv"]
-[ext_resource type="Script" path="res://protag/phone/MainPhoneNode.gd" id="2_cd73r"]
+[ext_resource type="Script" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
+[ext_resource type="Script" path="res://protag/phone/phone_base.gd" id="2_cd73r"]
 [ext_resource type="Script" path="res://protag/phone/Flashlight.gd" id="3_jr8mw"]
 [ext_resource type="AudioStream" uid="uid://d3s448a0plbr6" path="res://protag/phone/Flashlight Sound Effect sfx.mp3" id="4_gwrdj"]
 [ext_resource type="Script" path="res://protag/phone/FlashlightAudioPlayer.gd" id="5_1rg5o"]
+[ext_resource type="Script" path="res://protag/BatteryBar.gd" id="6_50o7a"]
 [ext_resource type="Texture2D" uid="uid://bdt3eychbninn" path="res://protag/phone/camOffIcon.png" id="6_o3t3n"]
 [ext_resource type="Script" path="res://protag/phone/PhoneCameraUpdate.gd" id="7_853cm"]
 [ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3" id="8_bhrfm"]
@@ -19,7 +20,8 @@ albedo_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ju561"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_5e8e2"]
+[sub_resource type="BoxMesh" id="BoxMesh_vw2lk"]
+size = Vector3(2, 2.6, 0.1)
 
 [sub_resource type="Animation" id="Animation_t2tbu"]
 resource_name = "HidePhone"
@@ -50,6 +52,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(0.440142, -0.375938, -0.56255)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PhoneNode:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_dfbam"]
 resource_name = "ShowPhone"
@@ -64,6 +78,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(0.44, -1, -0.563), Vector3(0.44, -0.376, -0.563)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PhoneNode:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.785398), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_eq54l"]
@@ -383,8 +409,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.440142, -0.375938, -0.56255
 script = ExtResource("2_cd73r")
 
 [node name="PhoneModel" type="MeshInstance3D" parent="CameraController/Camera3D/PhoneNode"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
-mesh = SubResource("SphereMesh_5e8e2")
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, -0.0145113)
+mesh = SubResource("BoxMesh_vw2lk")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="CameraController/Camera3D/PhoneNode"]
 light_color = Color(0.997824, 1, 0.906135, 1)
@@ -422,6 +448,7 @@ mouse_filter = 1
 max_value = 1000.0
 step = 1.0
 value = 1000.0
+script = ExtResource("6_50o7a")
 
 [node name="PhoneAnimationPlayer" type="AnimationPlayer" parent="CameraController/Camera3D/PhoneNode"]
 root_node = NodePath("../..")

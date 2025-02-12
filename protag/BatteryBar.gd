@@ -1,4 +1,4 @@
-extends Camera3D
+extends ProgressBar
 
 
 # Called when the node enters the scene tree for the first time.
@@ -8,4 +8,11 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	pass
+	
+func isDead():
+	if value <= 0:
+		return true
+	else:
+		return false
 	pass
