@@ -33,7 +33,7 @@ var direction
 
 @export var CAR_CAM_TILT_UPPER_LIMIT := deg_to_rad(15)
 @export var CAR_CAM_TILT_LOWER_LIMIT := deg_to_rad(-35)
-@export var CAR_SPEED_DEFAULT = 8
+@export var CAR_SPEED_DEFAULT = 8 #Rename to max speed
 @export var CAR_BRAKE_RATE = 0.4
 @export var CAR_ACCEL_RATE = 0.3
 @export var CAR_SPRINT_MULT = 2
@@ -53,6 +53,7 @@ enum CAR_TRANSMISSION_AUTO {
 	PARK,
 	NEUTRAL
 }
+var transmission_state = CAR_TRANSMISSION_AUTO.NEUTRAL
 enum CAR_TRANSMISSION_MANUAL {
 	M1,
 	M2,
@@ -96,9 +97,9 @@ func _input(event):
 	if event.is_action_pressed("interact"):
 		check_interact()
 
+#TODO: This might become obsolete with creation of Interactables node.
 func check_interact():
 	if PLAYER.player_state == PLAYER_STATE.DRIVING:
-
 		var DOOR_HANDLE_INTERACT = DOOR_HANDLE_AREA.get_instance_id()
 		var RADIO_INTERACT = RADIO_AREA.get_instance_id()
 		var GEAR_SHIFT_INTERACT = GEAR_SHIFT_AREA.get_instance_id()
@@ -123,58 +124,90 @@ func _physics_process(delta: float) -> void:
 	_player_look_interact_prompts()
 	_car_drift_away()
 	
+	VEHICLE.move_and_slide()
+	
+	#TODO: Level node should handle this
 	if PLAYER.player_state == PLAYER_STATE.DRIVING:
 		PLAYER.global_position = VEHICLE.global_position
 	
 func _driving_car_movement(delta):
 	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if PLAYER.player_state == PLAYER_STATE.DRIVING:
-		if direction and gear_shift != CAR_TRANSMISSION_AUTO.PARK and vehicle_engine != ENGINE_STATE.OFF : 
-			if (Input.is_action_pressed("move_forward") and gear_shift == CAR_TRANSMISSION_AUTO.DRIVE):
-				VEHICLE_BRAKELIGHT.light_OFF()
-				VEHICLE.velocity = Vector3.ZERO
-				_car_accel_rampup  = move_toward(_car_accel_rampup , CAR_SPEED_DEFAULT, CAR_ACCEL_RATE)
-				VEHICLE.velocity += -(VEHICLE.transform.basis.z) * _car_accel_rampup
-				if Input.is_action_pressed("move_right"):
-					PLAYER._mouse_rotation.y += -CAR_TURN_SPEED*delta
-					VEHICLE.rotate_y(-CAR_TURN_SPEED*delta)
-				elif Input.is_action_pressed("move_left"):
-					PLAYER._mouse_rotation.y += CAR_TURN_SPEED*delta
-					VEHICLE.rotate_y(CAR_TURN_SPEED*delta)
-			elif (Input.is_action_pressed("move_backward") and gear_shift == CAR_TRANSMISSION_AUTO.REVERSE):
-				VEHICLE.velocity = Vector3.ZERO
-				_car_accel_rampup  = move_toward(_car_accel_rampup , CAR_SPEED_DEFAULT, CAR_ACCEL_RATE)
-				VEHICLE.velocity += (VEHICLE.transform.basis.z) * _car_accel_rampup 
-				if Input.is_action_pressed("move_right"):
-					PLAYER._mouse_rotation.y += CAR_TURN_SPEED*delta
-					VEHICLE.rotate_y(CAR_TURN_SPEED*delta)
-				elif Input.is_action_pressed("move_left"):
-					PLAYER._mouse_rotation.y += -CAR_TURN_SPEED*delta
-					VEHICLE.rotate_y(-CAR_TURN_SPEED*delta)
-			if Input.is_action_pressed("sprint"):
-				velocity *= CAR_SPRINT_MULT
-				_is_car_sprinting = true
-				'''
-				below code works in concept but doesnt sound right lol, needs rethinking
-				
-				if !ENGINE_SPRINT_SOUND._car_is_sprinting:
-					ENGINE_SPRINT_SOUND.loopStart()
-				if (Input.is_action_pressed("move_right") or Input.is_action_pressed("move_left") ) and !WHEEL_AUDIO.is_playing():
-					WHEEL_AUDIO.hardTurn()
-				'''
-			else:
-				_is_car_sprinting = false 
-				ENGINE_SPRINT_SOUND.loopOff()
-		if (!(Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_backward") or gear_shift == CAR_TRANSMISSION_AUTO.PARK)):
-			VEHICLE.velocity.x = move_toward(VEHICLE.velocity.x, 0, CAR_BRAKE_RATE) #deccel isnt perfect, car kinda mildly drifts left/right at times when stopping for a quarter second
-			VEHICLE.velocity.z = move_toward(VEHICLE.velocity.z, 0, CAR_BRAKE_RATE)
-			_car_accel_rampup  = 0
-			if (gear_shift != CAR_TRANSMISSION_AUTO.REVERSE):
-				VEHICLE_BRAKELIGHT.light_ON_braking()
-		VEHICLE.move_and_slide()
-
+	#TODO: The original math is clunky to integrate with a state system. Need to refine velocity equation from original.
+	
+	#var input_signs = Vector3(1 if direction.x != 0 else -1, 0 ,1 if direction.z != 0 else -1) #Not sure if this actually works with better equation.
+	#var accel_rate = CAR_ACCEL_RATE
+	#var max_speed = CAR_SPEED_DEFAULT
+	#if PLAYER.player_state == PLAYER_STATE.DRIVING:
+		#match(gear_shift):
+			#CAR_TRANSMISSION_AUTO.PARK:
+				##speed_rate = 0
+				#VEHICLE_BRAKELIGHT.light_ON_braking()
+				#pass
+			#CAR_TRANSMISSION_AUTO.DRIVE:
+				#accel_rate = CAR_ACCEL_RATE
+				#VEHICLE_BRAKELIGHT.light_OFF()
+				#pass
+			#CAR_TRANSMISSION_AUTO.REVERSE:
+				#accel_rate = CAR_BRAKE_RATE
+				#pass
+			#CAR_TRANSMISSION_AUTO.NEUTRAL:
+				#pass
+			#
+		##velocity = Vector3.ZERO #ZERO or not is an experience choice
+		##TODO: Velocity isn't being negative when it needs to be.
+		##TODO: It needs to be negative when there's no input(we act like its Z) and when z is negative(we just use Z).
+		#velocity += input_signs * move_toward(_car_accel_rampup, max_speed, accel_rate)
+		#PLAYER._mouse_rotation.y += input_signs.y * CAR_TURN_SPEED * delta
+		#VEHICLE.rotate_y(input_signs.y * CAR_TURN_SPEED * delta)
+		#print(transform)
+		#print(transform.basis)
+		
+		
+	if direction and gear_shift != CAR_TRANSMISSION_AUTO.PARK and vehicle_engine != ENGINE_STATE.OFF : 
+		if (Input.is_action_pressed("move_forward") and gear_shift == CAR_TRANSMISSION_AUTO.DRIVE):
+			VEHICLE_BRAKELIGHT.light_OFF()
+			VEHICLE.velocity = Vector3.ZERO
+			_car_accel_rampup  = move_toward(_car_accel_rampup , CAR_SPEED_DEFAULT, CAR_ACCEL_RATE)
+			VEHICLE.velocity += -(VEHICLE.transform.basis.z) * _car_accel_rampup
+			if Input.is_action_pressed("move_right"):
+				PLAYER._mouse_rotation.y += -CAR_TURN_SPEED*delta
+				VEHICLE.rotate_y(-CAR_TURN_SPEED*delta)
+			elif Input.is_action_pressed("move_left"):
+				PLAYER._mouse_rotation.y += CAR_TURN_SPEED*delta
+				VEHICLE.rotate_y(CAR_TURN_SPEED*delta)
+		elif (Input.is_action_pressed("move_backward") and gear_shift == CAR_TRANSMISSION_AUTO.REVERSE):
+			VEHICLE.velocity = Vector3.ZERO
+			_car_accel_rampup  = move_toward(_car_accel_rampup , CAR_SPEED_DEFAULT, CAR_ACCEL_RATE)
+			VEHICLE.velocity += (VEHICLE.transform.basis.z) * _car_accel_rampup 
+			if Input.is_action_pressed("move_right"):
+				PLAYER._mouse_rotation.y += CAR_TURN_SPEED*delta
+				VEHICLE.rotate_y(CAR_TURN_SPEED*delta)
+			elif Input.is_action_pressed("move_left"):
+				PLAYER._mouse_rotation.y += -CAR_TURN_SPEED*delta
+				VEHICLE.rotate_y(-CAR_TURN_SPEED*delta)
+		if Input.is_action_pressed("sprint"):
+			velocity *= CAR_SPRINT_MULT
+			_is_car_sprinting = true
+			'''
+			below code works in concept but doesnt sound right lol, needs rethinking
 			
+			if !ENGINE_SPRINT_SOUND._car_is_sprinting:
+				ENGINE_SPRINT_SOUND.loopStart()
+			if (Input.is_action_pressed("move_right") or Input.is_action_pressed("move_left") ) and !WHEEL_AUDIO.is_playing():
+				WHEEL_AUDIO.hardTurn()
+			'''
+		else:
+			_is_car_sprinting = false 
+			ENGINE_SPRINT_SOUND.loopOff()
+	if (!(Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_backward") or gear_shift == CAR_TRANSMISSION_AUTO.PARK)):
+		VEHICLE.velocity.x = move_toward(VEHICLE.velocity.x, 0, CAR_BRAKE_RATE) #deccel isnt perfect, car kinda mildly drifts left/right at times when stopping for a quarter second
+		VEHICLE.velocity.z = move_toward(VEHICLE.velocity.z, 0, CAR_BRAKE_RATE)
+		_car_accel_rampup  = 0
+		if (gear_shift != CAR_TRANSMISSION_AUTO.REVERSE):
+			VEHICLE_BRAKELIGHT.light_ON_braking()
+
+#TODO: This is UI logic, should be moved to UI layer
 func _player_look_interact_prompts():
 	if(PLAYER.LOOK_DIR_RAY.is_colliding() and PLAYER.player_state == PLAYER_STATE.DRIVING):
 		var DOOR_HANDLE_INTERACT = DOOR_HANDLE_AREA.get_instance_id()
@@ -182,6 +215,19 @@ func _player_look_interact_prompts():
 		var GEAR_SHIFT_INTERACT = GEAR_SHIFT_AREA.get_instance_id()
 		var ENGINE_IGNITION_INTERACT = ENGINE_IGNITION_AREA.get_instance_id()
 		var CAR_HORN_INTERACT = CAR_HORN_AREA.get_instance_id()
+		
+		#Set vehicle label based on what the player is looking at
+		#match player_state == DRIVING:
+		# if player.looking_at(Interactable):
+		# 	vehicle_label.text = interactable.text
+		
+		
+		#TODO: Level should tell the Vehicle when to do something.
+		#var Interactables = [Node3D]
+		#for interactable : Interactable in Interactables:
+			#if (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == interactable.get_instance_id()):
+				#VEHICLE_LABEL.text = interactable.text
+			#
 		
 		if(PLAYER.LOOK_DIR_RAY.get_collider().is_in_group("CarInteractColliders") and VEHICLE_LABEL.text == ""):
 			if (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == DOOR_HANDLE_INTERACT):
@@ -265,7 +311,7 @@ func playerExitCar():
 	reconsider enter car area signal
 	also interferes with car mantaining speed when player force exits car
 	'''
-	PLAYER.player_state= PLAYER_STATE.WALKING
+	PLAYER.player_state = PLAYER_STATE.WALKING
 	if gear_shift == CAR_TRANSMISSION_AUTO.DRIVE:
 		VEHICLE.VEHICLE_BRAKELIGHT.light_OFF()
 	await get_tree().create_timer(1.0).timeout 
@@ -281,7 +327,5 @@ func _car_drift_away():
 			VEHICLE.velocity += -(VEHICLE.transform.basis.z) * _car_unparked_speed_curve
 		elif gear_shift == CAR_TRANSMISSION_AUTO.REVERSE:
 			VEHICLE.velocity += (VEHICLE.transform.basis.z) * _car_unparked_speed_curve
-		
-		VEHICLE.move_and_slide()
 	else:
 		_car_unparked_speed_curve = 0
