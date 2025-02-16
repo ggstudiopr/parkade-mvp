@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bu44ubd0ya3pe"]
+
+[ext_resource type="Script" path="res://interactable/interactable.gd" id="1_1mq1j"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ehhub"]
+radius = 1.07515
+height = 2.1503
+
+[sub_resource type="SphereMesh" id="SphereMesh_xcigj"]
+
+[node name="Interactable" type="Node3D" node_paths=PackedStringArray("area", "mesh")]
+script = ExtResource("1_1mq1j")
+area = NodePath("Area3D")
+mesh = NodePath("MeshInstance3D")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_ehhub")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_xcigj")

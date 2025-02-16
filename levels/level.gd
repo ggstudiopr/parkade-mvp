@@ -6,7 +6,7 @@ class_name Level
 ##Level Needs SpawnPoints to function, and EnemyManager
 
 var player_scene = preload("res://protag/Protag_Root_Scene.tscn")
-var car_scene = preload("res://vehicle/Vehicle_Root_Scene.tscn")
+var vehicle_scene = preload("res://vehicle/Vehicle_Root_Scene.tscn")
 var enemy_scene = preload("res://enemy/enemy.tscn")
 
 @export_subgroup("Enemies")
@@ -16,10 +16,12 @@ var spawn_points : Array[Node3D] ## Node3D's to be used as enemy spawn points
 #var enemies : Array[Enemy] = []
 
 @export_subgroup("Players")
-#@export var car : Car
+@export var vehicle : Vehicle
 @export var players : Array[Player] = []  
 
 var camera_viewport : SubViewport
+
+#TODO: UI EXISTS ON THIS LAYER
 
 signal level_ended 
 signal level_won
@@ -56,14 +58,14 @@ func _ready() -> void:
 	#OR, create our own C++ module that hijacks the pipeline to do what we want lmao
 	camera_viewport = get_tree().get_nodes_in_group("CameraViewport")[0]
 	
-	#car = car_scene.instantiate()
+	vehicle = vehicle_scene.instantiate()
 	
 	for player in range(PLAYER_COUNT):
 		var new_player = player_scene.instantiate()
 		#TODO: Set player to car.seat_position + player. Car should handle assigning players to specific seats
-		#car.add_child(new_player)
+		vehicle.add_child(new_player)
 		
-	#players.append(car.get_children() as Array[Player])
+	players.append(vehicle.get_children() as Array[Player])
 	
 	#spawn_points = enemy_spawns.get_children() as Array[Node3D]
 	

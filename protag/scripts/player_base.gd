@@ -254,8 +254,8 @@ the below signals need to be edited in whenever the vehicle is added
 to a scene. this needs to be made independent of player and made to
 check if the body entering the area later is the player
 '''
+
 func _on_vehicle_proximity_detect_body_entered(body: Node3D) -> void:
-	
 	_is_near_car = true
 	VEHICLE_LABEL.text= str("Press E to enter Vehicle")
 
