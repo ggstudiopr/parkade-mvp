@@ -1,15 +1,15 @@
 [gd_scene load_steps=29 format=3 uid="uid://dl60tvwy1elkf"]
 
-[ext_resource type="Script" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
-[ext_resource type="Script" path="res://protag/phone/phone_base.gd" id="2_cd73r"]
-[ext_resource type="Script" path="res://protag/phone/Flashlight.gd" id="3_jr8mw"]
+[ext_resource type="Script" uid="uid://cwfgwnkth6x74" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
+[ext_resource type="Script" uid="uid://bwgcsja3nfwur" path="res://protag/phone/phone_base.gd" id="2_cd73r"]
+[ext_resource type="Script" uid="uid://1tync2pe52c" path="res://protag/phone/Flashlight.gd" id="3_jr8mw"]
 [ext_resource type="AudioStream" uid="uid://d3s448a0plbr6" path="res://protag/phone/Flashlight Sound Effect sfx.mp3" id="4_gwrdj"]
-[ext_resource type="Script" path="res://protag/phone/FlashlightAudioPlayer.gd" id="5_1rg5o"]
-[ext_resource type="Script" path="res://protag/BatteryBar.gd" id="6_50o7a"]
+[ext_resource type="Script" uid="uid://uxhwtw25fcb" path="res://protag/phone/FlashlightAudioPlayer.gd" id="5_1rg5o"]
+[ext_resource type="Script" uid="uid://b5w7nmc4eynko" path="res://protag/BatteryBar.gd" id="6_50o7a"]
 [ext_resource type="Texture2D" uid="uid://bdt3eychbninn" path="res://protag/phone/camOffIcon.png" id="6_o3t3n"]
-[ext_resource type="Script" path="res://protag/phone/PhoneCameraUpdate.gd" id="7_853cm"]
+[ext_resource type="Script" uid="uid://cnf2d8tjli50t" path="res://protag/phone/PhoneCameraUpdate.gd" id="7_853cm"]
 [ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3" id="8_bhrfm"]
-[ext_resource type="Script" path="res://protag/scripts/FootstepAudioPlayer.gd" id="9_f878c"]
+[ext_resource type="Script" uid="uid://qkgymnnknv6n" path="res://protag/scripts/FootstepAudioPlayer.gd" id="9_f878c"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ni7be"]
 
@@ -94,9 +94,9 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_eq54l"]
 _data = {
-"HidePhone": SubResource("Animation_t2tbu"),
-"RESET": SubResource("Animation_i3rst"),
-"ShowPhone": SubResource("Animation_dfbam")
+&"HidePhone": SubResource("Animation_t2tbu"),
+&"RESET": SubResource("Animation_i3rst"),
+&"ShowPhone": SubResource("Animation_dfbam")
 }
 
 [sub_resource type="Animation" id="Animation_uydv3"]
@@ -245,10 +245,10 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gl5o2"]
 _data = {
-"RESET": SubResource("Animation_uydv3"),
-"headbob": SubResource("Animation_x1y7j"),
-"headbob_crouching": SubResource("Animation_4n2td"),
-"headbob_sprinting": SubResource("Animation_fs0a7")
+&"RESET": SubResource("Animation_uydv3"),
+&"headbob": SubResource("Animation_x1y7j"),
+&"headbob_crouching": SubResource("Animation_4n2td"),
+&"headbob_sprinting": SubResource("Animation_fs0a7")
 }
 
 [sub_resource type="Animation" id="Animation_m56i8"]
@@ -372,9 +372,9 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wpsm1"]
 _data = {
-"RESET": SubResource("Animation_m56i8"),
-"crouch": SubResource("Animation_i383i"),
-"stand": SubResource("Animation_d5j1e")
+&"RESET": SubResource("Animation_m56i8"),
+&"crouch": SubResource("Animation_i383i"),
+&"stand": SubResource("Animation_d5j1e")
 }
 
 [node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER")]
@@ -453,7 +453,7 @@ script = ExtResource("6_50o7a")
 [node name="PhoneAnimationPlayer" type="AnimationPlayer" parent="CameraController/Camera3D/PhoneNode"]
 root_node = NodePath("../..")
 libraries = {
-"": SubResource("AnimationLibrary_eq54l")
+&"": SubResource("AnimationLibrary_eq54l")
 }
 
 [node name="PhoneScreen" type="Sprite3D" parent="CameraController/Camera3D/PhoneNode"]
@@ -464,7 +464,6 @@ region_enabled = true
 region_rect = Rect2(80, 0, 344, 512)
 
 [node name="SubViewport" type="SubViewport" parent="CameraController/Camera3D/PhoneNode" groups=["CameraViewport"]]
-physics_interpolation_mode = 1
 handle_input_locally = false
 gui_disable_input = true
 render_target_clear_mode = 1
@@ -479,7 +478,7 @@ script = ExtResource("7_853cm")
 
 [node name="HeadAnimationPlayer" type="AnimationPlayer" parent="CameraController/Camera3D"]
 libraries = {
-"": SubResource("AnimationLibrary_gl5o2")
+&"": SubResource("AnimationLibrary_gl5o2")
 }
 
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="CameraController/Camera3D/HeadAnimationPlayer"]
@@ -498,7 +497,7 @@ debug_shape_custom_color = Color(0, 1, 0, 1)
 [node name="BodyAnimationPlayer" type="AnimationPlayer" parent="CameraController"]
 root_node = NodePath("../..")
 libraries = {
-"": SubResource("AnimationLibrary_wpsm1")
+&"": SubResource("AnimationLibrary_wpsm1")
 }
 
 [node name="HealthBar" type="ProgressBar" parent="."]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://heeroj1isx3v"]
 
-[ext_resource type="Script" path="res://levels/level.gd" id="1_7p2q1"]
-[ext_resource type="Script" path="res://enemy/enemy_manager.gd" id="2_lxvaa"]
+[ext_resource type="Script" uid="uid://dlaqd2dovajl5" path="res://levels/level.gd" id="1_7p2q1"]
+[ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_manager.gd" id="2_lxvaa"]
 [ext_resource type="PackedScene" uid="uid://dfg3xoqxo8tr7" path="res://enemy/enemy.tscn" id="3_2yblu"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="4_kb7pc"]
 [ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="5_bbmln"]

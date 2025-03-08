@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://k3rg1wbunkwb"]
 
 [ext_resource type="PackedScene" uid="uid://dfg3xoqxo8tr7" path="res://enemy/enemy.tscn" id="1_4qm2i"]
-[ext_resource type="Script" path="res://enemy/enemy_manager.gd" id="1_uodgu"]
+[ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_manager.gd" id="1_uodgu"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_3wv36"]
 

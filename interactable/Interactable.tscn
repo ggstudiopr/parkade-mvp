@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bu44ubd0ya3pe"]
 
-[ext_resource type="Script" path="res://interactable/interactable.gd" id="1_1mq1j"]
+[ext_resource type="Script" uid="uid://t1y565kg8oxy" path="res://interactable/interactable.gd" id="1_1mq1j"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ehhub"]
 radius = 1.07515
