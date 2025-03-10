@@ -21,11 +21,13 @@ var direction
 @onready var DOOR_HANDLE_AREA :=$"InnerDoorHandle/NodeMesh/NodeArea"
 @onready var RADIO_AREA :=$"Radio/NodeMesh/NodeArea"
 @onready var RADIO_SCREEN := $"Radio/RadioScreen"
-@onready var GEAR_SHIFT_AREA :=$"GearShift/NodeMesh/NodeArea"
+@onready var GEAR_SHIFT_AREA_AUTO_TOGGLE :=$"AutoGearShiftToggle/NodeMesh/NodeArea"
+@onready var GEAR_SHIFT_AREA_AUTO_PARK :=$"AutoGearShiftPark/NodeMesh/NodeArea"
+@onready var GEAR_SHIFT_AREA_AUTO_NEUTRAL :=$"AutoGearShiftNeutral/NodeMesh/NodeArea"
 @onready var ENGINE_IGNITION_AREA :=$Ignition/NodeMesh/NodeArea
 @onready var CAR_HORN_AREA :=$Front/CarHorn/NodeMesh/NodeArea
 @onready var CAR_HORN_AUDIO := $Front/CarHorn/CarHornAudio
-@onready var GEAR_SHIFT_TEXT := $"GearShift/TransmissionTextMesh"
+@onready var GEAR_SHIFT_TEXT := $"AutoGearShiftToggle/TransmissionTextMesh"
 @onready var ENGINE_SOUND := $Front/CarEngine
 @onready var RADIO_AUDIO := $"Radio/RadioAudio"
 @onready var WHEEL_AUDIO := $Front/WheelSound
@@ -38,7 +40,7 @@ var direction
 @export var CAR_ACCEL_RATE = 0.3
 @export var CAR_SPRINT_MULT = 2
 @export var CAR_TURN_SPEED = 0.9
-@export var CAR_DRIFTAWAY_SPEED = 0.01
+@export var CAR_DRIFTAWAY_SPEED = 0.1
 
 var text_mesh := TextMesh.new()
 var _car_unparked_speed_curve
@@ -51,7 +53,8 @@ enum CAR_TRANSMISSION_AUTO {
 	DRIVE,
 	REVERSE,
 	PARK,
-	NEUTRAL
+	NEUTRAL,
+	D_R_TOGGLE
 }
 var transmission_state = CAR_TRANSMISSION_AUTO.NEUTRAL
 enum CAR_TRANSMISSION_MANUAL {
@@ -102,28 +105,33 @@ func check_interact():
 	if PLAYER.player_state == PLAYER_STATE.DRIVING:
 		var DOOR_HANDLE_INTERACT = DOOR_HANDLE_AREA.get_instance_id()
 		var RADIO_INTERACT = RADIO_AREA.get_instance_id()
-		var GEAR_SHIFT_INTERACT = GEAR_SHIFT_AREA.get_instance_id()
+		var GEAR_SHIFT_INTERACT_AUTOTOGGLE = GEAR_SHIFT_AREA_AUTO_TOGGLE.get_instance_id()
+		var GEAR_SHIFT_INTERACT_AUTOPARK = GEAR_SHIFT_AREA_AUTO_PARK.get_instance_id()
+		#var GEAR_SHIFT_INTERACT_AUTONEUTRAL = GEAR_SHIFT_AREA_AUTO_NEUTRAL.get_instance_id()
 		var ENGINE_IGNITION_INTERACT = ENGINE_IGNITION_AREA.get_instance_id()
 		var CAR_HORN_INTERACT = CAR_HORN_AREA.get_instance_id()
 		
+		
 		if(PLAYER.LOOK_DIR_RAY.is_colliding()):
+			var player_is_looking_at = PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id()
 			if(PLAYER.LOOK_DIR_RAY.get_collider().is_in_group("CarInteractColliders")):
-				if (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == DOOR_HANDLE_INTERACT):
+				if (player_is_looking_at == DOOR_HANDLE_INTERACT):
 					playerExitCar()
-				elif (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == RADIO_INTERACT):
+				elif (player_is_looking_at == RADIO_INTERACT):
 					radioInteract()
-				elif (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == GEAR_SHIFT_INTERACT):
-					shiftGears()
-				elif (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == ENGINE_IGNITION_INTERACT):
+				elif (player_is_looking_at == GEAR_SHIFT_INTERACT_AUTOTOGGLE):
+					shiftGears(CAR_TRANSMISSION_AUTO.D_R_TOGGLE)
+				elif (player_is_looking_at == GEAR_SHIFT_INTERACT_AUTOPARK):
+					shiftGears(CAR_TRANSMISSION_AUTO.PARK)
+				elif (player_is_looking_at == ENGINE_IGNITION_INTERACT):
 					toggleEngine()
-				elif (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == CAR_HORN_INTERACT):
+				elif (player_is_looking_at == CAR_HORN_INTERACT):
 					carHornPlay()
 					
 func _physics_process(delta: float) -> void:
 	_driving_car_movement(delta)
 	_player_look_interact_prompts()
 	_car_drift_away()
-	
 	VEHICLE.move_and_slide()
 	
 	#TODO: Level node should handle this
@@ -164,10 +172,10 @@ func _driving_car_movement(delta):
 		#print(transform.basis)
 		
 		
-	if direction and gear_shift != CAR_TRANSMISSION_AUTO.PARK and vehicle_engine != ENGINE_STATE.OFF : 
+	if direction and gear_shift != CAR_TRANSMISSION_AUTO.PARK and vehicle_engine == ENGINE_STATE.ON and PLAYER.player_state == PLAYER_STATE.DRIVING: 
 		if (Input.is_action_pressed("move_forward") and gear_shift == CAR_TRANSMISSION_AUTO.DRIVE):
-			VEHICLE_BRAKELIGHT.light_OFF()
 			VEHICLE.velocity = Vector3.ZERO
+			VEHICLE_BRAKELIGHT.light_OFF()
 			_car_accel_rampup  = move_toward(_car_accel_rampup , CAR_SPEED_DEFAULT, CAR_ACCEL_RATE)
 			VEHICLE.velocity += -(VEHICLE.transform.basis.z) * _car_accel_rampup
 			if Input.is_action_pressed("move_right"):
@@ -189,30 +197,26 @@ func _driving_car_movement(delta):
 		if Input.is_action_pressed("sprint"):
 			velocity *= CAR_SPRINT_MULT
 			_is_car_sprinting = true
-			'''
-			below code works in concept but doesnt sound right lol, needs rethinking
-			
-			if !ENGINE_SPRINT_SOUND._car_is_sprinting:
-				ENGINE_SPRINT_SOUND.loopStart()
-			if (Input.is_action_pressed("move_right") or Input.is_action_pressed("move_left") ) and !WHEEL_AUDIO.is_playing():
-				WHEEL_AUDIO.hardTurn()
-			'''
 		else:
 			_is_car_sprinting = false 
-			ENGINE_SPRINT_SOUND.loopOff()
-	if (!(Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_backward") or gear_shift == CAR_TRANSMISSION_AUTO.PARK)):
+			#ENGINE_SPRINT_SOUND.loopOff()
+			
+	if ((!(Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_backward")) or gear_shift == CAR_TRANSMISSION_AUTO.PARK) and PLAYER.player_state == PLAYER_STATE.DRIVING):
 		VEHICLE.velocity.x = move_toward(VEHICLE.velocity.x, 0, CAR_BRAKE_RATE) #deccel isnt perfect, car kinda mildly drifts left/right at times when stopping for a quarter second
 		VEHICLE.velocity.z = move_toward(VEHICLE.velocity.z, 0, CAR_BRAKE_RATE)
 		_car_accel_rampup  = 0
-		if (gear_shift != CAR_TRANSMISSION_AUTO.REVERSE):
+		if (gear_shift == CAR_TRANSMISSION_AUTO.DRIVE):
 			VEHICLE_BRAKELIGHT.light_ON_braking()
-
+		if (gear_shift == CAR_TRANSMISSION_AUTO.PARK):
+			VEHICLE_BRAKELIGHT.light_OFF()
+			
 #TODO: This is UI logic, should be moved to UI layer
 func _player_look_interact_prompts():
 	if(PLAYER.LOOK_DIR_RAY.is_colliding() and PLAYER.player_state == PLAYER_STATE.DRIVING):
 		var DOOR_HANDLE_INTERACT = DOOR_HANDLE_AREA.get_instance_id()
 		var RADIO_INTERACT = RADIO_AREA.get_instance_id()
-		var GEAR_SHIFT_INTERACT = GEAR_SHIFT_AREA.get_instance_id()
+		var GEAR_SHIFT_INTERACT_AUTO_TOGGLE = GEAR_SHIFT_AREA_AUTO_TOGGLE.get_instance_id()
+		var GEAR_SHIFT_INTERACT_AUTO_PARK = GEAR_SHIFT_AREA_AUTO_PARK.get_instance_id()
 		var ENGINE_IGNITION_INTERACT = ENGINE_IGNITION_AREA.get_instance_id()
 		var CAR_HORN_INTERACT = CAR_HORN_AREA.get_instance_id()
 		
@@ -229,67 +233,89 @@ func _player_look_interact_prompts():
 				#VEHICLE_LABEL.text = interactable.text
 			#
 		
-		if(PLAYER.LOOK_DIR_RAY.get_collider().is_in_group("CarInteractColliders") and VEHICLE_LABEL.text == ""):
-			if (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == DOOR_HANDLE_INTERACT):
+		if(PLAYER.LOOK_DIR_RAY.get_collider().is_in_group("CarInteractColliders")):
+			var player_is_looking_at = PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id()
+			if (player_is_looking_at == DOOR_HANDLE_INTERACT):
 				VEHICLE_LABEL.text = str("Press E to exit")
-			elif (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == RADIO_INTERACT):
+			elif (player_is_looking_at == RADIO_INTERACT):
 				VEHICLE_LABEL.text = str("Press E to toggle radio")
-			elif (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == GEAR_SHIFT_INTERACT):
-				VEHICLE_LABEL.text = str("Press E to toggle Gear Shift")
-			elif (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == ENGINE_IGNITION_INTERACT):
+			elif (player_is_looking_at == GEAR_SHIFT_INTERACT_AUTO_TOGGLE):
+				if VEHICLE.gear_shift == CAR_TRANSMISSION_AUTO.DRIVE:
+					VEHICLE_LABEL.text = str("Press E to toggle Gear Shift into Reverse")
+				elif VEHICLE.gear_shift != CAR_TRANSMISSION_AUTO.DRIVE:
+					VEHICLE_LABEL.text = str("Press E to toggle Gear Shift into Drive")
+			elif (player_is_looking_at == GEAR_SHIFT_INTERACT_AUTO_PARK):
+				VEHICLE_LABEL.text = str("Press E to toggle Gear Shift into Park")
+			elif (player_is_looking_at == ENGINE_IGNITION_INTERACT):
 				VEHICLE_LABEL.text = str("Press E to turn car ON/OFF")
-			elif (PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id() == CAR_HORN_INTERACT):
+			elif (player_is_looking_at == CAR_HORN_INTERACT):
 				VEHICLE_LABEL.text = str("Press E to car horn")
 	else:
 		VEHICLE_LABEL.text = str("")
 
-func shiftGears():
+func shiftGears(new_gear_state):
 	if vehicle_engine == ENGINE_STATE.ON:
 		if (VEHICLE.velocity != Vector3.ZERO):
 			print("bad gear shift")#add car bounce animation when shifting while moving
 		VEHICLE.velocity = Vector3.ZERO
-		
-		if gear_shift == CAR_TRANSMISSION_AUTO.PARK:
-			VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.DRIVE
-			text_mesh.text = "DRIVE"
-			GEAR_SHIFT_TEXT.mesh = text_mesh
-		elif gear_shift == CAR_TRANSMISSION_AUTO.DRIVE:
-			VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.REVERSE
-			text_mesh.text = "REVERSE"
-			GEAR_SHIFT_TEXT.mesh = text_mesh
-			VEHICLE_REAR_CAM.CamOn()
-			RADIO_SCREEN.show()
-			VEHICLE_BRAKELIGHT.light_ON()
-		elif gear_shift == CAR_TRANSMISSION_AUTO.REVERSE:
+
+		if new_gear_state == CAR_TRANSMISSION_AUTO.PARK:
 			VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.PARK
 			text_mesh.text = "PARK"
 			GEAR_SHIFT_TEXT.mesh = text_mesh
-			
+		elif new_gear_state == CAR_TRANSMISSION_AUTO.D_R_TOGGLE:
+			if VEHICLE.gear_shift == CAR_TRANSMISSION_AUTO.REVERSE:
+				VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.DRIVE
+				text_mesh.text = "DRIVE"
+				GEAR_SHIFT_TEXT.mesh = text_mesh
+			elif VEHICLE.gear_shift == CAR_TRANSMISSION_AUTO.DRIVE:
+				VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.REVERSE
+				text_mesh.text = "REVERSE"
+				GEAR_SHIFT_TEXT.mesh = text_mesh
+				VEHICLE_REAR_CAM.CamOn()
+				RADIO_SCREEN.show()
+				VEHICLE_BRAKELIGHT.light_ON()
+			if VEHICLE.gear_shift !=  CAR_TRANSMISSION_AUTO.REVERSE and  VEHICLE.gear_shift !=  CAR_TRANSMISSION_AUTO.DRIVE:
+				VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.DRIVE
+				text_mesh.text = "DRIVE"
+				GEAR_SHIFT_TEXT.mesh = text_mesh
+		elif new_gear_state == CAR_TRANSMISSION_AUTO.NEUTRAL:
+			VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.NEUTRAL
+			text_mesh.text = "NEUTRAL"
+			GEAR_SHIFT_TEXT.mesh = text_mesh
+
 		if (gear_shift != CAR_TRANSMISSION_AUTO.REVERSE and VEHICLE_REAR_CAM.isOn()):
 			VEHICLE_REAR_CAM.CamOff()
 			VEHICLE_BRAKELIGHT.light_OFF()
 	else:
+		#probably make this a seperate label
 		VEHICLE_LABEL.text = str("Car must be ON to change gears!")
-			
+
+func getGearShift():
+	return VEHICLE.gear_shift
+	
 func toggleEngine():
 	if gear_shift == CAR_TRANSMISSION_AUTO.PARK:
 		if vehicle_engine == ENGINE_STATE.OFF:
-			vehicle_engine = ENGINE_STATE.ON
-			ENGINE_SOUND.engineOn()
-			VEHICLE_HEADLIGHT.light_ON()	
+			forceEngineOn()
 		elif vehicle_engine == ENGINE_STATE.ON:
-			vehicle_engine = ENGINE_STATE.OFF
-			RADIO_AUDIO.stop()
-			RADIO_SCREEN.hide()
-			ENGINE_SOUND.engineOff()
-			VEHICLE_HEADLIGHT.light_OFF()	
+			forceEngineOff()
 	else:
+		#probably make this a seperate label
 		VEHICLE_LABEL.text = str("Park car first!")
 
 func forceEngineOff():
-	vehicle_engine = ENGINE_STATE.OFF
-	VEHICLE_HEADLIGHT.headlight_OFF()
-	#play engine cutoff audio
+		vehicle_engine = ENGINE_STATE.OFF
+		RADIO_AUDIO.stop()
+		RADIO_SCREEN.hide()
+		ENGINE_SOUND.engineOff()
+		VEHICLE_HEADLIGHT.light_OFF()
+		VEHICLE_BRAKELIGHT.light_OFF()
+
+func forceEngineOn():
+	vehicle_engine = ENGINE_STATE.ON
+	ENGINE_SOUND.engineOn()
+	VEHICLE_HEADLIGHT.light_ON()	
 	
 func radioInteract():
 	if vehicle_engine == ENGINE_STATE.ON:
@@ -303,6 +329,7 @@ func radioInteract():
 			if gear_shift != CAR_TRANSMISSION_AUTO.REVERSE:
 				RADIO_SCREEN.hide()
 	else:
+		#probably make this a seperate label
 		VEHICLE_LABEL.text = str("Car must be ON to interact with radio!")
 
 func playerExitCar():
@@ -322,8 +349,10 @@ func carHornPlay():
 
 func _car_drift_away():
 	if gear_shift != CAR_TRANSMISSION_AUTO.PARK and vehicle_engine == ENGINE_STATE.ON and seat == SEAT_STATUS.OPEN: 
-		_car_unparked_speed_curve += CAR_DRIFTAWAY_SPEED/1000
+		
+		_car_unparked_speed_curve += CAR_DRIFTAWAY_SPEED/1000000
 		if gear_shift == CAR_TRANSMISSION_AUTO.DRIVE:
+			VEHICLE_BRAKELIGHT.light_OFF()
 			VEHICLE.velocity += -(VEHICLE.transform.basis.z) * _car_unparked_speed_curve
 		elif gear_shift == CAR_TRANSMISSION_AUTO.REVERSE:
 			VEHICLE.velocity += (VEHICLE.transform.basis.z) * _car_unparked_speed_curve

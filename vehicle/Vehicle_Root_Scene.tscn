@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://ykg03vys3buy"]
+[gd_scene load_steps=37 format=3 uid="uid://ykg03vys3buy"]
 
 [ext_resource type="Script" uid="uid://daukphcpp2rum" path="res://vehicle/vehicle_base.gd" id="1_elk10"]
 [ext_resource type="Script" uid="uid://c3tu4jh4obsrx" path="res://vehicle/EngineAudio.gd" id="2_echwb"]
@@ -70,6 +70,9 @@ albedo_color = Color(1, 1, 0.0235294, 1)
 text = "BASE"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7o0w8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oysj2"]
+albedo_color = Color(0.668055, 0.261228, 0, 1)
 
 [node name="Vehicle" type="CharacterBody3D"]
 script = ExtResource("1_elk10")
@@ -281,20 +284,33 @@ surface_material_override/0 = SubResource("StandardMaterial3D_4fosd")
 [node name="NodeCollision" type="CollisionShape3D" parent="Ignition/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
 shape = SubResource("SphereShape3D_63ipq")
 
-[node name="GearShift" type="Node3D" parent="."]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.538623, 1.0372, -1.94105)
+[node name="AutoGearShiftToggle" type="Node3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.557301, 0.931112, -1.839)
 
-[node name="NodeMesh" type="MeshInstance3D" parent="GearShift"]
+[node name="NodeMesh" type="MeshInstance3D" parent="AutoGearShiftToggle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.54305)
 mesh = SubResource("SphereMesh_7arhk")
 surface_material_override/0 = SubResource("StandardMaterial3D_2d5d8")
 
-[node name="NodeArea" type="Area3D" parent="GearShift/NodeMesh" groups=["CarInteractColliders"]]
+[node name="NodeArea" type="Area3D" parent="AutoGearShiftToggle/NodeMesh" groups=["CarInteractColliders"]]
 
-[node name="NodeCollision" type="CollisionShape3D" parent="GearShift/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+[node name="NodeCollision" type="CollisionShape3D" parent="AutoGearShiftToggle/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
 shape = SubResource("SphereShape3D_63ipq")
 
-[node name="TransmissionTextMesh" type="MeshInstance3D" parent="GearShift"]
+[node name="TransmissionTextMesh" type="MeshInstance3D" parent="AutoGearShiftToggle"]
 transform = Transform3D(0.798709, 0, -0.601717, 0, 1, 0, 0.601717, 0, 0.798709, 0.950862, 0.227104, 3.63123)
 mesh = SubResource("TextMesh_5gjb7")
 surface_material_override/0 = SubResource("StandardMaterial3D_7o0w8")
+
+[node name="AutoGearShiftPark" type="Node3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.516865, 0.951479, -2.17275)
+
+[node name="NodeMesh" type="MeshInstance3D" parent="AutoGearShiftPark"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.85391)
+mesh = SubResource("SphereMesh_7arhk")
+surface_material_override/0 = SubResource("StandardMaterial3D_oysj2")
+
+[node name="NodeArea" type="Area3D" parent="AutoGearShiftPark/NodeMesh" groups=["CarInteractColliders"]]
+
+[node name="NodeCollision" type="CollisionShape3D" parent="AutoGearShiftPark/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+shape = SubResource("SphereShape3D_63ipq")

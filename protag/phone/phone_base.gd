@@ -75,12 +75,14 @@ func togglePhoneCam():
 		PHONE_CAM.CamOff()
 
 func _force_phone_OFF():
-	PHONE_LIGHT.flashlightOff() #idk why the sound doesnt play when the battery dies but it works out ig
+	if PHONE_LIGHT.isOn():
+		PHONE_LIGHT.flashlightOff() #idk why the sound doesnt play when the battery dies but it works out ig
 	PHONE_CAM.CamOff()
 
 func _force_phone_DEAD():
 	PHONE_CAM.CamOff()
-	PHONE_LIGHT.flashlightOff()
+	if PHONE_LIGHT.isOn():
+		PHONE_LIGHT.flashlightOff()
 	PHONE_SCREEN.texture = load("res://protag/phone/batteryImage.png")
 	
 func isInHand():
