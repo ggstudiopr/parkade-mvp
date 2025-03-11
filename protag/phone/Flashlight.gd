@@ -1,6 +1,6 @@
 extends SpotLight3D
 
-@export var lightOn : float = 16
+@export var lightOn : float = 0.5
 @export var lightOff : float = 0
 
 @onready var LIGHT := $"."

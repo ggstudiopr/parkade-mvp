@@ -5,31 +5,39 @@ var input_dir
 var direction
 
 @onready var PLAYER := $"../Protagonist"
+#Front Vehicle Node
 @onready var VEHICLE := $"."
 @onready var VEHICLE_FRONT := $"Front"
+@onready var FRONT_SEAT_POS := $Front/FrontSeatPosition
 @onready var VEHICLE_HEADLIGHT := $Front/Headlight
+#Back Vehicle Node
 @onready var VEHICLE_BRAKELIGHT := $Back/BrakeLight
 @onready var VEHICLE_BACK := $"Back"
 @onready var VEHICLE_REAR_CAM := $Back/SubViewportBackCam/BackCam
+#UI Labels
 @onready var VEHICLE_LABEL := $"VehicleLabel"
-@onready var VEHICLE_ENGINE_SOUND := $"CarEngineStart"
-@onready var LEFT_BND_AREA := $"LeftMirror/LookBoundary"
-@onready var RIGHT_BND_AREA :=$"RightMirror/LookBoundary"
-@onready var MIRROR_LEFT := $"LeftMirror/SubViewportLeft/MirrorReflectionLeft"
-@onready var MIRROR_RIGHT := $"RightMirror/SubViewportRight/MirrorReflectionRight"
-@onready var MIRROR_REAR := $"RearMirror/SubViewportRear/MirrorReflectionRear"
-@onready var DOOR_HANDLE_AREA :=$"InnerDoorHandle/NodeMesh/NodeArea"
-@onready var RADIO_AREA :=$"Radio/NodeMesh/NodeArea"
-@onready var RADIO_SCREEN := $"Radio/RadioScreen"
-@onready var GEAR_SHIFT_AREA_AUTO_TOGGLE :=$"AutoGearShiftToggle/NodeMesh/NodeArea"
-@onready var GEAR_SHIFT_AREA_AUTO_PARK :=$"AutoGearShiftPark/NodeMesh/NodeArea"
-@onready var GEAR_SHIFT_AREA_AUTO_NEUTRAL :=$"AutoGearShiftNeutral/NodeMesh/NodeArea"
-@onready var ENGINE_IGNITION_AREA :=$Ignition/NodeMesh/NodeArea
-@onready var CAR_HORN_AREA :=$Front/CarHorn/NodeMesh/NodeArea
-@onready var CAR_HORN_AUDIO := $Front/CarHorn/CarHornAudio
-@onready var GEAR_SHIFT_TEXT := $"AutoGearShiftToggle/TransmissionTextMesh"
+@onready var VEHICLE_LABEL_BAD_INT := $"VehicleLabelBadInteract"
+#Cam View Bounds
+@onready var LEFT_BND_AREA := $"CarViewBounds/LookBoundaryL"
+@onready var RIGHT_BND_AREA :=$"CarViewBounds/LookBoundaryR"
+#mirrors
+@onready var MIRROR_LEFT := $Mirrors/LeftMirror/SubViewportLeft/MirrorReflectionLeft
+@onready var MIRROR_RIGHT := $"Mirrors/RightMirror/SubViewportRight/MirrorReflectionRight"
+@onready var MIRROR_REAR := $"Mirrors/RearMirror/SubViewportRear/MirrorReflectionRear"
+#interacts
+@onready var DOOR_HANDLE_AREA :=$Interactables/InnerDoorHandle/NodeMesh/NodeArea
+@onready var RADIO_AREA :=$"Interactables/Radio/NodeMesh/NodeArea"
+@onready var RADIO_SCREEN := $"Interactables/Radio/RadioScreen"
+@onready var GEAR_SHIFT_AREA_AUTO_TOGGLE :=$"Interactables/AutoGearShiftToggle/NodeMesh/NodeArea"
+@onready var GEAR_SHIFT_AREA_AUTO_PARK :=$"Interactables/AutoGearShiftPark/NodeMesh/NodeArea"
+@onready var GEAR_SHIFT_TEXT := $Interactables/AutoGearShiftToggle/TransmissionTextMesh
+@onready var ENGINE_IGNITION_AREA :=$"Interactables/Ignition/NodeMesh/NodeArea"
+@onready var CAR_HORN_AREA :=$Interactables/CarHorn/NodeMesh/NodeArea
+#audio playbacks
+@onready var VEHICLE_ENGINE_SOUND := $Front/CarEngine
+@onready var CAR_HORN_AUDIO := $Interactables/CarHorn/CarHornAudio
 @onready var ENGINE_SOUND := $Front/CarEngine
-@onready var RADIO_AUDIO := $"Radio/RadioAudio"
+@onready var RADIO_AUDIO := $Interactables/Radio/RadioAudio
 @onready var WHEEL_AUDIO := $Front/WheelSound
 @onready var ENGINE_SPRINT_SOUND := $Front/CarEngine/CarEngineSprintAudio
 
@@ -112,9 +120,9 @@ func check_interact():
 		var CAR_HORN_INTERACT = CAR_HORN_AREA.get_instance_id()
 		
 		
-		if(PLAYER.LOOK_DIR_RAY.is_colliding()):
-			var player_is_looking_at = PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id()
-			if(PLAYER.LOOK_DIR_RAY.get_collider().is_in_group("CarInteractColliders")):
+		if(PLAYER.CAR_LOOK_DIR_RAY.is_colliding()):
+			var player_is_looking_at = PLAYER.CAR_LOOK_DIR_RAY.get_collider().get_instance_id()
+			if(PLAYER.CAR_LOOK_DIR_RAY.get_collider().is_in_group("CarInteractColliders")):
 				if (player_is_looking_at == DOOR_HANDLE_INTERACT):
 					playerExitCar()
 				elif (player_is_looking_at == RADIO_INTERACT):
@@ -136,7 +144,7 @@ func _physics_process(delta: float) -> void:
 	
 	#TODO: Level node should handle this
 	if PLAYER.player_state == PLAYER_STATE.DRIVING:
-		PLAYER.global_position = VEHICLE.global_position
+		PLAYER.global_position = FRONT_SEAT_POS.global_position
 	
 func _driving_car_movement(delta):
 	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
@@ -212,7 +220,7 @@ func _driving_car_movement(delta):
 			
 #TODO: This is UI logic, should be moved to UI layer
 func _player_look_interact_prompts():
-	if(PLAYER.LOOK_DIR_RAY.is_colliding() and PLAYER.player_state == PLAYER_STATE.DRIVING):
+	if(PLAYER.CAR_LOOK_DIR_RAY.is_colliding() and PLAYER.player_state == PLAYER_STATE.DRIVING):
 		var DOOR_HANDLE_INTERACT = DOOR_HANDLE_AREA.get_instance_id()
 		var RADIO_INTERACT = RADIO_AREA.get_instance_id()
 		var GEAR_SHIFT_INTERACT_AUTO_TOGGLE = GEAR_SHIFT_AREA_AUTO_TOGGLE.get_instance_id()
@@ -233,8 +241,8 @@ func _player_look_interact_prompts():
 				#VEHICLE_LABEL.text = interactable.text
 			#
 		
-		if(PLAYER.LOOK_DIR_RAY.get_collider().is_in_group("CarInteractColliders")):
-			var player_is_looking_at = PLAYER.LOOK_DIR_RAY.get_collider().get_instance_id()
+		if(PLAYER.CAR_LOOK_DIR_RAY.get_collider().is_in_group("CarInteractColliders")):
+			var player_is_looking_at = PLAYER.CAR_LOOK_DIR_RAY.get_collider().get_instance_id()
 			if (player_is_looking_at == DOOR_HANDLE_INTERACT):
 				VEHICLE_LABEL.text = str("Press E to exit")
 			elif (player_is_looking_at == RADIO_INTERACT):
@@ -252,6 +260,7 @@ func _player_look_interact_prompts():
 				VEHICLE_LABEL.text = str("Press E to car horn")
 	else:
 		VEHICLE_LABEL.text = str("")
+		VEHICLE_LABEL_BAD_INT.text = str("")
 
 func shiftGears(new_gear_state):
 	if vehicle_engine == ENGINE_STATE.ON:
@@ -288,8 +297,7 @@ func shiftGears(new_gear_state):
 			VEHICLE_REAR_CAM.CamOff()
 			VEHICLE_BRAKELIGHT.light_OFF()
 	else:
-		#probably make this a seperate label
-		VEHICLE_LABEL.text = str("Car must be ON to change gears!")
+		VEHICLE_LABEL_BAD_INT.text = str("Car must be ON to change gears!")
 
 func getGearShift():
 	return VEHICLE.gear_shift
@@ -301,8 +309,7 @@ func toggleEngine():
 		elif vehicle_engine == ENGINE_STATE.ON:
 			forceEngineOff()
 	else:
-		#probably make this a seperate label
-		VEHICLE_LABEL.text = str("Park car first!")
+		VEHICLE_LABEL_BAD_INT.text = str("Park car first!")
 
 func forceEngineOff():
 		vehicle_engine = ENGINE_STATE.OFF
@@ -329,8 +336,7 @@ func radioInteract():
 			if gear_shift != CAR_TRANSMISSION_AUTO.REVERSE:
 				RADIO_SCREEN.hide()
 	else:
-		#probably make this a seperate label
-		VEHICLE_LABEL.text = str("Car must be ON to interact with radio!")
+		VEHICLE_LABEL_BAD_INT.text = str("Car must be ON to interact with radio!")
 
 func playerExitCar():
 	'''

@@ -90,9 +90,9 @@ var _camera_rotation : Vector3
 @export var TILT_UPPER_LIMIT := deg_to_rad(90)
 @export var CAMERA_CONTROLLER := Camera3D
 @export var MOUSE_SENSITIVITY : float = 0.15
-@onready var LOOK_DIR_RAY := $CameraController/Camera3D/LookDirectionTrigger
+@onready var CAR_LOOK_DIR_RAY := $CameraController/Camera3D/CarInteractRaycast
 @export var CAR_CAM_TILT_UPPER_LIMIT := deg_to_rad(15)
-@export var CAR_CAM_TILT_LOWER_LIMIT := deg_to_rad(-35)
+@export var CAR_CAM_TILT_LOWER_LIMIT := deg_to_rad(-50)
 
 #ANIMATION RELATED NODE DECLARATIONS
 @onready var BODY_ANIMATOR := $CameraController/BodyAnimationPlayer #transforms parent body on crouch/stand
@@ -101,8 +101,8 @@ var _camera_rotation : Vector3
 #VEHICLE RELATED NODE DECLARATIONS
 @onready var VEHICLE := $"../Vehicle"
 @onready var VEHICLE_LABEL := $"../Vehicle/VehicleLabel"
-@onready var LEFT_BND_AREA := $"../Vehicle/LeftMirror/LookBoundary"
-@onready var RIGHT_BND_AREA :=$"../Vehicle/RightMirror/LookBoundary"
+@onready var LEFT_BND_AREA := $"../Vehicle/CarViewBounds/LookBoundaryL"
+@onready var RIGHT_BND_AREA :=$"../Vehicle/CarViewBounds/LookBoundaryR"
 var _is_near_car : bool
 var CAR_CAM_BOUND_CURVE : float
 
@@ -113,7 +113,7 @@ var _is_sprinting : bool
 #PENDING USE, JUST TO CHECK IF CAN UNCROUCH
 @export var CrouchCollisionDetect : Node3D
 
-@onready var HEALTH := $HealthBar
+@onready var HEALTH := $UI/HealthBar
 
 #USED BY OTHER CLASSES
 var player_state = PLAYER_STATE.WALKING
@@ -206,13 +206,13 @@ func _update_camera(delta):
 		_mouse_rotation.x = clamp(_mouse_rotation.x, CAR_CAM_TILT_LOWER_LIMIT, CAR_CAM_TILT_UPPER_LIMIT)	
 		var RIGHT_BOUND = RIGHT_BND_AREA.get_instance_id()
 		var LEFT_BOUND = LEFT_BND_AREA.get_instance_id()
-		if(LOOK_DIR_RAY.is_colliding() and LOOK_DIR_RAY.get_collider().is_in_group("CarViewBoundaries")):
+		if(CAR_LOOK_DIR_RAY.is_colliding() and CAR_LOOK_DIR_RAY.get_collider().is_in_group("CarViewBoundaries")):
 			CAR_CAM_BOUND_CURVE += 0.002
-			if (LOOK_DIR_RAY.get_collider().get_instance_id() == RIGHT_BOUND):
+			if (CAR_LOOK_DIR_RAY.get_collider().get_instance_id() == RIGHT_BOUND):
 				_mouse_rotation.y += CAR_CAM_BOUND_CURVE
 				if (_rotation_input * delta > 0):
 					_mouse_rotation.y += _rotation_input * delta
-			elif(LOOK_DIR_RAY.get_collider().get_instance_id() == LEFT_BOUND):
+			elif(CAR_LOOK_DIR_RAY.get_collider().get_instance_id() == LEFT_BOUND):
 				_mouse_rotation.y -= CAR_CAM_BOUND_CURVE
 				if (_rotation_input * delta < 0):
 					_mouse_rotation.y += _rotation_input * delta

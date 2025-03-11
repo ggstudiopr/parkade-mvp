@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bfd4htvattvv6"]
+[gd_scene load_steps=13 format=3 uid="uid://bfd4htvattvv6"]
 
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_c7pc3"]
 [ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="2_t6p8l"]
@@ -23,14 +23,17 @@ size = Vector2(30, 30)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_kxiiv"]
 data = PackedVector3Array(15, 0, 15, -15, 0, 15, 15, 0, -15, -15, 0, 15, -15, 0, -15, 15, 0, -15)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_km3oa"]
-viewport_path = NodePath("LeftMirror/SubViewportLeft")
+[sub_resource type="ViewportTexture" id="ViewportTexture_j0b7v"]
+viewport_path = NodePath("Mirrors/RightMirror/SubViewportRight")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_lxj3t"]
-viewport_path = NodePath("RightMirror/SubViewportRight")
+[sub_resource type="ViewportTexture" id="ViewportTexture_wdsnx"]
+viewport_path = NodePath("Mirrors/LeftMirror/SubViewportLeft")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_00y3s"]
-viewport_path = NodePath("RearMirror/SubViewportRear")
+[sub_resource type="ViewportTexture" id="ViewportTexture_uixl8"]
+viewport_path = NodePath("Mirrors/RearMirror/SubViewportRear")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_5vjuy"]
+viewport_path = NodePath("Back/SubViewportBackCam")
 
 [node name="Node3D" type="Node3D"]
 
@@ -51,8 +54,21 @@ mesh = SubResource("PlaneMesh_wtufp")
 shape = SubResource("ConcavePolygonShape3D_kxiiv")
 
 [node name="Protagonist" parent="." instance=ExtResource("1_c7pc3")]
+transform = Transform3D(0.999994, -0.0032215, -0.00100672, 0.00322084, 0.999995, -0.000657618, 0.00100883, 0.000654377, 0.999999, 0, -0.1, 5.48811)
 
 [node name="Vehicle" parent="." instance=ExtResource("2_t6p8l")]
+
+[node name="MirrorScreenRight" parent="Vehicle/Mirrors/RightMirror" index="1"]
+texture = SubResource("ViewportTexture_j0b7v")
+
+[node name="MirrorScreenLeft" parent="Vehicle/Mirrors/LeftMirror" index="1"]
+texture = SubResource("ViewportTexture_wdsnx")
+
+[node name="MirrorScreenRear" parent="Vehicle/Mirrors/RearMirror" index="1"]
+texture = SubResource("ViewportTexture_uixl8")
+
+[node name="RadioScreen" parent="Vehicle/Interactables/Radio" index="2"]
+texture = SubResource("ViewportTexture_5vjuy")
 
 [node name="CarEngine" parent="Vehicle/Front" index="1"]
 volume_db = -35.0
@@ -61,17 +77,8 @@ volume_db = -35.0
 stream = ExtResource("3_pn5ok")
 volume_db = -30.0
 
-[node name="WheelSound" parent="Vehicle/Front" index="3"]
+[node name="WheelSound" parent="Vehicle/Front" index="2"]
 volume_db = -25.0
-
-[node name="MirrorScreenLeft" parent="Vehicle/LeftMirror" index="2"]
-texture = SubResource("ViewportTexture_km3oa")
-
-[node name="MirrorScreenRight" parent="Vehicle/RightMirror" index="2"]
-texture = SubResource("ViewportTexture_lxj3t")
-
-[node name="MirrorScreenRear" parent="Vehicle/RearMirror" index="1"]
-texture = SubResource("ViewportTexture_00y3s")
 
 [connection signal="body_entered" from="Vehicle/VehicleProximityDetect" to="Protagonist" method="_on_vehicle_proximity_detect_body_entered"]
 [connection signal="body_exited" from="Vehicle/VehicleProximityDetect" to="Protagonist" method="_on_vehicle_proximity_detect_body_exited"]

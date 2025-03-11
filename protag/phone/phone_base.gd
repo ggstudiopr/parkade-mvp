@@ -7,7 +7,7 @@ var phoneAnimating : bool
 @onready var PHONE_CAM := $SubViewport/PhoneCamera
 @onready var PHONE_SCREEN := $PhoneScreen
 @onready var PHONE_MODEL := $PhoneModel
-@onready var PHONE_BATTERY := $BatteryBar
+@onready var PHONE_BATTERY := $"../../../UI/BatteryBar"
 @onready var PHONE_ANIMATOR := $PhoneAnimationPlayer
 @onready var PHONE := $"."
 
