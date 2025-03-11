@@ -1,0 +1,168 @@
+[gd_scene load_steps=6 format=3 uid="uid://d1w1jahqvppkf"]
+
+[ext_resource type="Texture2D" uid="uid://crt46aeclq25v" path="res://UI/crosshair.png" id="1_2ulgl"]
+[ext_resource type="Script" uid="uid://b7hwdd0a1md8x" path="res://UI/ui_base.gd" id="1_y33ob"]
+[ext_resource type="Script" uid="uid://b5w7nmc4eynko" path="res://UI/BatteryBar.gd" id="2_8vchb"]
+[ext_resource type="Script" uid="uid://btsjkyf48gvoi" path="res://UI/GasolineBar.gd" id="3_8vchb"]
+
+[sub_resource type="Theme" id="Theme_7t5ai"]
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_y33ob")
+
+[node name="Player" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="MiddleReticle" type="CenterContainer" parent="Player"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+use_top_left = true
+
+[node name="crosshair" type="Sprite2D" parent="Player/MiddleReticle"]
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_2ulgl")
+
+[node name="HealthBar" type="ProgressBar" parent="Player"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 341.0
+offset_top = -52.0
+offset_right = 941.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+max_value = 1000.0
+value = 1000.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Player/HealthBar"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -26.0
+offset_right = 53.0
+offset_bottom = 14.0
+text = "Health"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Phone" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BatteryBar" type="ProgressBar" parent="Phone"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 1660.0
+offset_top = 959.0
+offset_right = 1883.0
+offset_bottom = 986.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.983317, 0.798216)
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 1
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+max_value = 1000.0
+value = 1000.0
+script = ExtResource("2_8vchb")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Phone/BatteryBar"]
+layout_mode = 0
+offset_left = 2.03393
+offset_top = -26.3087
+offset_right = 113.034
+offset_bottom = 13.6913
+text = "Phone Battery"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Car" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VehicleLabel" type="Label" parent="Car"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 849.0
+offset_top = 591.0
+offset_right = 1035.0
+offset_bottom = 614.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VehicleLabelBadInteract" type="Label" parent="Car"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 832.0
+offset_top = 556.0
+offset_right = 1018.0
+offset_bottom = 579.0
+grow_horizontal = 0
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GasolineBar" type="ProgressBar" parent="Car"]
+layout_mode = 0
+offset_left = 1684.0
+offset_top = 950.0
+offset_right = 1878.0
+offset_bottom = 977.0
+theme = SubResource("Theme_7t5ai")
+theme_override_colors/font_color = Color(0.868562, 0.344983, 0, 1)
+max_value = 1000.0
+value = 1000.0
+script = ExtResource("3_8vchb")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Car/GasolineBar"]
+layout_mode = 0
+offset_top = -23.0
+offset_right = 60.0
+offset_bottom = 17.0
+text = "Car Gas"
+fit_content = true
+autowrap_mode = 0

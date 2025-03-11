@@ -73,8 +73,8 @@ GAR
 '''
 #SPEED VALUES
 var _speed : float
-@export var SPEED_DEFAULT : float = 8
-@export var SPEED_CROUCH : float = 3
+@export var SPEED_DEFAULT : float = 3
+@export var SPEED_CROUCH : float = 1
 const JUMP_VELOCITY = 4.5
 @export var SPRINT_MULT : float = 2
 var input_dir
@@ -100,20 +100,17 @@ var _camera_rotation : Vector3
 
 #VEHICLE RELATED NODE DECLARATIONS
 @onready var VEHICLE := $"../Vehicle"
-@onready var VEHICLE_LABEL := $"../Vehicle/VehicleLabel"
 @onready var LEFT_BND_AREA := $"../Vehicle/CarViewBounds/LookBoundaryL"
 @onready var RIGHT_BND_AREA :=$"../Vehicle/CarViewBounds/LookBoundaryR"
-var _is_near_car : bool
 var CAR_CAM_BOUND_CURVE : float
 
 #BOOLS FOR MOVEMENT/ANIMATION LOGIC
 var _is_crouching : bool
 var _is_sprinting : bool
 
-#PENDING USE, JUST TO CHECK IF CAN UNCROUCH
-@export var CrouchCollisionDetect : Node3D
-
-@onready var HEALTH := $UI/HealthBar
+#UI related
+@onready var UI := $UI
+@onready var HEALTH := $UI/Player/HealthBar
 
 #USED BY OTHER CLASSES
 var player_state = PLAYER_STATE.WALKING
@@ -152,13 +149,8 @@ func _input(event):
 	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_STATE.WALKING:
 		crouch_toggle()
 	if event.is_action_pressed("interact"):
-		check_interact()
+		UI.check_interact()
 
-func check_interact():
-	if player_state == PLAYER_STATE.WALKING and VEHICLE.seat == SEAT_STATUS.OPEN:
-		if _is_near_car == true:
-			enterCar()
-		
 func crouch_toggle():
 	if is_on_floor() and _is_crouching == false:
 		BODY_ANIMATOR.play("crouch")
@@ -239,26 +231,26 @@ func _player_animation():
 	elif (input_dir.y>0 or input_dir.y<0) and _is_crouching == true:
 		HEAD_ANIMATOR.play("headbob_crouching")
 
-func enterCar():
+func playerEnterCar():
 	if _is_crouching == true:
 		crouch_toggle()
 		await get_tree().create_timer(1.0).timeout
 	VEHICLE.seat = SEAT_STATUS.TAKEN
 	player_state = PLAYER_STATE.DRIVING
-	
+
+func playerExitCar():
+	player_state = PLAYER_STATE.WALKING
+	global_position = $"../Vehicle/Interactables/OuterDoorHandle/ExitCarPosition".global_position
+	#if gear_shift == CAR_TRANSMISSION_AUTO.DRIVE:
+		#VEHICLE.VEHICLE_BRAKELIGHT.light_OFF()
+	await get_tree().create_timer(1.0).timeout 
+	VEHICLE.seat = SEAT_STATUS.OPEN
+
+func isDriving():
+	if player_state ==  PLAYER_STATE.DRIVING:
+		return true
+	else:
+		return false
+
 func hurt(hurt_rate):
 	HEALTH.value -= hurt_rate
-#VEHICLE SIGNALS
-'''
-the below signals need to be edited in whenever the vehicle is added 
-to a scene. this needs to be made independent of player and made to
-check if the body entering the area later is the player
-'''
-
-func _on_vehicle_proximity_detect_body_entered(body: Node3D) -> void:
-	_is_near_car = true
-	VEHICLE_LABEL.text= str("Press E to enter Vehicle")
-
-func _on_vehicle_proximity_detect_body_exited(body: Node3D) -> void:
-	_is_near_car = false
-	VEHICLE_LABEL.text= str("")

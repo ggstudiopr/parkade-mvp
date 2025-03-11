@@ -1,16 +1,10 @@
-[gd_scene load_steps=30 format=3 uid="uid://dl60tvwy1elkf"]
+[gd_scene load_steps=19 format=3 uid="uid://dl60tvwy1elkf"]
 
 [ext_resource type="Script" uid="uid://cwfgwnkth6x74" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
-[ext_resource type="Script" uid="uid://bwgcsja3nfwur" path="res://protag/phone/phone_base.gd" id="2_cd73r"]
-[ext_resource type="Script" uid="uid://1tync2pe52c" path="res://protag/phone/Flashlight.gd" id="3_jr8mw"]
-[ext_resource type="AudioStream" uid="uid://d3s448a0plbr6" path="res://protag/phone/Flashlight Sound Effect sfx.mp3" id="4_gwrdj"]
-[ext_resource type="Script" uid="uid://uxhwtw25fcb" path="res://protag/phone/FlashlightAudioPlayer.gd" id="5_1rg5o"]
-[ext_resource type="Script" uid="uid://b5w7nmc4eynko" path="res://protag/BatteryBar.gd" id="6_50o7a"]
-[ext_resource type="Texture2D" uid="uid://bdt3eychbninn" path="res://protag/phone/camOffIcon.png" id="6_o3t3n"]
-[ext_resource type="Script" uid="uid://cnf2d8tjli50t" path="res://protag/phone/PhoneCameraUpdate.gd" id="7_853cm"]
+[ext_resource type="PackedScene" uid="uid://csjcseh76ann" path="res://protag/phone/Phone_Root_Scene.tscn" id="2_nqwbi"]
+[ext_resource type="PackedScene" uid="uid://d1w1jahqvppkf" path="res://UI/UI_Root_Scene.tscn" id="5_7uxf5"]
 [ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3" id="8_bhrfm"]
 [ext_resource type="Script" uid="uid://qkgymnnknv6n" path="res://protag/scripts/FootstepAudioPlayer.gd" id="9_f878c"]
-[ext_resource type="Texture2D" uid="uid://crt46aeclq25v" path="res://protag/crosshair.png" id="11_cvd2c"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ni7be"]
 
@@ -20,85 +14,6 @@
 albedo_color = Color(1, 0, 0, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ju561"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_vw2lk"]
-size = Vector3(2, 2.6, 0.1)
-
-[sub_resource type="Animation" id="Animation_t2tbu"]
-resource_name = "HidePhone"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PhoneNode:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.25, -0.1, -0.2), Vector3(0.44, -1, -0.563)]
-}
-
-[sub_resource type="Animation" id="Animation_i3rst"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PhoneNode:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0.440142, -0.375938, -0.56255)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PhoneNode:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_dfbam"]
-resource_name = "ShowPhone"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PhoneNode:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.44, -1, -0.363), Vector3(0.25, -0.1, -0.2)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PhoneNode:rotation")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0.785398), Vector3(0, 0, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_eq54l"]
-_data = {
-&"HidePhone": SubResource("Animation_t2tbu"),
-&"RESET": SubResource("Animation_i3rst"),
-&"ShowPhone": SubResource("Animation_dfbam")
-}
 
 [sub_resource type="Animation" id="Animation_uydv3"]
 length = 0.001
@@ -379,7 +294,6 @@ _data = {
 }
 
 [node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 script = ExtResource("1_yvqfv")
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
 
@@ -403,58 +317,7 @@ transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871558, 0, 0.0871558, 0.996195
 
 [node name="Camera3D" type="Camera3D" parent="CameraController"]
 cull_mask = 1047553
-fov = 90.0
-
-[node name="PhoneNode" type="Node3D" parent="CameraController/Camera3D"]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.440142, -0.375938, -0.56255)
-script = ExtResource("2_cd73r")
-
-[node name="PhoneModel" type="MeshInstance3D" parent="CameraController/Camera3D/PhoneNode"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, -0.0145113)
-mesh = SubResource("BoxMesh_vw2lk")
-
-[node name="SpotLight3D" type="SpotLight3D" parent="CameraController/Camera3D/PhoneNode"]
-light_color = Color(0.997824, 1, 0.906135, 1)
-light_energy = 0.0
-light_indirect_energy = 0.0
-distance_fade_enabled = true
-distance_fade_begin = 20.0
-distance_fade_length = 5.0
-spot_range = 2.17183
-spot_attenuation = 0.81
-spot_angle = 45.6798
-script = ExtResource("3_jr8mw")
-
-[node name="FlashlightClick" type="AudioStreamPlayer3D" parent="CameraController/Camera3D/PhoneNode/SpotLight3D"]
-stream = ExtResource("4_gwrdj")
-volume_db = -30.27
-script = ExtResource("5_1rg5o")
-
-[node name="PhoneAnimationPlayer" type="AnimationPlayer" parent="CameraController/Camera3D/PhoneNode"]
-root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_eq54l")
-}
-
-[node name="PhoneScreen" type="Sprite3D" parent="CameraController/Camera3D/PhoneNode"]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
-double_sided = false
-texture = ExtResource("6_o3t3n")
-region_enabled = true
-region_rect = Rect2(80, 0, 344, 512)
-
-[node name="SubViewport" type="SubViewport" parent="CameraController/Camera3D/PhoneNode" groups=["CameraViewport"]]
-handle_input_locally = false
-gui_disable_input = true
-render_target_clear_mode = 1
-render_target_update_mode = 4
-
-[node name="PhoneCamera" type="Camera3D" parent="CameraController/Camera3D/PhoneNode/SubViewport"]
-physics_interpolation_mode = 1
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.44, 1.04579, -0.563)
-cull_mask = 1047555
-fov = 50.0
-script = ExtResource("7_853cm")
+fov = 80.0
 
 [node name="HeadAnimationPlayer" type="AnimationPlayer" parent="CameraController/Camera3D"]
 libraries = {
@@ -477,74 +340,16 @@ collide_with_bodies = false
 debug_shape_custom_color = Color(0, 1, 0, 1)
 debug_shape_thickness = 1
 
+[node name="PhoneNode" parent="CameraController/Camera3D" instance=ExtResource("2_nqwbi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.440142, -0.375938, -0.56255)
+
 [node name="BodyAnimationPlayer" type="AnimationPlayer" parent="CameraController"]
 root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_wpsm1")
 }
 
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
+[node name="UI" parent="." instance=ExtResource("5_7uxf5")]
 
-[node name="MiddleReticle" type="CenterContainer" parent="UI"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-use_top_left = true
-
-[node name="crosshair" type="Sprite2D" parent="UI/MiddleReticle"]
-scale = Vector2(0.05, 0.05)
-texture = ExtResource("11_cvd2c")
-
-[node name="HealthBar" type="ProgressBar" parent="UI"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -298.0
-offset_top = -37.0
-offset_right = 302.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 0
-max_value = 1000.0
-value = 1000.0
-
-[node name="BatteryBar" type="ProgressBar" parent="UI"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -111.0
-offset_top = -60.9999
-offset_right = 112.0
-offset_bottom = -34.0
-grow_horizontal = 2
-grow_vertical = 0
-scale = Vector2(0.983317, 0.798216)
-size_flags_horizontal = 4
-size_flags_vertical = 8
-mouse_filter = 1
-max_value = 1000.0
-step = 1.0
-value = 1000.0
-script = ExtResource("6_50o7a")
+[editable path="CameraController/Camera3D/PhoneNode"]
+[editable path="UI"]

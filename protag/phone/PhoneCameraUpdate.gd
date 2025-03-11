@@ -13,12 +13,18 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	PHONE_CAMERA.global_position = NODE2TRACK.global_position
 	PHONE_CAMERA.global_rotation = NODE2TRACK.global_rotation
+	PHONE_CAMERA.global_rotation.z += deg_to_rad(90)
 	
 func CamOn():
+		if !NODE2TRACK.isDead():
+			PHONE_SCREEN.texture = SUBVIEW_DISPLAY.get_texture()
+			CameraBool = true
+
+func forceCamOn():
 		PHONE_SCREEN.texture = SUBVIEW_DISPLAY.get_texture()
 		CameraBool = true
 
-func CamOff():
+func CamOff():	
 		PHONE_SCREEN.texture = load("res://protag/phone/camOffIcon.png")
 		CameraBool = false
 

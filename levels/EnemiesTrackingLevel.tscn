@@ -17,6 +17,9 @@ polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(0, 3, 2), PackedInt32Arr
 [sub_resource type="BoxShape3D" id="BoxShape3D_jtvp2"]
 size = Vector3(50, 1, 50)
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_3kqbg"]
+viewport_path = NodePath("Back/SubViewportBackCam")
+
 [sub_resource type="ViewportTexture" id="ViewportTexture_cjyga"]
 viewport_path = NodePath("Mirrors/RightMirror/SubViewportRight")
 
@@ -25,9 +28,6 @@ viewport_path = NodePath("Mirrors/LeftMirror/SubViewportLeft")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_2kjmu"]
 viewport_path = NodePath("Mirrors/RearMirror/SubViewportRear")
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_3kqbg"]
-viewport_path = NodePath("Back/SubViewportBackCam")
 
 [node name="Level" type="Node3D" node_paths=PackedStringArray("enemy_manager")]
 script = ExtResource("1_7p2q1")
@@ -87,6 +87,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689984, 17.6658)
 [node name="Vehicle" parent="." instance=ExtResource("5_bbmln")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.461462, -6.6784)
 
+[node name="RadioScreen" parent="Vehicle/Interactables/Radio" index="2"]
+texture = SubResource("ViewportTexture_3kqbg")
+
 [node name="MirrorScreenRight" parent="Vehicle/Mirrors/RightMirror" index="1"]
 texture = SubResource("ViewportTexture_cjyga")
 
@@ -95,11 +98,5 @@ texture = SubResource("ViewportTexture_u3fgk")
 
 [node name="MirrorScreenRear" parent="Vehicle/Mirrors/RearMirror" index="1"]
 texture = SubResource("ViewportTexture_2kjmu")
-
-[node name="RadioScreen" parent="Vehicle/Interactables/Radio" index="2"]
-texture = SubResource("ViewportTexture_3kqbg")
-
-[connection signal="body_entered" from="Vehicle/VehicleProximityDetect" to="Protagonist" method="_on_vehicle_proximity_detect_body_entered"]
-[connection signal="body_exited" from="Vehicle/VehicleProximityDetect" to="Protagonist" method="_on_vehicle_proximity_detect_body_exited"]
 
 [editable path="Vehicle"]

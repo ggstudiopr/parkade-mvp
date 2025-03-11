@@ -1,39 +1,24 @@
-[gd_scene load_steps=38 format=3 uid="uid://ykg03vys3buy"]
+[gd_scene load_steps=40 format=3 uid="uid://ykg03vys3buy"]
 
-[ext_resource type="Script" uid="uid://daukphcpp2rum" path="res://vehicle/vehicle_base.gd" id="1_elk10"]
-[ext_resource type="Script" uid="uid://c3tu4jh4obsrx" path="res://vehicle/EngineAudio.gd" id="2_echwb"]
-[ext_resource type="Script" uid="uid://bipadkdw1u3m1" path="res://vehicle/CarHeadlights.gd" id="2_hg1yu"]
+[ext_resource type="Script" uid="uid://daukphcpp2rum" path="res://vehicle/scripts/vehicle_base.gd" id="1_elk10"]
+[ext_resource type="Script" uid="uid://c3tu4jh4obsrx" path="res://vehicle/scripts/EngineAudio.gd" id="2_echwb"]
+[ext_resource type="Script" uid="uid://bipadkdw1u3m1" path="res://vehicle/scripts/CarHeadlights.gd" id="2_hg1yu"]
 [ext_resource type="AudioStream" uid="uid://jksouwbnj23u" path="res://vehicle/sounds/Miku.mp3" id="3_1681n"]
-[ext_resource type="Script" uid="uid://cva7co4k3rewb" path="res://vehicle/RadioAudio.gd" id="3_i0utq"]
+[ext_resource type="Script" uid="uid://cva7co4k3rewb" path="res://vehicle/scripts/RadioAudio.gd" id="3_i0utq"]
 [ext_resource type="AudioStream" uid="uid://of4mbtrq2uv5" path="res://vehicle/sounds/EngineStart.mp3" id="3_p2q0p"]
-[ext_resource type="Script" uid="uid://bvbb6mfnxn2ub" path="res://vehicle/MirrorReflectionLeft.gd" id="3_xmco5"]
-[ext_resource type="Script" uid="uid://cnmdbv2drttra" path="res://vehicle/MirrorReflectioRight.gd" id="4_gxq1t"]
-[ext_resource type="Script" uid="uid://c5twtxie73va7" path="res://vehicle/BackCam.gd" id="5_0k2mh"]
+[ext_resource type="Script" uid="uid://bvbb6mfnxn2ub" path="res://vehicle/scripts/MirrorReflectionLeft.gd" id="3_xmco5"]
+[ext_resource type="Script" uid="uid://cnmdbv2drttra" path="res://vehicle/scripts/MirrorReflectioRight.gd" id="4_gxq1t"]
+[ext_resource type="Script" uid="uid://c5twtxie73va7" path="res://vehicle/scripts/BackCam.gd" id="5_0k2mh"]
 [ext_resource type="AudioStream" uid="uid://bkpblki1ngjfs" path="res://vehicle/sounds/CarHorn.wav" id="5_knwov"]
-[ext_resource type="Script" uid="uid://cpsflumb6m35a" path="res://vehicle/MirrorReflectionRear.gd" id="5_lm5gg"]
-[ext_resource type="Script" uid="uid://bqiyqfh8ywp4o" path="res://vehicle/EngineAudioSprinting.gd" id="5_qnrr6"]
-[ext_resource type="Script" uid="uid://c7jlcfuxcwwnt" path="res://vehicle/HornAudio.gd" id="5_qtwpx"]
-[ext_resource type="Script" uid="uid://bxap6lt6cwk6q" path="res://vehicle/WheelAudio.gd" id="7_pdxqd"]
-[ext_resource type="Script" uid="uid://cu50voscq5c26" path="res://vehicle/BrakeLights.gd" id="8_iwtnb"]
-[ext_resource type="ArrayMesh" uid="uid://cod7ik8uvbmo1" path="res://vehicle/Mercedes-Benz GLC Coupé (C253 LP).obj" id="17_oysj2"]
+[ext_resource type="Script" uid="uid://cpsflumb6m35a" path="res://vehicle/scripts/MirrorReflectionRear.gd" id="5_lm5gg"]
+[ext_resource type="Script" uid="uid://bqiyqfh8ywp4o" path="res://vehicle/scripts/EngineAudioSprinting.gd" id="5_qnrr6"]
+[ext_resource type="Script" uid="uid://c7jlcfuxcwwnt" path="res://vehicle/scripts/HornAudio.gd" id="5_qtwpx"]
+[ext_resource type="Script" uid="uid://bxap6lt6cwk6q" path="res://vehicle/scripts/WheelAudio.gd" id="7_pdxqd"]
+[ext_resource type="Script" uid="uid://cu50voscq5c26" path="res://vehicle/scripts/BrakeLights.gd" id="8_iwtnb"]
+[ext_resource type="ArrayMesh" uid="uid://cod7ik8uvbmo1" path="res://vehicle/CarObj.obj" id="17_oysj2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_w6b14"]
 size = Vector3(50, 15.5189, 0.5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_wc4vm"]
-size = Vector3(1.5, 1, 0.1)
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_mok6m"]
-viewport_path = NodePath("Mirrors/RightMirror/SubViewportRight")
-
-[sub_resource type="BoxMesh" id="BoxMesh_0pe3b"]
-size = Vector3(1.5, 1, 0.1)
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_k3wbg"]
-viewport_path = NodePath("Mirrors/LeftMirror/SubViewportLeft")
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_7hwei"]
-viewport_path = NodePath("Mirrors/RearMirror/SubViewportRear")
 
 [sub_resource type="SphereMesh" id="SphereMesh_7arhk"]
 
@@ -65,19 +50,69 @@ albedo_color = Color(0.668055, 0.261228, 0, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qjm6t"]
 albedo_color = Color(0.982218, 0.43752, 0, 1)
 
+[sub_resource type="BoxMesh" id="BoxMesh_wc4vm"]
+size = Vector3(0.1, 0.1, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_mok6m"]
+viewport_path = NodePath("Mirrors/RightMirror/SubViewportRight")
+
+[sub_resource type="BoxMesh" id="BoxMesh_0pe3b"]
+size = Vector3(0.1, 0.1, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_k3wbg"]
+viewport_path = NodePath("Mirrors/LeftMirror/SubViewportLeft")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7hwei"]
+viewport_path = NodePath("Mirrors/RearMirror/SubViewportRear")
+
 [sub_resource type="SphereMesh" id="SphereMesh_psaxl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ppir"]
 albedo_color = Color(0.568627, 0.0352941, 0.0705882, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qacrj"]
+size = Vector3(1.72721, 0.64856, 4.77682)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_inspg"]
+[sub_resource type="Animation" id="Animation_oysj2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_vheon"]
+resource_name = "bad_gear_shift"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.0333333, 0.1, 0.2, 0.433333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.0174533, 0, 0), Vector3(-0.0174533, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_psaxl"]
+_data = {
+&"RESET": SubResource("Animation_oysj2"),
+&"bad_gear_shift": SubResource("Animation_vheon")
+}
 
 [node name="Vehicle" type="CharacterBody3D"]
 script = ExtResource("1_elk10")
 
-[node name="CarViewBounds" type="Node3D" parent="."]
+[node name="CarViewBounds" type="Node3D" parent="." groups=["CarViewBoundaries"]]
 
 [node name="LookBoundaryL" type="Area3D" parent="CarViewBounds" groups=["CarViewBoundaries"]]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -1.049, 1.05, -0.698)
@@ -95,105 +130,52 @@ collision_layer = 2
 transform = Transform3D(3.34849e-08, 0.766044, -0.642788, 1, -4.37114e-08, 0, -2.80971e-08, -0.642788, -0.766044, -2.27535, 1.5, 7.68744)
 shape = SubResource("BoxShape3D_w6b14")
 
-[node name="Mirrors" type="Node3D" parent="."]
-
-[node name="RightMirror" type="Node3D" parent="Mirrors"]
-transform = Transform3D(0.186568, 0, -0.072058, 0, 0.2, 0, 0.072058, 0, 0.186568, 1.36528, 1.27246, -0.990205)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Mirrors/RightMirror"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("BoxMesh_wc4vm")
-
-[node name="MirrorScreenRight" type="Sprite3D" parent="Mirrors/RightMirror"]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0.0601623)
-layers = 5
-texture = SubResource("ViewportTexture_mok6m")
-region_enabled = true
-region_rect = Rect2(65, 140, 400, 250)
-
-[node name="SubViewportRight" type="SubViewport" parent="Mirrors/RightMirror"]
-render_target_update_mode = 4
-
-[node name="MirrorReflectionRight" type="Camera3D" parent="Mirrors/RightMirror/SubViewportRight"]
-transform = Transform3D(-0.978274, 0, -0.207314, 0, 1, 0, 0.207314, 0, -0.978274, 1.4295, 1.37645, -0.900244)
-cull_mask = 1047557
-fov = 90.0
-script = ExtResource("4_gxq1t")
-
-[node name="LeftMirror" type="Node3D" parent="Mirrors"]
-transform = Transform3D(0.191044, 0, 0.0591783, 0, 0.2, 0, -0.0591783, 0, 0.191044, -0.701918, 1.30286, -0.978084)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Mirrors/LeftMirror"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("BoxMesh_0pe3b")
-
-[node name="MirrorScreenLeft" type="Sprite3D" parent="Mirrors/LeftMirror"]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0.0538948)
-layers = 5
-texture = SubResource("ViewportTexture_k3wbg")
-region_enabled = true
-region_rect = Rect2(65, 140, 400, 250)
-
-[node name="SubViewportLeft" type="SubViewport" parent="Mirrors/LeftMirror"]
-render_target_update_mode = 4
-
-[node name="MirrorReflectionLeft" type="Camera3D" parent="Mirrors/LeftMirror/SubViewportLeft"]
-transform = Transform3D(-0.995511, 0, 0.0946472, 0, 1, 0, -0.0946472, 0, -0.995511, -0.776404, 1.39189, -0.922809)
-cull_mask = 1047557
-fov = 90.0
-script = ExtResource("3_xmco5")
-
-[node name="RearMirror" type="Node3D" parent="Mirrors"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.349192, 1.54094, -0.886196)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Mirrors/RearMirror"]
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
-mesh = SubResource("BoxMesh_wc4vm")
-
-[node name="MirrorScreenRear" type="Sprite3D" parent="Mirrors/RearMirror"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0.039001)
-layers = 5
-texture = SubResource("ViewportTexture_7hwei")
-region_enabled = true
-region_rect = Rect2(153, 191.5, 234, 117)
-
-[node name="SubViewportRear" type="SubViewport" parent="Mirrors/RearMirror"]
-render_target_update_mode = 4
-
-[node name="MirrorReflectionRear" type="Camera3D" parent="Mirrors/RearMirror/SubViewportRear"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.34721, 1.46663, -0.851155)
-cull_mask = 1047557
-fov = 90.0
-script = ExtResource("5_lm5gg")
-
-[node name="Interactables" type="Node3D" parent="."]
+[node name="Interactables" type="Node3D" parent="." groups=["CarInteractColliders"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.335218, 0, 0.514771)
 
 [node name="InnerDoorHandle" type="Node3D" parent="Interactables"]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.812145, 1.93214, -2.11743)
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.772581, 1.93214, -2.11743)
 
 [node name="NodeMesh" type="MeshInstance3D" parent="Interactables/InnerDoorHandle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -2.86953, 4.57686)
 mesh = SubResource("SphereMesh_7arhk")
 surface_material_override/0 = SubResource("StandardMaterial3D_ipret")
 
-[node name="NodeArea" type="Area3D" parent="Interactables/InnerDoorHandle/NodeMesh" groups=["CarInteractColliders"]]
+[node name="InnerDoorInteract" type="Area3D" parent="Interactables/InnerDoorHandle/NodeMesh" groups=["CarInteractColliders"]]
 collision_layer = 2
 
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/InnerDoorHandle/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/InnerDoorHandle/NodeMesh/InnerDoorInteract" groups=["CarInteractColliders"]]
 shape = SubResource("SphereShape3D_63ipq")
 
+[node name="OuterDoorHandle" type="Node3D" parent="Interactables"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.969602, 1.93214, -1.70422)
+
+[node name="NodeMesh" type="MeshInstance3D" parent="Interactables/OuterDoorHandle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.04722, -2.76759, 4.58309)
+mesh = SubResource("SphereMesh_7arhk")
+surface_material_override/0 = SubResource("StandardMaterial3D_ipret")
+
+[node name="OuterDoorInteract" type="Area3D" parent="Interactables/OuterDoorHandle/NodeMesh" groups=["CarInteractColliders"]]
+collision_layer = 2
+
+[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/OuterDoorHandle/NodeMesh/OuterDoorInteract" groups=["CarInteractColliders"]]
+shape = SubResource("SphereShape3D_63ipq")
+
+[node name="ExitCarPosition" type="Node3D" parent="Interactables/OuterDoorHandle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05638, -5.97712, 4.61828)
+
 [node name="Radio" type="Node3D" parent="Interactables"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.157891, 1.23165, -1.70504)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.17454, 1.23165, -1.83505)
 
 [node name="NodeMesh" type="MeshInstance3D" parent="Interactables/Radio"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.54305)
 mesh = SubResource("SphereMesh_7arhk")
 surface_material_override/0 = SubResource("StandardMaterial3D_ok67h")
 
-[node name="NodeArea" type="Area3D" parent="Interactables/Radio/NodeMesh" groups=["CarInteractColliders"]]
+[node name="RadioInteract" type="Area3D" parent="Interactables/Radio/NodeMesh" groups=["CarInteractColliders"]]
 collision_layer = 2
 
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/Radio/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/Radio/NodeMesh/RadioInteract" groups=["CarInteractColliders"]]
 shape = SubResource("SphereShape3D_63ipq")
 
 [node name="RadioAudio" type="AudioStreamPlayer3D" parent="Interactables/Radio"]
@@ -215,43 +197,43 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.54305)
 mesh = SubResource("SphereMesh_7arhk")
 surface_material_override/0 = SubResource("StandardMaterial3D_4fosd")
 
-[node name="NodeArea" type="Area3D" parent="Interactables/Ignition/NodeMesh" groups=["CarInteractColliders"]]
+[node name="IgnitionInteract" type="Area3D" parent="Interactables/Ignition/NodeMesh" groups=["CarInteractColliders"]]
 collision_layer = 2
 
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/Ignition/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/Ignition/NodeMesh/IgnitionInteract" groups=["CarInteractColliders"]]
 shape = SubResource("SphereShape3D_63ipq")
 
 [node name="AutoGearShiftToggle" type="Node3D" parent="Interactables"]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.0783191, 0.931112, -1.61812)
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.0783191, 0.931112, -1.70085)
 
 [node name="NodeMesh" type="MeshInstance3D" parent="Interactables/AutoGearShiftToggle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.54305)
 mesh = SubResource("SphereMesh_7arhk")
 surface_material_override/0 = SubResource("StandardMaterial3D_2d5d8")
 
-[node name="NodeArea" type="Area3D" parent="Interactables/AutoGearShiftToggle/NodeMesh" groups=["CarInteractColliders"]]
+[node name="AutoGearTogInteract" type="Area3D" parent="Interactables/AutoGearShiftToggle/NodeMesh" groups=["CarInteractColliders"]]
 collision_layer = 2
 
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/AutoGearShiftToggle/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/AutoGearShiftToggle/NodeMesh/AutoGearTogInteract" groups=["CarInteractColliders"]]
 shape = SubResource("SphereShape3D_63ipq")
 
 [node name="TransmissionTextMesh" type="MeshInstance3D" parent="Interactables/AutoGearShiftToggle"]
-transform = Transform3D(0.798709, 0, -0.601717, 0, 1, 0, 0.601717, 0, 0.798709, 0.950862, 0.227104, 3.63123)
+transform = Transform3D(0.601759, 0, -0.798677, 0, 0.999999, 0, 0.798677, 0, 0.601759, 0.984724, 0.352545, 3.46641)
 mesh = SubResource("TextMesh_5gjb7")
 surface_material_override/0 = SubResource("StandardMaterial3D_7o0w8")
 
 [node name="AutoGearShiftPark" type="Node3D" parent="Interactables"]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.068328, 0.951479, -1.85809)
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.0485373, 0.951479, -1.97508)
 
 [node name="NodeMesh" type="MeshInstance3D" parent="Interactables/AutoGearShiftPark"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.85391)
 mesh = SubResource("SphereMesh_7arhk")
 surface_material_override/0 = SubResource("StandardMaterial3D_oysj2")
 
-[node name="NodeArea" type="Area3D" parent="Interactables/AutoGearShiftPark/NodeMesh" groups=["CarInteractColliders"]]
+[node name="AutoGearParkInteract" type="Area3D" parent="Interactables/AutoGearShiftPark/NodeMesh" groups=["CarInteractColliders"]]
 collision_layer = 2
 
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/AutoGearShiftPark/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/AutoGearShiftPark/NodeMesh/AutoGearParkInteract" groups=["CarInteractColliders"]]
 shape = SubResource("SphereShape3D_63ipq")
 
 [node name="CarHorn" type="Node3D" parent="Interactables"]
@@ -262,10 +244,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.69312)
 mesh = SubResource("SphereMesh_7arhk")
 surface_material_override/0 = SubResource("StandardMaterial3D_qjm6t")
 
-[node name="NodeArea" type="Area3D" parent="Interactables/CarHorn/NodeMesh" groups=["CarInteractColliders"]]
+[node name="HornInteract" type="Area3D" parent="Interactables/CarHorn/NodeMesh" groups=["CarInteractColliders"]]
 collision_layer = 2
 
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/CarHorn/NodeMesh/NodeArea" groups=["CarInteractColliders"]]
+[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/CarHorn/NodeMesh/HornInteract" groups=["CarInteractColliders"]]
 shape = SubResource("SphereShape3D_63ipq")
 
 [node name="CarHornAudio" type="AudioStreamPlayer3D" parent="Interactables/CarHorn"]
@@ -274,8 +256,85 @@ stream = ExtResource("5_knwov")
 volume_db = -30.0
 script = ExtResource("5_qtwpx")
 
+[node name="Mirrors" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.347759, 0, 0.502833)
+
+[node name="RightMirror" type="Node3D" parent="Mirrors"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 1.4315, 1.3, -0.95)
+
+[node name="CameraArrowMesh" type="MeshInstance3D" parent="Mirrors/RightMirror"]
+visible = false
+mesh = SubResource("BoxMesh_wc4vm")
+
+[node name="MirrorScreenRight" type="Sprite3D" parent="Mirrors/RightMirror"]
+transform = Transform3D(0.286884, 0, -0.0877366, 0, 0.3, 0, 0.0877366, 0, 0.286884, -0.302804, -0.0417643, -0.115732)
+layers = 5
+flip_h = true
+texture = SubResource("ViewportTexture_mok6m")
+region_enabled = true
+region_rect = Rect2(65, 140, 400, 250)
+
+[node name="SubViewportRight" type="SubViewport" parent="Mirrors/RightMirror"]
+render_target_update_mode = 4
+
+[node name="MirrorReflectionRight" type="Camera3D" parent="Mirrors/RightMirror/SubViewportRight"]
+transform = Transform3D(-0.978274, 0, -0.207314, 0, 1, 0, 0.207314, 0, -0.978274, 1.4295, 1.37645, -0.900244)
+cull_mask = 1047557
+fov = 90.0
+script = ExtResource("4_gxq1t")
+
+[node name="LeftMirror" type="Node3D" parent="Mirrors"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.81118, 1.3, -0.95)
+
+[node name="CameraArrowMesh" type="MeshInstance3D" parent="Mirrors/LeftMirror"]
+visible = false
+mesh = SubResource("BoxMesh_0pe3b")
+
+[node name="MirrorScreenLeft" type="Sprite3D" parent="Mirrors/LeftMirror"]
+transform = Transform3D(0.283478, 0, 0.0981852, 0, 0.3, 0, -0.0981852, 0, 0.283478, 0.582891, -0.0368066, -0.149423)
+layers = 5
+flip_h = true
+texture = SubResource("ViewportTexture_k3wbg")
+region_enabled = true
+region_rect = Rect2(65, 140, 400, 250)
+
+[node name="SubViewportLeft" type="SubViewport" parent="Mirrors/LeftMirror"]
+render_target_update_mode = 4
+
+[node name="MirrorReflectionLeft" type="Camera3D" parent="Mirrors/LeftMirror/SubViewportLeft"]
+transform = Transform3D(-0.995511, 0, 0.0946472, 0, 1, 0, -0.0946472, 0, -0.995511, -0.776404, 1.39189, -0.922809)
+cull_mask = 1047557
+fov = 90.0
+script = ExtResource("3_xmco5")
+
+[node name="RearMirror" type="Node3D" parent="Mirrors"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.349192, 1.54094, -0.886196)
+
+[node name="CameraArrowMesh" type="MeshInstance3D" parent="Mirrors/RearMirror"]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+visible = false
+mesh = SubResource("BoxMesh_wc4vm")
+
+[node name="MirrorScreenRear" type="Sprite3D" parent="Mirrors/RearMirror"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.00457704, 0, 0.039001)
+layers = 5
+flip_h = true
+pixel_size = 0.025
+texture = SubResource("ViewportTexture_7hwei")
+region_enabled = true
+region_rect = Rect2(157, 208.5, 242, 92)
+
+[node name="SubViewportRear" type="SubViewport" parent="Mirrors/RearMirror"]
+render_target_update_mode = 4
+
+[node name="MirrorReflectionRear" type="Camera3D" parent="Mirrors/RearMirror/SubViewportRear"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.34721, 1.46663, -0.851155)
+cull_mask = 1047557
+fov = 90.0
+script = ExtResource("5_lm5gg")
+
 [node name="Front" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.341, 0.8, -3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0274365, 0.8, -2.49783)
 
 [node name="Headlight" type="SpotLight3D" parent="Front"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00287801, 0.652833)
@@ -286,6 +345,7 @@ script = ExtResource("2_hg1yu")
 [node name="CarEngine" type="AudioStreamPlayer3D" parent="Front"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.806649, 3.75572)
 stream = ExtResource("3_p2q0p")
+volume_db = -30.0
 script = ExtResource("2_echwb")
 
 [node name="CarEngineSprintAudio" type="AudioStreamPlayer3D" parent="Front/CarEngine"]
@@ -295,7 +355,7 @@ script = ExtResource("5_qnrr6")
 script = ExtResource("7_pdxqd")
 
 [node name="FrontSeatPosition" type="Node3D" parent="Front"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42706, -0.888136, 2.69123)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.380578, -0.888136, 2.66118)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Front/FrontSeatPosition"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
@@ -303,7 +363,7 @@ mesh = SubResource("SphereMesh_psaxl")
 surface_material_override/0 = SubResource("StandardMaterial3D_3ppir")
 
 [node name="Back" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.340443, 1.12926, 2.1404)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00325802, 1.12926, 2.61591)
 
 [node name="SubViewportBackCam" type="SubViewport" parent="Back"]
 
@@ -321,34 +381,22 @@ spot_angle = 59.7183
 script = ExtResource("8_iwtnb")
 
 [node name="CarCollisionShape" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.77972, -0.147893)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.287795, 0.341344, -0.371602)
 shape = SubResource("BoxShape3D_qacrj")
 disabled = true
 
-[node name="Mercedes-benzGlcCoupé(c253Lp)" type="MeshInstance3D" parent="CarCollisionShape"]
-transform = Transform3D(-1.1, 0, -1.66095e-07, 0, 1.1, 0, 1.66095e-07, 0, -1.1, 0.337553, -1.77972, -0.344644)
+[node name="Mercedes-benzGlcCoupé(c253Lp)" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.1, 0, 9.61651e-08, 0, 1.1, 0, -9.61651e-08, 0, -1.1, 0, 0, 0)
 mesh = ExtResource("17_oysj2")
-skeleton = NodePath("../..")
 
-[node name="VehicleProximityDetect" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.611662, -0.0815697)
+[node name="CarAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_psaxl")
+}
 
-[node name="VehicleProxCollision" type="CollisionShape3D" parent="VehicleProximityDetect"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0141625, 0.308237, 0.017293)
-shape = SubResource("SphereShape3D_inspg")
-
-[node name="VehicleLabel" type="Label" parent="."]
-offset_left = 878.0
-offset_top = 489.0
-offset_right = 1064.0
-offset_bottom = 512.0
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="VehicleLabelBadInteract" type="Label" parent="."]
-offset_left = 904.0
-offset_top = 448.0
-offset_right = 1090.0
-offset_bottom = 471.0
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="cabinlight" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.575933, 0.817497, 0, -0.817497, 0.575933, 0.0143636, 1.7441, 0.24993)
+light_color = Color(0.243137, 1, 1, 1)
+light_energy = 0.3
+spot_range = 1.3417
+spot_angle = 29.1075
