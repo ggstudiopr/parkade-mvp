@@ -103,3 +103,21 @@ func prompt_UI_labels():
 	else:
 		VEHICLE_LABEL.text = str("")
 		VEHICLE_LABEL_BAD_INT.text = str("")
+
+func drainBattery(amount :float):
+	$Phone/BatteryBar.value -= amount
+
+func batteryDead():
+	return true if $Phone/BatteryBar.isDead()  else false
+
+func drainHealth (amount:float):
+	$Player/HealthBar.value -= amount
+
+func healthEmpty():
+	return true if $Player/HealthBar.isEmpty() else false
+
+func drainGas (amount:float):
+	$Car/GasolineBar.value -= amount
+
+func gasEmpty():
+	return true if $Car/GasolineBar.isEmpty() else false

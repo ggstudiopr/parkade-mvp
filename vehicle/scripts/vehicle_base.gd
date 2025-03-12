@@ -15,7 +15,7 @@ var direction
 @onready var VEHICLE_BACK := $"Back"
 @onready var VEHICLE_REAR_CAM := $Back/SubViewportBackCam/BackCam
 #UI
-@onready var VEHICLE_GAS := $"../Protagonist/UI/Car/GasolineBar"
+@onready var UI := $"../Protagonist/UI"
 #mirrors
 @onready var MIRROR_LEFT := $Mirrors/LeftMirror/SubViewportLeft/MirrorReflectionLeft
 @onready var MIRROR_RIGHT := $"Mirrors/RightMirror/SubViewportRight/MirrorReflectionRight"
@@ -33,12 +33,10 @@ var direction
 #animation player
 @onready var CAR_ANIMATOR := $CarAnimationPlayer
 
-@export var CAR_CAM_TILT_UPPER_LIMIT := deg_to_rad(15)
-@export var CAR_CAM_TILT_LOWER_LIMIT := deg_to_rad(-35)
 @export var CAR_SPEED_DEFAULT = 8 #Rename to max speed
 @export var CAR_BRAKE_RATE = 0.4
 @export var CAR_ACCEL_RATE = 0.3
-@export var CAR_SPRINT_MULT = 2
+@export var CAR_SPRINT_MULT = 1.5
 @export var CAR_TURN_SPEED = 0.9
 @export var CAR_DRIFTAWAY_SPEED = 0.1
 
@@ -104,7 +102,7 @@ func _input(event):
 func _physics_process(delta: float) -> void:
 	_driving_car_movement(delta)
 	_car_drift_away()
-	if !VEHICLE_GAS.isEmpty():
+	if !UI.gasEmpty() and isOn():
 		_drain_gas()
 		
 	VEHICLE.move_and_slide()
@@ -114,11 +112,10 @@ func _physics_process(delta: float) -> void:
 		PLAYER.global_position = FRONT_SEAT_POS.global_position
 
 func _drain_gas():
-	if vehicle_engine == ENGINE_STATE.ON:
-		VEHICLE_GAS.value -= 0.05
+	UI.drainGas(0.05)
 	if _is_car_sprinting == true:
-		VEHICLE_GAS.value -= 0.15
-	if VEHICLE_GAS.isEmpty():
+		UI.drainGas(0.15)
+	if UI.gasEmpty():
 		forceEngineOff()
 
 func _driving_car_movement(delta):
@@ -233,7 +230,7 @@ func getGearShift():
 	return VEHICLE.gear_shift
 
 func toggleEngine():
-	if !isOn() and !VEHICLE_GAS.isEmpty():
+	if !isOn() and !UI.gasEmpty():
 		forceEngineOn()
 	elif isOn():
 		forceEngineOff()
