@@ -3,93 +3,23 @@ class_name Player
 
 '''
 GAR
-2/11/2025 10PM
-	
-	-reorganized logic and added check functions for readability in player_base.gd, vehicle_base.gd, and phone_base.gd
-	-restructured/renamed project files for readability
-	-player functions present:
-		>free movement
-		>jump
-		>crouch
-		>sprint
-		>Phone
-			>light
-			>camera
-	-vehicle functions present:
-		>kinematic movement
-		>car "sprint" (accelerates)
-		>transmission interact
-		>radio interact
-		>door exit interact
-		>car horn interact
-		>car engine ignition interact
-		>mirrors (left, right, rear)
-		>car reversing back camera on radio display in logic
-		>unparked car drifts away in logic lmfao
-		>car headlights&brakelights in logic
-	
-	-vehicle_base.gd issues:
-		A>gearShift() can be rewritten to support other transmissions
-			-will require rewriting parts of _driving_car_movement(delta)
-			-editing gearShift to this degree will also involve adjusting the 3D node and creating childs
-		B>vehicle needs revised player exit logic, particularly the signal for when the player enters fucks w stuff
-			-this item is particularly noticeable when exiting car while its moving. check playerExitCar() 
-			-check player_base.gd item A
-		C>car sometimes drifts ever so slightly left/right by an inch when stopping
-		D>player interact ray cast doesnt work as intended when other entities block view
-			-noticeable when driving through enemies in EnemiesTrackingLevel, re-eval
-			-will likely affect _player_look_interact_prompts() 
-	-player_base.gd issues:
-		A>need to fix signals (bottom of script) for knowing when u can enter the car
-			-check vehicle_base.gd item B
-		
-	-Other recent changes from last break:
-		>health bar added which decreases when in proximity to enemy entity
-		>restructured file dir
-	-Planned additions pending:
-		>car gas/battery meter
-			-will work identical to phone battery, just drain it when car is on
-			-probably make it MUCH more subtle than phone battery in final implementation, a subtle UI element in car
-		>Hold Q (bring phone up) to bring it to face
-			-probably only add some logic in phoneToggle + an animation, likely an extra bool
-				-consider Outlast full screen cam idea instead of hovering camera in front of face
-				-consider Content Warning hovering face cam idea as base concept
-		>Phone gallery? maybe 1 additional app?
-			-input key 3 still unassinged
-		>Scroll input
-			-could be useful for phone camera
-		>Right click input
-			-there is literally no right clicking in this game? maybe change car E interacts to click?
-		>Car doors/locking?
-			-car keys
-			-car doors
-		>Car collision box when hitting walls
-			-animation + sound when above collision triggers
-		>consolidate all enums into one resource? especially for eventManager
-	notes:
-		Vehicle node has several mini scripts made with the intention of giving more 
-		direct control of those elements for enemy events later. Try to develop
-		with this in mind.
+3/11/2025 12AM
 '''
 #SPEED VALUES
 var _speed : float
 @export var SPEED_DEFAULT : float = 3
 @export var SPEED_CROUCH : float = 1
 const JUMP_VELOCITY = 4.5
-@export var SPRINT_MULT : float = 2
+@export var SPRINT_MULT : float = 1.5
 var input_dir
 var direction
+
 #CAMERA RELATED VARIABLES
-var _mouse_input : bool = false
-var _mouse_rotation : Vector3
-var _rotation_input : float
-var _tilt_input : float
-var _player_rotation : Vector3
-var _camera_rotation : Vector3
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90)
 @export var TILT_UPPER_LIMIT := deg_to_rad(90)
 @export var CAMERA_CONTROLLER := Camera3D
-@export var MOUSE_SENSITIVITY : float = 0.15
+@export var MOUSE_SENSITIVITY : float = 0.0015
+var mouse_input : Vector2
 @onready var CAR_LOOK_DIR_RAY := $CameraController/Camera3D/CarInteractRaycast
 @export var CAR_CAM_TILT_UPPER_LIMIT := deg_to_rad(15)
 @export var CAR_CAM_TILT_LOWER_LIMIT := deg_to_rad(-50)
@@ -97,20 +27,36 @@ var _camera_rotation : Vector3
 #ANIMATION RELATED NODE DECLARATIONS
 @onready var BODY_ANIMATOR := $CameraController/BodyAnimationPlayer #transforms parent body on crouch/stand
 @onready var HEAD_ANIMATOR := $CameraController/Camera3D/HeadAnimationPlayer  #headbobbing animations
-
+@onready var Footstep_Audio_Player := $CameraController/Camera3D/HeadAnimationPlayer/FootstepAudioPlayer
 #VEHICLE RELATED NODE DECLARATIONS
 @onready var VEHICLE := $"../Vehicle"
 @onready var LEFT_BND_AREA := $"../Vehicle/CarViewBounds/LookBoundaryL"
 @onready var RIGHT_BND_AREA :=$"../Vehicle/CarViewBounds/LookBoundaryR"
+var RIGHT_BOUND
+var LEFT_BOUND
 var CAR_CAM_BOUND_CURVE : float
 
-#BOOLS FOR MOVEMENT/ANIMATION LOGIC
+#BOOLS FOR MOVEMENT LOGIC
 var _is_crouching : bool
 var _is_sprinting : bool
-
+var Q_is_being_held : bool
 #UI related
 @onready var UI := $UI
 @onready var HEALTH := $UI/Player/HealthBar
+
+#phone related 
+@onready var PHONE := $CameraController/Camera3D/PhoneNode
+#phone cam swaying
+var phone_cam_holder_pos : Vector3
+@export var phoneCamPosOnHand : Vector3 = Vector3(0.1,-0.05,-0.15)
+@export var phoneCamPosClose : Vector3 = Vector3(0,0,-0.07)
+var phoneIsCloseToFace : bool
+@export var tilt_amount := 0.05
+@export var sway_amount := 0.01
+@export var bob_amount : float = 0.002
+@export var bob_freq : float = 0.01
+var bob_am_base
+var bob_fq_base
 
 #USED BY OTHER CLASSES
 var player_state = PLAYER_STATE.WALKING
@@ -119,7 +65,6 @@ enum PLAYER_STATE {
 	WALKING,
 	DRIVING
 }
-
 var gear_shift = CAR_TRANSMISSION.PARK
 enum CAR_TRANSMISSION {
 	DRIVE,
@@ -135,14 +80,12 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_is_crouching = false
 	_is_sprinting = false
+	Q_is_being_held = false
 	_speed = SPEED_DEFAULT
-
-func _unhandled_input(event):
-	_mouse_input = event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
-	if _mouse_input:
-		_rotation_input = -event.relative.x * MOUSE_SENSITIVITY
-		_tilt_input = -event.relative.y * MOUSE_SENSITIVITY
-
+	RIGHT_BOUND = RIGHT_BND_AREA.get_instance_id()
+	LEFT_BOUND = LEFT_BND_AREA.get_instance_id()
+	phone_cam_holder_pos = phoneCamPosOnHand
+	phoneIsCloseToFace = false
 func _input(event):
 	if event.is_action_pressed("exit"):#kill game
 		get_tree().quit()
@@ -150,7 +93,41 @@ func _input(event):
 		crouch_toggle()
 	if event.is_action_pressed("interact"):
 		UI.check_interact()
+	if !CAMERA_CONTROLLER: return
+	if event is InputEventMouseMotion:
+		update_camera(event)
+	#Phone Related Inputs
+	
+	if Input.is_action_just_pressed("Toggle Phone"): #Input Q, holdQ logic to adjust phone position
+		await get_tree().create_timer(0.75).timeout
+		if Input.is_action_pressed("Toggle Phone") and Q_is_being_held == false:
+			Q_is_being_held = true
+			if PHONE.isInHand():
+				if phone_cam_holder_pos == phoneCamPosClose:
+					phone_cam_holder_pos = phoneCamPosOnHand
+					phoneIsCloseToFace = false
+					return #THIS RETURN IS NECESSARY FOR FUNCTIONALITY 
+				elif phone_cam_holder_pos == phoneCamPosOnHand:
+					phone_cam_holder_pos = phoneCamPosClose
+					phoneIsCloseToFace = true
+					return #this one isnt but its nice and pretty
+			if !PHONE.isInHand():
+				phone_cam_holder_pos = phoneCamPosClose
+				phoneIsCloseToFace = true
+				PHONE.togglePhone()
+	if (Input.is_action_just_released("Toggle Phone")) and !Q_is_being_held:
+		phone_cam_holder_pos = phoneCamPosOnHand
+		phoneIsCloseToFace = false
+		PHONE.togglePhone()
+	if (Input.is_action_just_released("Toggle Phone")) and Q_is_being_held:
+		Q_is_being_held = false
 
+	if PHONE.isInHand() and !PHONE.isDead():
+		if Input.is_action_just_pressed("Toggle Light"):#Input 1
+			PHONE.togglePhoneLight()
+		if Input.is_action_just_pressed("Toggle Cam"):#Input 2
+			PHONE.togglePhoneCam()
+	
 func crouch_toggle():
 	if is_on_floor() and _is_crouching == false:
 		BODY_ANIMATOR.play("crouch")
@@ -162,74 +139,91 @@ func crouch_toggle():
 
 func _process(delta) -> void:
 	Global.player_position = global_position
-
+	
+func update_camera(event):
+	CAMERA_CONTROLLER.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
+	if player_state == PLAYER_STATE.DRIVING:
+		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,CAR_CAM_TILT_LOWER_LIMIT,CAR_CAM_TILT_UPPER_LIMIT)
+	elif player_state == PLAYER_STATE.WALKING:
+		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,-1.25,1.5)
+	self.rotation.y -= event.relative.x * MOUSE_SENSITIVITY
+	mouse_input = event.relative
+	
 func _physics_process(delta: float) -> void:
-	_update_camera(delta)
-	_walking_player_movement(delta)
+	_walking_player_movement(delta) #there is a world blurriness when walking. moving it to _process() fixes this but then car riding breaks
+	_car_camera_bind()
 	_player_animation()
+	
+func _player_animation():
+	if (input_dir.y>0 or input_dir.y<0) and _is_crouching == false and player_state == PLAYER_STATE.WALKING:
+		if !Footstep_Audio_Player.is_playing():
+			Footstep_Audio_Player._play_footstep()
+	elif (input_dir.y>0 or input_dir.y<0) and _is_crouching == true:
+		#HEAD_ANIMATOR.play("headbob_crouching")
+		pass
+	
+func _car_camera_bind():
+	if player_state == PLAYER_STATE.DRIVING:
+		if(CAR_LOOK_DIR_RAY.is_colliding() and CAR_LOOK_DIR_RAY.get_collider().is_in_group("CarViewBoundaries")):
+			CAR_CAM_BOUND_CURVE += 0.008
+			if (CAR_LOOK_DIR_RAY.get_collider().get_instance_id() == RIGHT_BOUND):
+				self.rotation.y += CAR_CAM_BOUND_CURVE
+			elif(CAR_LOOK_DIR_RAY.get_collider().get_instance_id() == LEFT_BOUND):
+				self.rotation.y -= CAR_CAM_BOUND_CURVE
+		else:
+			CAR_CAM_BOUND_CURVE = 0.01
 
 func _walking_player_movement(delta):
 	if not is_on_floor() and player_state ==  PLAYER_STATE.WALKING:
 		velocity += get_gravity() * delta
-	if Input.is_action_just_pressed("jump") and is_on_floor() and _is_crouching == false and player_state ==  PLAYER_STATE.WALKING:
-		velocity.y = JUMP_VELOCITY
-	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	input_dir = Input.get_vector("move_left","move_right","move_forward","move_backward")
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if player_state == PLAYER_STATE.WALKING:
-		if direction: 
-			velocity.x = direction.x * _speed
-			velocity.z = direction.z * _speed
-			if Input.is_action_pressed("sprint") and is_on_floor() and _is_crouching == false:
-				velocity.z *= SPRINT_MULT
-				_is_sprinting = true
-			else:
-				_is_sprinting = false 
+	if direction:
+		velocity.x = direction.x * _speed
+		velocity.z = direction.z * _speed
+		if Input.is_action_pressed("sprint") and is_on_floor() and _is_crouching == false:
+			velocity.z *= SPRINT_MULT
+			velocity.x *= SPRINT_MULT
+			_is_sprinting = true
 		else:
-			velocity.x = move_toward(velocity.x, 0, _speed)
-			velocity.z = move_toward(velocity.z, 0, _speed)
+			_is_sprinting = false 
+	else:
+		velocity.x = move_toward(velocity.x, 0, _speed)
+		velocity.z = move_toward(velocity.z, 0, _speed)
 	move_and_slide()
-
-func _update_camera(delta):
-	_mouse_rotation.x += _tilt_input * delta
-	if player_state == PLAYER_STATE.WALKING: 
-		_mouse_rotation.y += _rotation_input * delta
-		_mouse_rotation.x = clamp(_mouse_rotation.x, TILT_LOWER_LIMIT, TILT_UPPER_LIMIT)
-	elif player_state == PLAYER_STATE.DRIVING:
-		_mouse_rotation.x = clamp(_mouse_rotation.x, CAR_CAM_TILT_LOWER_LIMIT, CAR_CAM_TILT_UPPER_LIMIT)	
-		var RIGHT_BOUND = RIGHT_BND_AREA.get_instance_id()
-		var LEFT_BOUND = LEFT_BND_AREA.get_instance_id()
-		if(CAR_LOOK_DIR_RAY.is_colliding() and CAR_LOOK_DIR_RAY.get_collider().is_in_group("CarViewBoundaries")):
-			CAR_CAM_BOUND_CURVE += 0.002
-			if (CAR_LOOK_DIR_RAY.get_collider().get_instance_id() == RIGHT_BOUND):
-				_mouse_rotation.y += CAR_CAM_BOUND_CURVE
-				if (_rotation_input * delta > 0):
-					_mouse_rotation.y += _rotation_input * delta
-			elif(CAR_LOOK_DIR_RAY.get_collider().get_instance_id() == LEFT_BOUND):
-				_mouse_rotation.y -= CAR_CAM_BOUND_CURVE
-				if (_rotation_input * delta < 0):
-					_mouse_rotation.y += _rotation_input * delta
+	phonecam_tilt_sway_bob(input_dir.x, delta, velocity.length())
+	
+func phonecam_tilt_sway_bob(input_x, delta, vel : float):
+	#sway
+	mouse_input = lerp(mouse_input, Vector2.ZERO, 10*delta)
+	PHONE.rotation.x = lerp(PHONE.rotation.x, mouse_input.y * sway_amount, 10*delta)
+	PHONE.rotation.y = lerp(PHONE.rotation.y, -mouse_input.x * sway_amount * 0.25, 10*delta)
+	if PHONE.isInHand():
+		#tilt
+		if !isDriving():
+			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount, 10*delta)
+			PHONE.rotation.x = lerp(PHONE.rotation.x, input_dir.y * tilt_amount, delta * 10)
+		#bobbing
+		if vel > 0 and is_on_floor():#moving bobbing
+			if !isDriving():
+				bob_am_base = bob_amount
+				bob_fq_base = bob_freq
+				if _is_sprinting == true:#add bobbing if sprinting
+					bob_am_base += 0.005
+					bob_fq_base += 0.005
+				PHONE.position.y = lerp(PHONE.position.y, phone_cam_holder_pos.y + sin(Time.get_ticks_msec() * bob_fq_base) * bob_am_base, 10 * delta)
+				PHONE.position.x = lerp(PHONE.position.x, phone_cam_holder_pos.x + sin(Time.get_ticks_msec() * bob_fq_base * 0.5) * bob_am_base, 10 * delta)
 		else:
-			CAR_CAM_BOUND_CURVE = 0.01
-			_mouse_rotation.y += _rotation_input * delta
-	_player_rotation = Vector3(0, _mouse_rotation.y, 0)
-	_camera_rotation = Vector3(_mouse_rotation.x, 0, 0)
-	CAMERA_CONTROLLER.transform.basis = Basis.from_euler(_camera_rotation)
-	CAMERA_CONTROLLER.rotation.z = 0
-	var a = Quaternion(global_transform.basis)
-	var b = Quaternion(Basis.from_euler(_player_rotation))
-	var c = a.slerp(b,0.5)
-	global_transform.basis = Basis(c)
-	_rotation_input = 0
-	_tilt_input = 0
-
-func _player_animation():
-	if (input_dir.y>0 or input_dir.y<0) and _is_crouching == false and player_state == PLAYER_STATE.WALKING:
-		if _is_sprinting == true:
-			HEAD_ANIMATOR.play("headbob_sprinting")
-		else:
-			HEAD_ANIMATOR.play("headbob")
-	elif (input_dir.y>0 or input_dir.y<0) and _is_crouching == true:
-		HEAD_ANIMATOR.play("headbob_crouching")
+			PHONE.position.y = lerp(PHONE.position.y, phone_cam_holder_pos.y, 10 * delta)
+			PHONE.position.x = lerp(PHONE.position.x, phone_cam_holder_pos.x, 10 * delta)
+		if is_on_floor():#idle bobbing
+			bob_am_base = bob_amount
+			bob_fq_base = bob_freq
+			if phoneIsCloseToFace == false:
+				PHONE.rotation.z = move_toward(PHONE.rotation.z, deg_to_rad(-80), 0.125)
+			PHONE.position.y = lerp(PHONE.position.y, phone_cam_holder_pos.y + sin(Time.get_ticks_msec() * bob_fq_base* 0.3) * bob_am_base * 0.3, 10 * delta)
+			PHONE.position.x = lerp(PHONE.position.x, phone_cam_holder_pos.x + sin(Time.get_ticks_msec() * bob_fq_base * 0.5) * bob_am_base* 0.1, 10 * delta)
+			PHONE.position.z = lerp(PHONE.position.z, phone_cam_holder_pos.z + sin(Time.get_ticks_msec() * bob_fq_base * 0.5) * bob_am_base* 0.1, 10 * delta)
 
 func playerEnterCar():
 	if _is_crouching == true:

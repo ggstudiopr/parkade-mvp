@@ -162,20 +162,20 @@ func _driving_car_movement(delta):
 			_car_accel_rampup  = move_toward(_car_accel_rampup , CAR_SPEED_DEFAULT, CAR_ACCEL_RATE)
 			VEHICLE.velocity += -(VEHICLE.transform.basis.z) * _car_accel_rampup
 			if Input.is_action_pressed("move_right"):
-				PLAYER._mouse_rotation.y += -CAR_TURN_SPEED*delta
+				PLAYER.rotation.y += -CAR_TURN_SPEED*delta
 				VEHICLE.rotate_y(-CAR_TURN_SPEED*delta)
 			elif Input.is_action_pressed("move_left"):
-				PLAYER._mouse_rotation.y += CAR_TURN_SPEED*delta
+				PLAYER.rotation.y += CAR_TURN_SPEED*delta
 				VEHICLE.rotate_y(CAR_TURN_SPEED*delta)
 		elif (Input.is_action_pressed("move_backward") and gear_shift == CAR_TRANSMISSION_AUTO.REVERSE):
 			VEHICLE.velocity = Vector3.ZERO
 			_car_accel_rampup  = move_toward(_car_accel_rampup , CAR_SPEED_DEFAULT, CAR_ACCEL_RATE)
 			VEHICLE.velocity += (VEHICLE.transform.basis.z) * _car_accel_rampup 
 			if Input.is_action_pressed("move_right"):
-				PLAYER._mouse_rotation.y += CAR_TURN_SPEED*delta
+				PLAYER.rotation.y += CAR_TURN_SPEED*delta
 				VEHICLE.rotate_y(CAR_TURN_SPEED*delta)
 			elif Input.is_action_pressed("move_left"):
-				PLAYER._mouse_rotation.y += -CAR_TURN_SPEED*delta
+				PLAYER.rotation.y += -CAR_TURN_SPEED*delta
 				VEHICLE.rotate_y(-CAR_TURN_SPEED*delta)
 		if Input.is_action_pressed("sprint"):
 			velocity *= CAR_SPRINT_MULT

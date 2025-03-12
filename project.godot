@@ -107,6 +107,10 @@ interact={
 3d_render/layer_4="CarRearCamVisibleOnly"
 3d_physics/layer_2="CarRaycastLayer"
 
+[physics]
+
+common/physics_ticks_per_second=120
+
 [rendering]
 
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3

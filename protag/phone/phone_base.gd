@@ -25,19 +25,17 @@ func _ready():
 	
 	
 func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("Toggle Phone"): #Input Q
-		togglePhone()
-		
-	if PHONE.isInHand() and !PHONE_BATTERY.isDead():
-		if Input.is_action_just_pressed("Toggle Light"):#Input 1
-			togglePhoneLight()
-		if Input.is_action_just_pressed("Toggle Cam"):#Input 2
-			togglePhoneCam()
+	pass
 
 func _physics_process(_delta:float) -> void:
 	if !PHONE_BATTERY.isDead():
 		_drain_battery()
-	
+	if !PHONE.isInHand(): #hardcoded animation to pull phone away from camera when it is put away
+		PHONE.position.y = move_toward(PHONE.position.y, -0.4, 0.0035)
+		PHONE.position.x = move_toward(PHONE.position.x, 0.2, 0.002)
+		PHONE.rotation.z = move_toward(PHONE.rotation.z , deg_to_rad(-160), 0.02)
+		#PHONE.rotation.x = move_toward(PHONE.rotation.x , deg_to_rad(-30), 0.03)
+		#PHONE.rotation.y = move_toward(PHONE.rotation.y , deg_to_rad(-30), 0.05)
 func _drain_battery():
 	if PHONE_LIGHT.LightBool == true:
 		PHONE_BATTERY.value -= 0.2
@@ -65,16 +63,16 @@ func togglePhone():
 		if PhoneInHandBool == true: #if true, phone is being pulled out
 			PHONE_MODEL.show()
 			PHONE_SCREEN.show()
-			PHONE_ANIMATOR.play("ShowPhone")
+			#PHONE.position = Vector3(0.7,-1,0) #starter position when rendering model
+			PHONE_AUDIO. _play_ON_sound()
 			if !isDead():
 				PHONE_SCREEN.texture = load("res://protag/phone/wallpaper.png")
-			await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(0.75).timeout
 			PHONE_CAM.CamOn()
 		elif PhoneInHandBool == false: #if false, phone is being put away
-			PHONE_ANIMATOR.play("HidePhone")
 			if !PHONE_BATTERY.isDead():
 				_force_phone_OFF()
-			await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(0.75).timeout
 			PHONE_MODEL.hide()
 			PHONE_SCREEN.hide()
 		phoneAnimating = false

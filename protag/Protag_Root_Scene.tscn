@@ -316,6 +316,7 @@ debug_shape_custom_color = Color(1.29953e-06, 0.670053, 0.480873, 1)
 transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871558, 0, 0.0871558, 0.996195, 0, 1.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraController"]
+physics_interpolation_mode = 1
 cull_mask = 1047553
 fov = 80.0
 
@@ -327,7 +328,7 @@ libraries = {
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="CameraController/Camera3D/HeadAnimationPlayer"]
 transform = Transform3D(0.999991, 0.00418878, 0, -0.00418878, 0.999991, 0, 0, 0, 1, -0.00389556, -0.0299919, 0)
 stream = ExtResource("8_bhrfm")
-volume_db = -17.042
+volume_db = -25.0
 script = ExtResource("9_f878c")
 
 [node name="CarInteractRaycast" type="RayCast3D" parent="CameraController/Camera3D"]
