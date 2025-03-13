@@ -12,10 +12,9 @@ GAR
 -added phone holdQ to bring up to face. 
 -added visbility layers to render things seperately in phone camera/car mirrors if needed
 -added UI scene, wrote methods to tie all current resources to UI parent node
-
+-added screenshot functinality + gallery app
 pending core additions:
 	car enter/exit anims
-	phone gallery app, probably reassign to 2, make camera On the default state
 	car slope support for moving floors
 	touch up player animations + add protag model + rigging
 
@@ -24,6 +23,7 @@ issues:
 		-increasing project physics fps fixes this, likely terrible solution (default 60, currently 120)
 	player and car are codependent for individual root scenes to run, might be good practice to rewrite so this isnt true
 	HoldQ works as intended, can be finnicky when spamming Q, maybe revisit this section later
+	gallery works but need to rewrite so u dont accidentally load invalid files
 '''
 #SPEED VALUES
 var _speed : float
@@ -66,10 +66,9 @@ var Q_is_being_held : bool
 @onready var PHONE := $CameraController/Camera3D/PhoneNode
 @onready var ClosePosAnchor := $CameraController/Camera3D/PhonePositionalAnchors/Close
 @onready var FarPosAnchor := $CameraController/Camera3D/PhonePositionalAnchors/Far
+
 #phone cam swaying
 var positionToUse4Phone : Vector3
-var phoneCamPosFar: Vector3 #probably rewrite to not need these 2 later, use Anchors directly
-var phoneCamPosClose : Vector3 
 var phonePosToggle : bool
 @export var tilt_amount := 0.1
 @export var sway_amount := 0.01
@@ -114,6 +113,11 @@ func _input(event):
 		crouch_toggle()
 	if event.is_action_pressed("interact"):
 		UI.check_interact()
+	
+	if event.is_action_pressed("left_click"):
+		if PHONE.isInHand():
+			PHONE.takePicture()
+	
 	if !CAMERA_CONTROLLER: return
 	if event is InputEventMouseMotion:
 		update_camera(event)
@@ -125,30 +129,32 @@ func _input(event):
 			Q_is_being_held = true
 			if PHONE.isInHand():
 				if phonePosToggle == true:
-					positionToUse4Phone = phoneCamPosFar
+					positionToUse4Phone = FarPosAnchor.position
 					phonePosToggle = false
 					return #THIS RETURN IS NECESSARY FOR FUNCTIONALITY 
 				elif phonePosToggle == false:
-					positionToUse4Phone = phoneCamPosClose
+					positionToUse4Phone =  ClosePosAnchor.position
 					phonePosToggle = true
 					return #this one isnt but its nice and pretty
 			if !PHONE.isInHand():
-				positionToUse4Phone = phoneCamPosClose
+				positionToUse4Phone =  ClosePosAnchor.position
 				phonePosToggle = true
 				PHONE.togglePhone()
 	if (Input.is_action_just_released("Toggle Phone")) and !Q_is_being_held:
-		positionToUse4Phone = phoneCamPosFar
+		positionToUse4Phone = FarPosAnchor.position
 		phonePosToggle = false
 		PHONE.togglePhone()
 	if (Input.is_action_just_released("Toggle Phone")) and Q_is_being_held:
 		Q_is_being_held = false
 
 	if PHONE.isInHand() and !PHONE.isDead():
-		if Input.is_action_just_pressed("Toggle Light"):#Input 1
+		if Input.is_action_just_pressed("phone_1"):#Input 1
 			PHONE.togglePhoneLight()
-		if Input.is_action_just_pressed("Toggle Cam"):#Input 2
-			PHONE.togglePhoneCam()
-
+		if Input.is_action_just_pressed("phone_2"):#Input 2
+			PHONE.PhoneCamOn()
+		if Input.is_action_just_pressed("phone_3"):#Input 3
+			PHONE.GalleryOn()
+			
 func _process(delta) -> void:
 	Global.player_position = global_position
 	
@@ -165,7 +171,9 @@ func _walking_player_movement(delta):
 	if direction:
 		velocity.x = direction.x * _speed
 		velocity.z = direction.z * _speed
-		if Input.is_action_pressed("sprint") and is_on_floor() and _is_crouching == false:
+		if Input.is_action_pressed("sprint") and is_on_floor():
+			if _is_crouching == true:
+				crouch_toggle()
 			velocity.z *= SPRINT_MULT
 			velocity.x *= SPRINT_MULT
 			_is_sprinting = true
@@ -191,12 +199,12 @@ func update_camera(event):
 
 func phone_n_cam_tilt(input_x, input_y, delta):
 	if PHONE:
-		if phonePosToggle == false: #if phone is not up close, add FarPosAnchor z rotation
+		if phonePosToggle == false: #if phone is not up close, add FarPosAnchor z rotation for flavor
 			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75 + FarPosAnchor.rotation.z, 10 * delta)
 		else:
 			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75, 10 * delta)
 		PHONE.rotation.x = lerp(PHONE.rotation.x, input_y * tilt_amount * 0.75, 7 * delta)
-	if CAMERA_CONTROLLER:
+	if CAMERA_CONTROLLER:#this CAN be nauseating, conmsider removing altogether but its nice immersion flavor
 		CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.05, 10 * delta)
 		
 func phone_sway(delta):
@@ -208,8 +216,6 @@ func phone_sway(delta):
 		#CAMERA_CONTROLLER.rotation.y = lerp(CAMERA_CONTROLLER.rotation.y, mouse_input.x * sway_amount , 25 * delta)
 			
 func phone_bobbing(vel : float, delta):
-	phoneCamPosFar = FarPosAnchor.position
-	phoneCamPosClose = ClosePosAnchor.position
 	if PHONE.isInHand():
 		bob_am_base = bob_amount
 		bob_fq_base = bob_freq
@@ -230,10 +236,10 @@ func phone_bobbing(vel : float, delta):
 		PHONE.position.z = lerp(PHONE.position.z, positionToUse4Phone.z + sin(Time.get_ticks_msec() * bob_fq_base * 0.5) * bob_am_base* 0.1,  2*delta)
 
 func _player_animation():
-	if (input_dir.y>0 or input_dir.y<0) and _is_crouching == false and player_state == PLAYER_STATE.WALKING:
+	if ((input_dir.y>0 or input_dir.y<0)or(input_dir.x>0 or input_dir.x<0)) and _is_crouching == false and player_state == PLAYER_STATE.WALKING:
 		if !Footstep_Audio_Player.is_playing():
 			Footstep_Audio_Player._play_footstep()
-	elif (input_dir.y>0 or input_dir.y<0) and _is_crouching == true:
+	elif ((input_dir.y>0 or input_dir.y<0)or(input_dir.x>0 or input_dir.x<0)) and _is_crouching == true:
 		#HEAD_ANIMATOR.play("headbob_crouching")
 		pass
 

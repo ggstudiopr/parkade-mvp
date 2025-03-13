@@ -1,13 +1,13 @@
 [gd_scene load_steps=14 format=3 uid="uid://csjcseh76ann"]
 
 [ext_resource type="Script" uid="uid://bwgcsja3nfwur" path="res://protag/phone/phone_base.gd" id="1_27mfi"]
-[ext_resource type="Script" uid="uid://1tync2pe52c" path="res://protag/phone/Flashlight.gd" id="2_0mhho"]
+[ext_resource type="Script" path="res://protag/phone/Flashlight.gd" id="2_0mhho"]
 [ext_resource type="AudioStream" uid="uid://d3s448a0plbr6" path="res://protag/phone/Flashlight Sound Effect sfx.mp3" id="3_qcfi2"]
-[ext_resource type="Script" uid="uid://uxhwtw25fcb" path="res://protag/phone/FlashlightAudioPlayer.gd" id="4_sx8jk"]
+[ext_resource type="Script" path="res://protag/phone/FlashlightAudioPlayer.gd" id="4_sx8jk"]
 [ext_resource type="Texture2D" uid="uid://bdt3eychbninn" path="res://protag/phone/camOffIcon.png" id="5_q526q"]
 [ext_resource type="AudioStream" uid="uid://tnc0mjj5m1i3" path="res://protag/phone/soft_beep.mp3" id="5_sx8jk"]
-[ext_resource type="Script" uid="uid://cnf2d8tjli50t" path="res://protag/phone/PhoneCameraUpdate.gd" id="6_887j7"]
-[ext_resource type="Script" uid="uid://bsynunnnwa3jl" path="res://protag/phone/PhoneAudioPlayer.gd" id="6_q526q"]
+[ext_resource type="Script" path="res://protag/phone/PhoneCameraUpdate.gd" id="6_887j7"]
+[ext_resource type="Script" path="res://protag/phone/PhoneAudioPlayer.gd" id="6_q526q"]
 [ext_resource type="ArrayMesh" uid="uid://1xrvufpoku40" path="res://protag/phone/hand_phone.obj" id="7_0mhho"]
 
 [sub_resource type="Animation" id="Animation_t2tbu"]
