@@ -23,7 +23,7 @@ issues:
 		-increasing project physics fps fixes this, likely terrible solution (default 60, currently 120)
 	player and car are codependent for individual root scenes to run, might be good practice to rewrite so this isnt true
 	HoldQ works as intended, can be finnicky when spamming Q, maybe revisit this section later
-	gallery works but need to rewrite so u dont accidentally load invalid files
+	rewrite car view bound logic to not bounce
 '''
 #SPEED VALUES
 var _speed : float
@@ -121,8 +121,8 @@ func _input(event):
 	if !CAMERA_CONTROLLER: return
 	if event is InputEventMouseMotion:
 		update_camera(event)
-	#Phone Related Inputs
 	
+	#Phone Related Inputs
 	if Input.is_action_just_pressed("Toggle Phone"): #Input Q, holdQ logic to adjust phone position
 		await get_tree().create_timer(0.75).timeout
 		if Input.is_action_pressed("Toggle Phone") and Q_is_being_held == false:

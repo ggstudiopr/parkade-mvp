@@ -120,6 +120,8 @@ scroll_down={
 3d_render/layer_2="PhoneCameraVisibleOnly"
 3d_render/layer_3="MirrorCameraVisibleOnly"
 3d_render/layer_4="CarRearCamVisibleOnly"
+3d_render/layer_6="PlayerVisibleOnly"
+3d_render/layer_7="ScreenshotVisibleOnly"
 3d_physics/layer_2="CarRaycastLayer"
 
 [physics]

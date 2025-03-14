@@ -19,34 +19,36 @@ var phoneAnimating : bool
 #UI dependencies
 @onready var UI := $"../../../UI"
 var isCharging : bool
+
 #gallery
 var SAVE_SS_PATH = "user://phoneImg/"
 var ss_dir = DirAccess.make_dir_absolute(SAVE_SS_PATH)
 var galleryActive : bool
-var ss_toUse_count
+var ss_index
 
 #initialize values
 func _ready():
-	
 	PhoneInHandBool = false
 	phoneAnimating = false
 	isCharging = false 
 	PHONE_MODEL.hide()
 	PHONE_SCREEN.hide()
 	galleryActive = false
-	ss_toUse_count = 1
+	ss_index = 1
+	
 func _input(_event: InputEvent) -> void:
 	if _event.is_action_pressed("scroll_down") and galleryActive == true:
-		ss_toUse_count += 1
-		if ss_toUse_count > 10:
-			ss_toUse_count = 1
-		loadImage(ss_toUse_count)
-	if _event.is_action_pressed("scroll_up") and galleryActive == true:
-		ss_toUse_count -= 1
-		if ss_toUse_count < 1:
-			ss_toUse_count = 10
-		loadImage(ss_toUse_count)
-		
+		ss_index = ss_index_cycler(ss_index, 1)
+		if loadImage(ss_index, false) == false:
+			ss_index = ss_index_cycler(ss_index, -1)
+		else:
+			loadImage(ss_index, true)
+	elif _event.is_action_pressed("scroll_up") and galleryActive == true:
+		ss_index = ss_index_cycler(ss_index, -1)
+		if loadImage(ss_index, false) == false:
+			ss_index = ss_index_cycler(ss_index, 1)
+		else:
+			loadImage(ss_index, true)
 		
 func _physics_process(_delta:float) -> void:
 	if !isDead():
@@ -55,8 +57,7 @@ func _physics_process(_delta:float) -> void:
 		PHONE.position.x = lerp(PHONE.position.x, PHONE_AWAY_ANCHOR.position.x, 1.5 * _delta)
 		PHONE.position.y = lerp(PHONE.position.y, PHONE_AWAY_ANCHOR.position.y, 2.5 * _delta)
 		PHONE.position.z = lerp(PHONE.position.z, PHONE_AWAY_ANCHOR.position.z, 1 * _delta)
-		#PHONE.position.y = move_toward(PHONE.position.y, PHONE_AWAY_ANCHOR.position.y, 0.0035)
-		#PHONE.rotation.z = move_toward(PHONE.rotation.z , PHONE_AWAY_ANCHOR.rotation.z, 0.02)
+
 func _drain_battery():
 	if PHONE_LIGHT.LightBool == true:
 		UI.drainBattery(0.2)
@@ -70,9 +71,12 @@ func _drain_battery():
 		if isCharging == false:
 			isCharging = true
 			PHONE_AUDIO._play_charging_sound()
+			print ("Phone is charging in car...")
 	else:
 		if !PLAYER.isDriving() or !VEHICLE.isOn():#resets charging sound trigger when exit car or car is off 
-			isCharging = false
+			if isCharging == true:
+				print ("Phone car charging disconnected...")
+				isCharging = false
 	#Deactivate basic functions on 0 battery
 	if isDead():
 		_force_phone_DEAD()
@@ -80,15 +84,16 @@ func _drain_battery():
 func togglePhone():
 	if phoneAnimating == false: #takes function hostage while animations play
 		PhoneInHandBool = !PhoneInHandBool
-		phoneAnimating = true
+		phoneAnimating = true 
 		if PhoneInHandBool == true: #if true, phone is being pulled out
 			PHONE_MODEL.show()
 			PHONE_SCREEN.show()
-			PHONE_AUDIO. _play_ON_sound()
 			if !isDead():
+				PHONE_AUDIO._play_ON_sound()
+				print("Booting phone... (hardcoded to start on Camera App to skip App loadscreen!)")
 				PHONE_SCREEN.texture = load("res://protag/phone/wallpaper.png") #base boot wallpaper
-			await get_tree().create_timer(loadScreenTimer).timeout
-			PHONE_CAM.CamOn()
+				await get_tree().create_timer(loadScreenTimer).timeout
+				PHONE_CAM.CamOn() #calling this function directly to skip loadscreen
 		elif PhoneInHandBool == false: #if false, phone is being put away
 			if !isDead():
 				_force_phone_OFF()
@@ -98,6 +103,7 @@ func togglePhone():
 		phoneAnimating = false
 
 func togglePhoneLight():
+	print("Toggling Phone LED...")
 	if !PHONE_LIGHT.isOn():
 		PHONE_LIGHT.flashlightOn()
 	elif PHONE_LIGHT.isOn():
@@ -110,6 +116,7 @@ func takePicture():
 		PHONE_CAM.createImg()
 
 func togglePhoneCam():
+	print("Toggling Phone Camera ON/OFF")
 	if !PHONE_CAM.isOn():
 		if galleryActive == true:
 			galleryActive = false
@@ -118,6 +125,7 @@ func togglePhoneCam():
 		PHONE_CAM.CamOff()
 
 func PhoneCamOn():
+	print("Loading Camera app...")
 	if galleryActive == true:
 		galleryActive = false
 	if !PHONE_CAM.isOn():
@@ -126,39 +134,44 @@ func PhoneCamOn():
 		PHONE_CAM.CamOn()
 		
 func GalleryOn():
+	print("Loading Gallery app...")
 	if PHONE_CAM.isOn():
 		PHONE_CAM.CamOff()
 	if galleryActive ==false:
 		galleryActive = true
 	PHONE_SCREEN.texture = load("res://protag/phone/gallery loadscreen.jpg")#LOADSCREEN
 	await get_tree().create_timer(loadScreenTimer).timeout
-	loadImage(ss_toUse_count)
+	loadImage(ss_index, true)
 	
-func loadImage(ss_toUse_count):
-	var img_str = SAVE_SS_PATH+"ss"+str(ss_toUse_count)+".png"
+func loadImage(ss_to_load, trueImgLoad): 
+	var img_str = SAVE_SS_PATH+"ss"+str(ss_to_load)+".png"
 	var img_file = Image.new()
-	print("loading img: "+img_str)
-	
+
 	var err = img_file.load(img_str)
 	if err != OK:#no img found
-		print("error loading " +img_str+": img not found") #rewrite this for not accidentally loading invalid files
-		#if ss_toUse_count == 1:
-			#print("no images taken yet")
-		return
-		
-	img_file.load(img_str)
-	var img_texture = ImageTexture.create_from_image(img_file)
+		if ss_to_load == 1:
+			print("No images saved!")
+			return false
+		print("Error loading " +img_str+": img not found") #rewrite this for not accidentally loading invalid files
+		return false
 	
-	PHONE_SCREEN.texture = img_texture
+	if trueImgLoad == true:#trueImgLoad avoids loading image twice when just checking for above error
+		print("Loading img: "+img_str)
+		img_file.load(img_str)
+		var img_texture = ImageTexture.create_from_image(img_file)
+		PHONE_SCREEN.texture = img_texture
 	
-func _force_phone_OFF():
+func _force_phone_OFF(): #handles resetting app related bools and statuses
 	if PHONE_LIGHT.isOn():
 		PHONE_LIGHT.flashlightOff()
 	PHONE_CAM.CamOff()
+	galleryActive = false
 	PHONE_SCREEN.texture = load("res://protag/phone/wallpaper.png")
 	
 func _force_phone_DEAD():
+	print("Phone battery has died!")
 	PHONE_CAM.CamOff()
+	galleryActive = false
 	if PHONE_LIGHT.isOn():
 		PHONE_LIGHT.flashlightOff()
 	PHONE_SCREEN.texture = load("res://protag/phone/batteryImage.png")
@@ -168,3 +181,11 @@ func isInHand():
 
 func isDead():
 	return true if UI.batteryDead() else false
+
+func ss_index_cycler(new_index, step): #cycles screenshots index in 10
+	new_index += step #PhoneCameraUpdate.gd cycles create_img() cycle back to 1 every time its own index hits 11
+	if new_index > 10:
+		new_index = 1
+	if new_index < 1:
+		new_index = 10
+	return new_index
