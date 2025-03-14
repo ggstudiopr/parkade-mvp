@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://ykg03vys3buy"]
+[gd_scene load_steps=39 format=3 uid="uid://ykg03vys3buy"]
 
 [ext_resource type="Script" uid="uid://daukphcpp2rum" path="res://vehicle/scripts/vehicle_base.gd" id="1_elk10"]
 [ext_resource type="Script" uid="uid://c3tu4jh4obsrx" path="res://vehicle/scripts/EngineAudio.gd" id="2_echwb"]
@@ -16,9 +16,6 @@
 [ext_resource type="Script" uid="uid://bxap6lt6cwk6q" path="res://vehicle/scripts/WheelAudio.gd" id="7_pdxqd"]
 [ext_resource type="Script" uid="uid://cu50voscq5c26" path="res://vehicle/scripts/BrakeLights.gd" id="8_iwtnb"]
 [ext_resource type="ArrayMesh" uid="uid://cod7ik8uvbmo1" path="res://vehicle/CarObj.obj" id="17_oysj2"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_w6b14"]
-size = Vector3(50, 15.5189, 0.5)
 
 [sub_resource type="SphereMesh" id="SphereMesh_7arhk"]
 
@@ -111,24 +108,6 @@ _data = {
 
 [node name="Vehicle" type="CharacterBody3D"]
 script = ExtResource("1_elk10")
-
-[node name="CarViewBounds" type="Node3D" parent="." groups=["CarViewBoundaries"]]
-
-[node name="LookBoundaryL" type="Area3D" parent="CarViewBounds" groups=["CarViewBoundaries"]]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -1.049, 1.05, -0.698)
-collision_layer = 2
-
-[node name="LookBoundaryShapeLeft" type="CollisionShape3D" parent="CarViewBounds/LookBoundaryL" groups=["CarViewBoundaries"]]
-transform = Transform3D(3.34849e-08, 0.766044, 0.642788, 1, -4.37114e-08, 0, 2.80971e-08, 0.642788, -0.766044, -1.07534, 1.5, 8.82415)
-shape = SubResource("BoxShape3D_w6b14")
-
-[node name="LookBoundaryR" type="Area3D" parent="CarViewBounds" groups=["CarViewBoundaries"]]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 1.527, 1.05, -0.678)
-collision_layer = 2
-
-[node name="LookBoundaryShapeRight" type="CollisionShape3D" parent="CarViewBounds/LookBoundaryR" groups=["CarViewBoundaries"]]
-transform = Transform3D(3.34849e-08, 0.766044, -0.642788, 1, -4.37114e-08, 0, -2.80971e-08, -0.642788, -0.766044, -2.27535, 1.5, 7.68744)
-shape = SubResource("BoxShape3D_w6b14")
 
 [node name="Interactables" type="Node3D" parent="." groups=["CarInteractColliders"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.335218, 0, 0.514771)

@@ -23,7 +23,7 @@ issues:
 		-increasing project physics fps fixes this, likely terrible solution (default 60, currently 120)
 	player and car are codependent for individual root scenes to run, might be good practice to rewrite so this isnt true
 	HoldQ works as intended, can be finnicky when spamming Q, maybe revisit this section later
-	rewrite car view bound logic to not bounce
+
 '''
 #SPEED VALUES
 var _speed : float
@@ -50,11 +50,7 @@ var mouse_input : Vector2
 @onready var Footstep_Audio_Player := $CameraController/Camera3D/HeadAnimationPlayer/FootstepAudioPlayer
 #VEHICLE RELATED NODE DECLARATIONS
 @onready var VEHICLE := $"../Vehicle"
-@onready var LEFT_BND_AREA := $"../Vehicle/CarViewBounds/LookBoundaryL"
-@onready var RIGHT_BND_AREA :=$"../Vehicle/CarViewBounds/LookBoundaryR"
-var RIGHT_BOUND
-var LEFT_BOUND
-var CAR_CAM_BOUND_CURVE : float
+var self_total_rot
 
 #BOOLS FOR MOVEMENT LOGIC
 var _is_crouching : bool
@@ -93,6 +89,7 @@ enum SEAT_STATUS{ #this one is silly, really only there for minor car logic and 
 	OPEN,
 	TAKEN
 }
+
 #INITIALIZE
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -100,11 +97,11 @@ func _ready():
 	_is_sprinting = false
 	Q_is_being_held = false
 	_speed = SPEED_DEFAULT
-	RIGHT_BOUND = RIGHT_BND_AREA.get_instance_id()
-	LEFT_BOUND = LEFT_BND_AREA.get_instance_id()
 	
 	positionToUse4Phone = FarPosAnchor.position
 	phonePosToggle = false
+	
+	self_total_rot = 0
 	
 func _input(event):
 	if event.is_action_pressed("exit"):#kill game
@@ -160,7 +157,6 @@ func _process(delta) -> void:
 	
 func _physics_process(delta: float) -> void:
 	_walking_player_movement(delta) #phone animations handled within this due to needing input_dir
-	_car_camera_bind() #consider rewriting to hard limits that dont bounce camera
 	_player_animation() #going to try and handle walking animations here later. for now only contains simple footstep loop. removed headbob
 
 func _walking_player_movement(delta):
@@ -194,7 +190,14 @@ func update_camera(event):
 		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,CAR_CAM_TILT_LOWER_LIMIT,CAR_CAM_TILT_UPPER_LIMIT)
 	elif player_state == PLAYER_STATE.WALKING:
 		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,-1.25,1.5)
-	self.rotation.y -= event.relative.x * MOUSE_SENSITIVITY
+	
+	if isDriving():
+		self_total_rot -= rad_to_deg(event.relative.x * MOUSE_SENSITIVITY)
+		self_total_rot = clamp(self_total_rot, -80, 80) 
+		self.rotation.y = VEHICLE.rotation.y + deg_to_rad(self_total_rot)
+	if !isDriving():
+		self.rotate_y(-event.relative.x * MOUSE_SENSITIVITY) 
+	
 	mouse_input = event.relative
 
 func phone_n_cam_tilt(input_x, input_y, delta):
@@ -224,6 +227,9 @@ func phone_bobbing(vel : float, delta):
 				if _is_sprinting == true:#add bobbing if sprinting
 					bob_am_base += 0.005
 					bob_fq_base += 0.005
+				if _is_crouching == true:
+					bob_am_base -= 0.001
+					bob_fq_base -= 0.005
 				PHONE.position.x = lerp(PHONE.position.x, positionToUse4Phone.x + sin(Time.get_ticks_msec() * bob_fq_base * 0.5) * bob_am_base, 10 * delta)	
 				PHONE.position.y = lerp(PHONE.position.y, positionToUse4Phone.y + sin(Time.get_ticks_msec() * bob_fq_base) * bob_am_base, 10 * delta)
 		else:#positional anchoring on no movement
@@ -252,18 +258,9 @@ func crouch_toggle():
 		_speed = SPEED_DEFAULT
 	_is_crouching = !_is_crouching
 
-func _car_camera_bind():
-	if player_state == PLAYER_STATE.DRIVING:
-		if(CAR_LOOK_DIR_RAY.is_colliding() and CAR_LOOK_DIR_RAY.get_collider().is_in_group("CarViewBoundaries")):
-			CAR_CAM_BOUND_CURVE += 0.008
-			if (CAR_LOOK_DIR_RAY.get_collider().get_instance_id() == RIGHT_BOUND):
-				self.rotation.y += CAR_CAM_BOUND_CURVE
-			elif(CAR_LOOK_DIR_RAY.get_collider().get_instance_id() == LEFT_BOUND):
-				self.rotation.y -= CAR_CAM_BOUND_CURVE
-		else:
-			CAR_CAM_BOUND_CURVE = 0.01
-
 func playerEnterCar():
+	self_total_rot = 0
+	self.rotation.y = VEHICLE.rotation.y
 	if _is_crouching == true:
 		crouch_toggle()
 		await get_tree().create_timer(1.0).timeout
@@ -271,6 +268,7 @@ func playerEnterCar():
 	player_state = PLAYER_STATE.DRIVING
 
 func playerExitCar():
+	self_total_rot = 0
 	player_state = PLAYER_STATE.WALKING
 	global_position = $"../Vehicle/Interactables/OuterDoorHandle/ExitCarPosition".global_position
 	#if gear_shift == CAR_TRANSMISSION_AUTO.DRIVE:
