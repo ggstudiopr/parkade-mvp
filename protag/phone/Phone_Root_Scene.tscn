@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://csjcseh76ann"]
+[gd_scene load_steps=15 format=3 uid="uid://csjcseh76ann"]
 
 [ext_resource type="Script" uid="uid://bwgcsja3nfwur" path="res://protag/phone/phone_base.gd" id="1_27mfi"]
 [ext_resource type="Script" uid="uid://1tync2pe52c" path="res://protag/phone/Flashlight.gd" id="2_0mhho"]
@@ -112,6 +112,8 @@ _data = {
 &"ShowPhone": SubResource("Animation_dfbam")
 }
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sx8jk"]
+
 [node name="PhoneNode" type="Node3D"]
 script = ExtResource("1_27mfi")
 
@@ -165,3 +167,4 @@ script = ExtResource("6_887j7")
 [node name="HandPhone" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.0114897, -0.170845, -0.0342158)
 mesh = ExtResource("7_0mhho")
+surface_material_override/0 = SubResource("StandardMaterial3D_sx8jk")

@@ -8,6 +8,7 @@ var ssCount = 1
 var CameraBool : bool
 var SAVE_SS_PATH = "user://phoneImg/"
 var ss_dir = DirAccess.make_dir_absolute(SAVE_SS_PATH)
+
 func _ready() -> void:
 	ss_dir = DirAccess.open(SAVE_SS_PATH)
 	CameraBool = false
@@ -42,7 +43,5 @@ func createImg():
 		ssCount = 1
 	
 func isOn():
-	if CameraBool == true:
-		return true
-	if CameraBool == false:
-		return false
+	return true if CameraBool == true else false
+	

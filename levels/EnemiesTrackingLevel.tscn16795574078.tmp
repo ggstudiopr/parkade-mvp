@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://heeroj1isx3v"]
+[gd_scene load_steps=14 format=3 uid="uid://heeroj1isx3v"]
 
 [ext_resource type="Script" uid="uid://dlaqd2dovajl5" path="res://levels/level.gd" id="1_7p2q1"]
 [ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_manager.gd" id="2_lxvaa"]
@@ -16,6 +16,18 @@ polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(0, 3, 2), PackedInt32Arr
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jtvp2"]
 size = Vector3(50, 1, 50)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_3kqbg"]
+viewport_path = NodePath("Back/SubViewportBackCam")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_cjyga"]
+viewport_path = NodePath("Mirrors/RightMirror/SubViewportRight")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_u3fgk"]
+viewport_path = NodePath("Mirrors/LeftMirror/SubViewportLeft")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2kjmu"]
+viewport_path = NodePath("Mirrors/RearMirror/SubViewportRear")
 
 [node name="Level" type="Node3D" node_paths=PackedStringArray("enemy_manager")]
 script = ExtResource("1_7p2q1")
@@ -74,3 +86,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689984, 17.6658)
 
 [node name="Vehicle" parent="." instance=ExtResource("5_bbmln")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.461462, -6.6784)
+
+[node name="RadioScreen" parent="Vehicle/Interactables/Radio" index="2"]
+texture = SubResource("ViewportTexture_3kqbg")
+
+[node name="MirrorScreenRight" parent="Vehicle/Mirrors/RightMirror" index="1"]
+texture = SubResource("ViewportTexture_cjyga")
+
+[node name="MirrorScreenLeft" parent="Vehicle/Mirrors/LeftMirror" index="1"]
+texture = SubResource("ViewportTexture_u3fgk")
+
+[node name="MirrorScreenRear" parent="Vehicle/Mirrors/RearMirror" index="1"]
+texture = SubResource("ViewportTexture_2kjmu")
+
+[editable path="Vehicle"]

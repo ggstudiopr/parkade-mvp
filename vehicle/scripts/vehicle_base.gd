@@ -34,15 +34,15 @@ var direction
 @onready var CAR_ANIMATOR := $CarAnimationPlayer
 
 @export var CAR_SPEED_DEFAULT = 8 #Rename to max speed
-@export var CAR_BRAKE_RATE = 0.4
+@export var CAR_BRAKE_RATE = 0.3
 @export var CAR_ACCEL_RATE = 0.3
+var car_accel
 @export var CAR_SPRINT_MULT = 1.5
 @export var CAR_TURN_SPEED = 0.9
 @export var CAR_DRIFTAWAY_SPEED = 0.1
 
 var text_mesh := TextMesh.new()
 var _car_unparked_speed_curve
-var _car_accel_rampup 
 var gear_shift = CAR_TRANSMISSION_AUTO.PARK
 var _is_car_sprinting = false
 var _is_near_car : bool
@@ -92,7 +92,7 @@ func _ready():
 	MIRROR_RIGHT.CamOn()
 	MIRROR_REAR.CamOn()
 	_car_unparked_speed_curve = 0
-	_car_accel_rampup  = 0
+	car_accel = 0
 
 func _input(event):
 	#if event.is_action_pressed("interact"):
@@ -119,8 +119,7 @@ func _drain_gas():
 		forceEngineOff()
 
 func _driving_car_movement(delta):
-	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	direction = (transform.basis * Vector3(PLAYER.movement_vector().x, 0, PLAYER.movement_vector().y))
 	#TODO: The original math is clunky to integrate with a state system. Need to refine velocity equation from original.
 	
 	#var input_signs = Vector3(1 if direction.x != 0 else -1, 0 ,1 if direction.z != 0 else -1) #Not sure if this actually works with better equation.
@@ -150,59 +149,57 @@ func _driving_car_movement(delta):
 		#VEHICLE.rotate_y(input_signs.y * CAR_TURN_SPEED * delta)
 		#print(transform)
 		#print(transform.basis)
-		
-		
-	if direction and gear_shift != CAR_TRANSMISSION_AUTO.PARK and vehicle_engine == ENGINE_STATE.ON and PLAYER.player_state == PLAYER_STATE.DRIVING: 
-		if (Input.is_action_pressed("move_forward") and gear_shift == CAR_TRANSMISSION_AUTO.DRIVE):
+	
+	
+	#TODO: Rewritten to semi-support later manual transmission
+	#TODO: it needs speed multiplers for movement based on transmission and added lines to canMoveForward()/canMoveBackward()/isParked()
+	if direction and !self.isParked() and self.isOn() and PLAYER.isDriving(): 
+		if PLAYER.movement_vector().y:
+			car_accel = move_toward(car_accel, 1, CAR_ACCEL_RATE)
+		else:
+			car_accel = 0
+		if (Input.is_action_pressed("move_forward") and self.canMoveForward()):
 			VEHICLE.velocity = Vector3.ZERO
 			VEHICLE_BRAKELIGHT.light_OFF()
-			_car_accel_rampup  = move_toward(_car_accel_rampup , CAR_SPEED_DEFAULT, CAR_ACCEL_RATE)
-			VEHICLE.velocity += -(VEHICLE.transform.basis.z) * _car_accel_rampup
-			if Input.is_action_pressed("move_right"):
-				PLAYER.rotation.y += -CAR_TURN_SPEED*delta
-				VEHICLE.rotate_y(-CAR_TURN_SPEED*delta)
-			elif Input.is_action_pressed("move_left"):
-				PLAYER.rotation.y += CAR_TURN_SPEED*delta
-				VEHICLE.rotate_y(CAR_TURN_SPEED*delta)
-		elif (Input.is_action_pressed("move_backward") and gear_shift == CAR_TRANSMISSION_AUTO.REVERSE):
+			VEHICLE.velocity += -(VEHICLE.transform.basis.z) * CAR_SPEED_DEFAULT * -PLAYER.movement_vector().y * car_accel
+			PLAYER.rotation.y += -PLAYER.movement_vector().x * delta * CAR_TURN_SPEED
+			VEHICLE.rotate_y(-PLAYER.movement_vector().x * delta * CAR_TURN_SPEED)
+		elif (Input.is_action_pressed("move_backward") and self.canMoveBackward()):
 			VEHICLE.velocity = Vector3.ZERO
-			_car_accel_rampup  = move_toward(_car_accel_rampup , CAR_SPEED_DEFAULT, CAR_ACCEL_RATE)
-			VEHICLE.velocity += (VEHICLE.transform.basis.z) * _car_accel_rampup 
-			if Input.is_action_pressed("move_right"):
-				PLAYER.rotation.y += CAR_TURN_SPEED*delta
-				VEHICLE.rotate_y(CAR_TURN_SPEED*delta)
-			elif Input.is_action_pressed("move_left"):
-				PLAYER.rotation.y += -CAR_TURN_SPEED*delta
-				VEHICLE.rotate_y(-CAR_TURN_SPEED*delta)
+			VEHICLE.velocity += (VEHICLE.transform.basis.z)  * CAR_SPEED_DEFAULT * PLAYER.movement_vector().y * car_accel
+			PLAYER.rotation.y += PLAYER.movement_vector().x * delta * CAR_TURN_SPEED
+			VEHICLE.rotate_y(PLAYER.movement_vector().x * delta * CAR_TURN_SPEED)
 		if Input.is_action_pressed("sprint"):
 			velocity *= CAR_SPRINT_MULT
 			_is_car_sprinting = true
 		else:
 			_is_car_sprinting = false 
-			#ENGINE_SPRINT_SOUND.loopOff()
-			
-	if ((!(Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_backward")) or gear_shift == CAR_TRANSMISSION_AUTO.PARK) and PLAYER.isDriving()):
+	
+	var cond1 = !(self.canMoveForward() and PLAYER.movement_vector().y < 0)
+	var cond2 = !(self.canMoveBackward() and PLAYER.movement_vector().y > 0)
+	var cond3 = cond1 or cond2 or gear_shift == CAR_TRANSMISSION_AUTO.PARK
+	if cond3 and PLAYER.isDriving():#deccel
 		VEHICLE.velocity.x = move_toward(VEHICLE.velocity.x, 0, CAR_BRAKE_RATE) #deccel isnt perfect, car kinda mildly drifts left/right at times when stopping for a quarter second
 		VEHICLE.velocity.z = move_toward(VEHICLE.velocity.z, 0, CAR_BRAKE_RATE)
-		_car_accel_rampup  = 0
-		if (gear_shift == CAR_TRANSMISSION_AUTO.DRIVE):
+		if self.canMoveForward():
 			VEHICLE_BRAKELIGHT.light_ON_braking()
-		if (gear_shift == CAR_TRANSMISSION_AUTO.PARK):
+		if self.isParked():
 			VEHICLE_BRAKELIGHT.light_OFF()
 
 func shiftGears(new_gear_state):
 	if (VEHICLE.velocity != Vector3.ZERO):
-		pass
+		car_accel = 0
 		#CAR_ANIMATOR.play("bad_gear_shift")#add car bounce animation when shifting while moving
 		#the above animation flickers player camera weirdly when condition, not as intended
 	VEHICLE.velocity = Vector3.ZERO
-
+	
 	if new_gear_state == CAR_TRANSMISSION_AUTO.PARK:
 		VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.PARK
 		text_mesh.text = "PARK"
 		GEAR_SHIFT_TEXT.mesh = text_mesh
 	elif new_gear_state == CAR_TRANSMISSION_AUTO.D_R_TOGGLE:
-		if VEHICLE.gear_shift == CAR_TRANSMISSION_AUTO.REVERSE:
+		var cond1 = (VEHICLE.gear_shift !=  CAR_TRANSMISSION_AUTO.REVERSE) and (VEHICLE.gear_shift != CAR_TRANSMISSION_AUTO.DRIVE)
+		if (VEHICLE.gear_shift == CAR_TRANSMISSION_AUTO.REVERSE) or cond1:
 			VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.DRIVE
 			text_mesh.text = "DRIVE"
 			GEAR_SHIFT_TEXT.mesh = text_mesh
@@ -213,22 +210,34 @@ func shiftGears(new_gear_state):
 			VEHICLE_REAR_CAM.CamOn()
 			RADIO_SCREEN.show()				
 			VEHICLE_BRAKELIGHT.light_ON()
-		if VEHICLE.gear_shift !=  CAR_TRANSMISSION_AUTO.REVERSE and  VEHICLE.gear_shift !=  CAR_TRANSMISSION_AUTO.DRIVE:
-			VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.DRIVE
-			text_mesh.text = "DRIVE"
-			GEAR_SHIFT_TEXT.mesh = text_mesh
 	elif new_gear_state == CAR_TRANSMISSION_AUTO.NEUTRAL:
 		VEHICLE.gear_shift = CAR_TRANSMISSION_AUTO.NEUTRAL
 		text_mesh.text = "NEUTRAL"
 		GEAR_SHIFT_TEXT.mesh = text_mesh
 
-	if (gear_shift != CAR_TRANSMISSION_AUTO.REVERSE and VEHICLE_REAR_CAM.isOn()):
+	#the syntax below makes no sense but it works. disables rear cam when not reversing
+	var isReversing = false if gear_shift == CAR_TRANSMISSION_AUTO.REVERSE else true
+	if (!isReversing and VEHICLE_REAR_CAM.isOn()):
 		VEHICLE_REAR_CAM.CamOff()
 		VEHICLE_BRAKELIGHT.light_OFF()
-
+	
+	'''
+	Current above code supports entirely self sufficient Auto Transmission system
+	Just add similar code for incoming Manual transmission passed variables
+	'''
+	
 func getGearShift():
 	return VEHICLE.gear_shift
 
+func isParked():
+	return true if gear_shift ==  CAR_TRANSMISSION_AUTO.PARK else false
+
+func canMoveForward():
+	return true if gear_shift ==  CAR_TRANSMISSION_AUTO.DRIVE else false
+	
+func canMoveBackward():
+	return true if gear_shift ==  CAR_TRANSMISSION_AUTO.REVERSE else false
+	
 func toggleEngine():
 	if !isOn() and !UI.gasEmpty():
 		forceEngineOn()
@@ -275,13 +284,4 @@ func _car_drift_away():
 		_car_unparked_speed_curve = 0
 
 func isOn():
-	if vehicle_engine == ENGINE_STATE.ON:
-		return true
-	else:
-		return false
-
-func isParked():
-	if gear_shift == CAR_TRANSMISSION_AUTO.PARK:
-		return true
-	else:
-		return false
+	return true if vehicle_engine == ENGINE_STATE.ON else false
