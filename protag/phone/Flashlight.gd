@@ -5,7 +5,7 @@ extends SpotLight3D
 @export var lightFlash : float = 6
 @onready var LIGHT := $"."
 @onready var SOUND := $FlashlightClick
-
+@onready var PHONE_SNAP := $"../SnapViewport/SnapshotCamera"
 var LightBool : bool
 
 func _ready() -> void:
@@ -30,10 +30,12 @@ func isOn():
 func pictureFlash():
 	LIGHT.light_energy = lightFlash
 	SOUND._play_flash()
-	await get_tree().create_timer(0.15).timeout
-	LIGHT.light_energy = lightOn
-	
 	await get_tree().create_timer(0.05).timeout
+	LIGHT.light_energy = lightOn + 1
+	#this is the moneyshot window, the commented lines helped indicate this is when image creation technically happens
+	#here
+	await get_tree().create_timer(0.1).timeout
+	PHONE_SNAP.createImg()
 	LIGHT.light_energy = lightFlash
 	await get_tree().create_timer(0.05).timeout
 	if isOn():

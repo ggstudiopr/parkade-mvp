@@ -6,20 +6,15 @@ extends Camera3D
 @onready var SUBVIEW_DISPLAY := $".." #subview texture is based on phone camera child (this node)
 var ssCount = 1
 var CameraBool : bool
-var SAVE_SS_PATH = "user://phoneImg/"
-var ss_dir = DirAccess.make_dir_absolute(SAVE_SS_PATH)
-
+var zoom_value
 func _ready() -> void:
-	ss_dir = DirAccess.open(SAVE_SS_PATH)
 	CameraBool = false
-	for file in ss_dir.get_files():
-		ss_dir.remove(file)
-		
+	zoom_value = 1	
 func _process(delta: float) -> void:
 	PHONE_CAMERA.global_position = NODE2TRACK.global_position
 	PHONE_CAMERA.global_rotation = NODE2TRACK.global_rotation
 	PHONE_CAMERA.global_rotation.z += deg_to_rad(90)
-	
+	zoom_cam(zoom_value)
 func CamOn():
 		if !NODE2TRACK.isDead():
 			PHONE_SCREEN.texture = SUBVIEW_DISPLAY.get_texture()
@@ -32,16 +27,18 @@ func forceCamOn():
 func CamOff():	
 		PHONE_SCREEN.texture = load("res://protag/phone/camOffIcon.png")
 		CameraBool = false
-
-func createImg():
-	var image = SUBVIEW_DISPLAY.get_texture().get_image()
-	var img_str = SAVE_SS_PATH+"ss"+str(ssCount)+".png"
-	image.save_png(img_str)
-	print ("saving img: "+img_str)
-	ssCount +=1 
-	if ssCount > 10:
-		ssCount = 1
 	
 func isOn():
 	return true if CameraBool == true else false
+
+func zoom_cam(zoom_index):
+	zoom_value =  zoom_index
+	if zoom_value == 1:
+		self.fov = move_toward(self.fov, 50, 0.3)
+	elif zoom_value == 2:
+		self.fov =  move_toward(self.fov, 35, 0.3)
+	elif zoom_value == 3:
+		self.fov = move_toward(self.fov, 20, 0.3)
 	
+func returnFOV():
+	return self.fov

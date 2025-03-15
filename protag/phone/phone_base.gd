@@ -5,6 +5,7 @@ var phoneAnimating : bool
 
 @onready var PHONE_LIGHT := $SpotLight3D
 @onready var PHONE_CAM := $SubViewport/PhoneCamera
+@onready var PHONE_SNAP := $SnapViewport/SnapshotCamera
 @onready var PHONE_SCREEN := $PhoneScreen
 @onready var PHONE_MODEL := $HandPhone
 @onready var PHONE_ANIMATOR := $PhoneAnimationPlayer
@@ -25,7 +26,7 @@ var SAVE_SS_PATH = "user://phoneImg/"
 var ss_dir = DirAccess.make_dir_absolute(SAVE_SS_PATH)
 var galleryActive : bool
 var ss_index
-
+var zoom_index
 #initialize values
 func _ready():
 	PhoneInHandBool = false
@@ -35,8 +36,11 @@ func _ready():
 	PHONE_SCREEN.hide()
 	galleryActive = false
 	ss_index = 1
+	zoom_index = 1
+	PHONE.position = PHONE_AWAY_ANCHOR.position
 	
 func _input(_event: InputEvent) -> void:
+	#gallery scrolling
 	if _event.is_action_pressed("scroll_down") and galleryActive == true:
 		ss_index = ss_index_cycler(ss_index, 1)
 		if loadImage(ss_index, false) == false:
@@ -49,7 +53,15 @@ func _input(_event: InputEvent) -> void:
 			ss_index = ss_index_cycler(ss_index, 1)
 		else:
 			loadImage(ss_index, true)
-		
+	#camera zoom scrolling
+	if _event.is_action_pressed("scroll_down") and PHONE_CAM.isOn():
+		zoom_index = zoom_index_cycler(zoom_index, -1)
+		PHONE_CAM.zoom_cam(zoom_index)
+	elif _event.is_action_pressed("scroll_up") and PHONE_CAM.isOn():
+		zoom_index = zoom_index_cycler(zoom_index, 1)
+		PHONE_CAM.zoom_cam(zoom_index)
+	
+	
 func _physics_process(_delta:float) -> void:
 	if !isDead():
 		_drain_battery()
@@ -111,9 +123,7 @@ func togglePhoneLight():
 
 func takePicture():
 	if PHONE_CAM.isOn() and !isDead():
-		PHONE_LIGHT.pictureFlash()
-		await get_tree().create_timer(0.15).timeout #light flash timer
-		PHONE_CAM.createImg()
+		PHONE_LIGHT.pictureFlash() #img creation logic within here to line up with spotlight values for effect
 
 func togglePhoneCam():
 	print("Toggling Phone Camera ON/OFF")
@@ -188,4 +198,12 @@ func ss_index_cycler(new_index, step): #cycles screenshots index in 10
 		new_index = 1
 	if new_index < 1:
 		new_index = 10
+	return new_index
+
+func zoom_index_cycler(new_index, step):
+	new_index += step #only cycles between 1-3 for zoom steps
+	if new_index > 3:
+		new_index = 3
+	if new_index < 1:
+		new_index = 1
 	return new_index
