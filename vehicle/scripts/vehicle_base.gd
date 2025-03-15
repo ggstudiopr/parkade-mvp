@@ -216,7 +216,7 @@ func shiftGears(new_gear_state):
 		GEAR_SHIFT_TEXT.mesh = text_mesh
 
 	#the syntax below makes no sense but it works. disables rear cam when not reversing
-	var isReversing = false if gear_shift == CAR_TRANSMISSION_AUTO.REVERSE else true
+	var isReversing = true  if gear_shift == CAR_TRANSMISSION_AUTO.REVERSE else false
 	if (!isReversing and VEHICLE_REAR_CAM.isOn()):
 		VEHICLE_REAR_CAM.CamOff()
 		VEHICLE_BRAKELIGHT.light_OFF()
