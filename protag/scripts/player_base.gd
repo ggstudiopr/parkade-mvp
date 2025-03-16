@@ -24,6 +24,11 @@ issues:
 	player and car are codependent for individual root scenes to run, might be good practice to rewrite so this isnt true
 	HoldQ works as intended, can be finnicky when spamming Q, maybe revisit this section later
 
+monster:
+	- 1) drains health throughout repetitive continous events
+	- 2) reaching zero leaves you vulnerable to death
+	- 3) Death occurs once final hits are done (hits are determined per monster)
+
 '''
 #SPEED VALUES
 var _speed : float
@@ -118,9 +123,9 @@ func _input(event):
 	
 func _process(delta) -> void:
 	Global.player_position = global_position
-	_walking_player_movement(delta) #phone animations handled within this due to needing input_dir
-func _physics_process(delta: float) -> void:
 	
+func _physics_process(delta: float) -> void:
+	_walking_player_movement(delta) #phone animations handled within this due to needing input_dir
 	_player_animation() #going to try and handle walking animations here later. for now only contains simple footstep loop. removed headbob
 	if controller_RS_Input(): #controller right stick support
 		update_camera_controller(controller_RS_Input())

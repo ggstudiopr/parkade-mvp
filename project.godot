@@ -166,6 +166,10 @@ aim_down={
 3d_render/layer_7="ScreenshotVisibleOnly"
 3d_physics/layer_2="CarRaycastLayer"
 
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
 [rendering]
 
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
