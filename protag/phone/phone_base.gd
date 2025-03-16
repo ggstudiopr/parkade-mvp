@@ -4,6 +4,7 @@ var PhoneInHandBool: bool
 var phoneAnimating : bool
 
 @onready var PHONE_LIGHT := $SpotLight3D
+var flashlight_memory : bool
 @onready var PHONE_CAM := $SubViewport/PhoneCamera
 @onready var PHONE_SNAP := $SnapViewport/SnapshotCamera
 @onready var PHONE_SCREEN := $PhoneScreen
@@ -14,9 +15,11 @@ var phoneAnimating : bool
 @onready var VEHICLE := $"../../../../Vehicle"
 @onready var PHONE_AUDIO := $PhoneAnimationPlayer/PhoneAudio
 @onready var PHONE_AWAY_ANCHOR := $"../PhonePositionalAnchors/Away"
+@onready var PHONE_CLOSE_ANCHOR := $"../PhonePositionalAnchors/Close"
+@onready var PHONE_FAR_ANCHOR :=$"../PhonePositionalAnchors/Far"
 
 @export var loadScreenTimer = 0.75
-
+var app_memory 
 #UI dependencies
 @onready var UI := $"../../../UI"
 var isCharging : bool
@@ -27,6 +30,18 @@ var ss_dir = DirAccess.make_dir_absolute(SAVE_SS_PATH)
 var galleryActive : bool
 var ss_index
 var zoom_index
+
+#diagnostics app
+var diagnosticsActive: bool
+
+enum ACTIVE_APP {
+	CAM,
+	GALLERY,
+	DIAG
+}
+
+var appChangeLock : bool
+var appChangeLockTimer = 0.5
 #initialize values
 func _ready():
 	PhoneInHandBool = false
@@ -37,30 +52,13 @@ func _ready():
 	galleryActive = false
 	ss_index = 1
 	zoom_index = 1
+	diagnosticsActive = false
+	flashlight_memory = false
+	app_memory = ACTIVE_APP.CAM
 	PHONE.position = PHONE_AWAY_ANCHOR.position
-	
+	appChangeLock = false
 func _input(_event: InputEvent) -> void:
-	#gallery scrolling
-	if _event.is_action_pressed("scroll_down") and galleryActive == true:
-		ss_index = ss_index_cycler(ss_index, 1)
-		if loadImage(ss_index, false) == false:
-			ss_index = ss_index_cycler(ss_index, -1)
-		else:
-			loadImage(ss_index, true)
-	elif _event.is_action_pressed("scroll_up") and galleryActive == true:
-		ss_index = ss_index_cycler(ss_index, -1)
-		if loadImage(ss_index, false) == false:
-			ss_index = ss_index_cycler(ss_index, 1)
-		else:
-			loadImage(ss_index, true)
-	#camera zoom scrolling
-	if _event.is_action_pressed("scroll_down") and PHONE_CAM.isOn():
-		zoom_index = zoom_index_cycler(zoom_index, -1)
-		PHONE_CAM.zoom_cam(zoom_index)
-	elif _event.is_action_pressed("scroll_up") and PHONE_CAM.isOn():
-		zoom_index = zoom_index_cycler(zoom_index, 1)
-		PHONE_CAM.zoom_cam(zoom_index)
-	
+	pass
 	
 func _physics_process(_delta:float) -> void:
 	if !isDead():
@@ -69,17 +67,20 @@ func _physics_process(_delta:float) -> void:
 		PHONE.position.x = lerp(PHONE.position.x, PHONE_AWAY_ANCHOR.position.x, 1.5 * _delta)
 		PHONE.position.y = lerp(PHONE.position.y, PHONE_AWAY_ANCHOR.position.y, 2.5 * _delta)
 		PHONE.position.z = lerp(PHONE.position.z, PHONE_AWAY_ANCHOR.position.z, 1 * _delta)
-
+	if diagnosticsActive == true:
+		runDiagnostics()
+	
+	
 func _drain_battery():
-	if PHONE_LIGHT.LightBool == true:
-		UI.drainBattery(0.2)
-	if PHONE_CAM.CameraBool == true:
-		UI.drainBattery(0.2)
+	if PHONE_LIGHT.isOn():
+		UI.drainBattery(0.03)
+	if PHONE_CAM.isOn():
+		UI.drainBattery(0.03)
 	if  PHONE.isInHand():
-		UI.drainBattery(0.1)
+		UI.drainBattery(0.01)
 	if PLAYER.isDriving() and VEHICLE.isOn(): #passive phone charging lol
 		if !PHONE.isInHand():#boolean and conditions set to trigger sound only once
-			UI.drainBattery(-0.05)
+			UI.drainBattery(-0.01)
 		if isCharging == false:
 			isCharging = true
 			PHONE_AUDIO._play_charging_sound()
@@ -101,21 +102,29 @@ func togglePhone():
 			PHONE_MODEL.show()
 			PHONE_SCREEN.show()
 			if !isDead():
+				if flashlight_memory == true:
+					print("Phone Light was on last time it was put away so it will be automatically re-enabled.")
+					togglePhoneLight()
 				PHONE_AUDIO._play_ON_sound()
-				print("Booting phone... (hardcoded to start on Camera App to skip App loadscreen!)")
+				print("Booting phone...")
 				PHONE_SCREEN.texture = load("res://protag/phone/wallpaper.png") #base boot wallpaper
 				await get_tree().create_timer(loadScreenTimer).timeout
-				PHONE_CAM.CamOn() #calling this function directly to skip loadscreen
+				check_app_memory(true)
 		elif PhoneInHandBool == false: #if false, phone is being put away
+			if PHONE_LIGHT.isOn():
+				flashlight_memory = true
+			else:
+				flashlight_memory = false
+			check_app_memory(false)
 			if !isDead():
 				_force_phone_OFF()
 			await get_tree().create_timer(loadScreenTimer).timeout
 			PHONE_MODEL.hide()
 			PHONE_SCREEN.hide()
 		phoneAnimating = false
-
+	
 func togglePhoneLight():
-	print("Toggling Phone LED...")
+	#print("Toggling Phone LED...")
 	if !PHONE_LIGHT.isOn():
 		PHONE_LIGHT.flashlightOn()
 	elif PHONE_LIGHT.isOn():
@@ -128,31 +137,55 @@ func takePicture():
 func togglePhoneCam():
 	print("Toggling Phone Camera ON/OFF")
 	if !PHONE_CAM.isOn():
-		if galleryActive == true:
-			galleryActive = false
 		PHONE_CAM.CamOn()
 	elif PHONE_CAM.isOn():
 		PHONE_CAM.CamOff()
 
-func PhoneCamOn():
-	print("Loading Camera app...")
-	if galleryActive == true:
-		galleryActive = false
+func PhoneCamOn(skipLoadscreen):
 	if !PHONE_CAM.isOn():
-		PHONE_SCREEN.texture = load("res://protag/phone/camera_loadscreen.jpg")#LOADSCREEN
-		await get_tree().create_timer(loadScreenTimer).timeout
+		print("Loading Camera app...")
+		appChangeLock = true
+		reset_all_states(false)
+		if skipLoadscreen == false:
+			PHONE_SCREEN.texture = load("res://protag/phone/camera_loadscreen.jpg")#LOADSCREEN
+			await get_tree().create_timer(loadScreenTimer).timeout
 		PHONE_CAM.CamOn()
-		
-func GalleryOn():
-	print("Loading Gallery app...")
-	if PHONE_CAM.isOn():
-		PHONE_CAM.CamOff()
-	if galleryActive ==false:
-		galleryActive = true
-	PHONE_SCREEN.texture = load("res://protag/phone/gallery loadscreen.jpg")#LOADSCREEN
-	await get_tree().create_timer(loadScreenTimer).timeout
-	loadImage(ss_index, true)
+		await get_tree().create_timer(appChangeLockTimer).timeout
+		appChangeLock = false
 	
+func GalleryOn(skipLoadscreen):
+	if galleryActive == false:
+		print("Loading Gallery app...")
+		appChangeLock = true	
+		reset_all_states(false)
+		galleryActive = true
+		if skipLoadscreen == false:
+			PHONE_SCREEN.texture = load("res://protag/phone/gallery loadscreen.jpg")#LOADSCREEN
+			await get_tree().create_timer(loadScreenTimer).timeout
+		loadImage(ss_index, true)
+		await get_tree().create_timer(appChangeLockTimer).timeout
+		appChangeLock = false
+	
+func DiagnosticsOn(skipLoadscreen):
+	if diagnosticsActive == false:
+		print("Loading Diagnostics app...")
+		appChangeLock = true
+		reset_all_states(false)
+		diagnosticsActive = true
+		if skipLoadscreen == false:
+			PHONE_SCREEN.texture = load("res://protag/phone/heart_load.jpg")#LOADSCREEN
+			await get_tree().create_timer(loadScreenTimer).timeout
+		#load 2D diagnostics screen
+		await get_tree().create_timer(appChangeLockTimer).timeout
+		appChangeLock = false
+	
+func runDiagnostics():
+	print("----------------")
+	print("diagnostics info:")
+	print("current health: "+ str(UI.getHealth()))
+	print("current battery: "+ str(UI.getBattery()))
+	pass
+
 func loadImage(ss_to_load, trueImgLoad): 
 	var img_str = SAVE_SS_PATH+"ss"+str(ss_to_load)+".png"
 	var img_file = Image.new()
@@ -161,6 +194,7 @@ func loadImage(ss_to_load, trueImgLoad):
 	if err != OK:#no img found
 		if ss_to_load == 1:
 			print("No images saved!")
+			PHONE_SCREEN.texture = load("res://protag/phone/no_images_found.png")
 			return false
 		print("Error loading " +img_str+": img not found") #rewrite this for not accidentally loading invalid files
 		return false
@@ -170,20 +204,15 @@ func loadImage(ss_to_load, trueImgLoad):
 		img_file.load(img_str)
 		var img_texture = ImageTexture.create_from_image(img_file)
 		PHONE_SCREEN.texture = img_texture
-	
+
 func _force_phone_OFF(): #handles resetting app related bools and statuses
-	if PHONE_LIGHT.isOn():
-		PHONE_LIGHT.flashlightOff()
-	PHONE_CAM.CamOff()
-	galleryActive = false
+	print("Phone off...")
+	reset_all_states(true)
 	PHONE_SCREEN.texture = load("res://protag/phone/wallpaper.png")
 	
 func _force_phone_DEAD():
 	print("Phone battery has died!")
-	PHONE_CAM.CamOff()
-	galleryActive = false
-	if PHONE_LIGHT.isOn():
-		PHONE_LIGHT.flashlightOff()
+	reset_all_states(true)
 	PHONE_SCREEN.texture = load("res://protag/phone/batteryImage.png")
 	
 func isInHand():
@@ -207,3 +236,33 @@ func zoom_index_cycler(new_index, step):
 	if new_index < 1:
 		new_index = 1
 	return new_index
+
+func reset_all_states(bypassPhoneLight):
+	if PHONE_CAM.isOn():
+		PHONE_CAM.CamOff()
+	if galleryActive == true:
+		galleryActive = false
+	if diagnosticsActive == true:
+		diagnosticsActive = false
+	if bypassPhoneLight == true:
+		if PHONE_LIGHT.isOn():
+			PHONE_LIGHT.flashlightOff()
+
+func check_app_memory(functionToUse):
+	if functionToUse == false: #write
+		if PHONE_CAM.isOn():
+			app_memory = ACTIVE_APP.CAM
+		if galleryActive == true:
+			app_memory = ACTIVE_APP.GALLERY
+		if diagnosticsActive == true:
+			app_memory = ACTIVE_APP.DIAG
+	if functionToUse == true: #load
+		if app_memory == ACTIVE_APP.CAM:
+			print("Autoloaded into Camera...")
+			PhoneCamOn(true)
+		if app_memory == ACTIVE_APP.GALLERY:
+			print("Autoloaded into Gallery...")
+			GalleryOn(true)
+		if app_memory == ACTIVE_APP.DIAG:
+			print("Autoloaded into Diagnostics...")
+			DiagnosticsOn(false)

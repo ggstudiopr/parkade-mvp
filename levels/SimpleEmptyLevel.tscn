@@ -60,13 +60,13 @@ transform = Transform3D(0.999994, -0.0032215, -0.00100672, 0.00322084, 0.999995,
 
 [node name="Vehicle" parent="." instance=ExtResource("2_t6p8l")]
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="PictureOnlyMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.642172, 0.76656, 0, -0.76656, 0.642172, -2.67111, 0.81596, -3.96515)
 layers = 64
 mesh = SubResource("TextMesh_mtc2l")
 skin = SubResource("Skin_wdsnx")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D2"]
+[node name="PictureOnlyMesh" type="MeshInstance3D" parent="PictureOnlyMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 0.1, 0, -0.0812082, -0.0969381)
 layers = 64
 mesh = SubResource("BoxMesh_j0b7v")

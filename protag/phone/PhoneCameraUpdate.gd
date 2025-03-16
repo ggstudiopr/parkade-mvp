@@ -17,15 +17,17 @@ func _process(delta: float) -> void:
 	zoom_cam(zoom_value)
 func CamOn():
 		if !NODE2TRACK.isDead():
+			print("Phone Camera loaded!")
 			PHONE_SCREEN.texture = SUBVIEW_DISPLAY.get_texture()
 			CameraBool = true
 
 func forceCamOn():
+		print("Phone Camera force-loaded!")
 		PHONE_SCREEN.texture = SUBVIEW_DISPLAY.get_texture()
 		CameraBool = true
 
 func CamOff():	
-		PHONE_SCREEN.texture = load("res://protag/phone/camOffIcon.png")
+		#PHONE_SCREEN.texture = load("res://protag/phone/camOffIcon.png")
 		CameraBool = false
 	
 func isOn():

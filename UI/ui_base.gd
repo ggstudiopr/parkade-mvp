@@ -116,6 +116,12 @@ func drainHealth (amount:float):
 func healthEmpty():
 	return true if $Player/HealthBar.isEmpty() else false
 
+func getHealth():
+	return $Player/HealthBar.value
+
+func getBattery():
+	return $Phone/BatteryBar.value
+
 func drainGas (amount:float):
 	$Car/GasolineBar.value -= amount
 

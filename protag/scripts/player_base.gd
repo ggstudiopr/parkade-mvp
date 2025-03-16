@@ -62,8 +62,6 @@ var Q_is_being_held : bool
 @onready var UI := $UI
 #phone related 
 @onready var PHONE := $CameraController/Camera3D/PhoneNode
-@onready var ClosePosAnchor := $CameraController/Camera3D/PhonePositionalAnchors/Close
-@onready var FarPosAnchor := $CameraController/Camera3D/PhonePositionalAnchors/Far
 
 #phone cam swaying
 var positionToUse4Phone : Vector3
@@ -99,13 +97,12 @@ func _ready():
 	_is_sprinting = false
 	Q_is_being_held = false
 	_speed = SPEED_DEFAULT
-	
-	positionToUse4Phone = FarPosAnchor.position
+	positionToUse4Phone = PHONE.PHONE_AWAY_ANCHOR.position
 	phonePosToggle = false
-	
 	self_total_rot = 0
 	
 func _input(event):
+	
 	if event.is_action_pressed("exit"):#kill game
 		get_tree().quit()
 	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_STATE.WALKING:
@@ -113,53 +110,17 @@ func _input(event):
 	if event.is_action_pressed("interact"):
 		UI.check_interact()
 	
-	if event.is_action_pressed("left_click"):
-		if PHONE.isInHand():
-			PHONE.takePicture()
-	
 	if !CAMERA_CONTROLLER: return
 	if event is InputEventMouseMotion:
 		update_camera(event)
 	
-		
-	#Phone Related Inputs
-	if Input.is_action_just_pressed("Toggle Phone"): #Input Q, holdQ logic to adjust phone position
-		await get_tree().create_timer(0.75).timeout
-		if Input.is_action_pressed("Toggle Phone") and Q_is_being_held == false:
-			Q_is_being_held = true
-			if PHONE.isInHand():
-				if phonePosToggle == true:
-					positionToUse4Phone = FarPosAnchor.position
-					phonePosToggle = false
-					return #THIS RETURN IS NECESSARY FOR FUNCTIONALITY 
-				elif phonePosToggle == false:
-					positionToUse4Phone =  ClosePosAnchor.position
-					phonePosToggle = true
-					return #this one isnt but its nice and pretty
-			if !PHONE.isInHand():
-				positionToUse4Phone =  ClosePosAnchor.position
-				phonePosToggle = true
-				PHONE.togglePhone()
-	if (Input.is_action_just_released("Toggle Phone")) and !Q_is_being_held:
-		positionToUse4Phone = FarPosAnchor.position
-		phonePosToggle = false
-		PHONE.togglePhone()
-	if (Input.is_action_just_released("Toggle Phone")) and Q_is_being_held:
-		Q_is_being_held = false
-
-	if PHONE.isInHand() and !PHONE.isDead():
-		if Input.is_action_just_pressed("phone_1"):#Input 1
-			PHONE.togglePhoneLight()
-		if Input.is_action_just_pressed("phone_2"):#Input 2
-			PHONE.PhoneCamOn()
-		if Input.is_action_just_pressed("phone_3"):#Input 3
-			PHONE.GalleryOn()
-		
+	phone_input_check(event) #threw all phone related inputs into here to clean readability
+	
 func _process(delta) -> void:
 	Global.player_position = global_position
-	
-func _physics_process(delta: float) -> void:
 	_walking_player_movement(delta) #phone animations handled within this due to needing input_dir
+func _physics_process(delta: float) -> void:
+	
 	_player_animation() #going to try and handle walking animations here later. for now only contains simple footstep loop. removed headbob
 	if controller_RS_Input(): #controller right stick support
 		update_camera_controller(controller_RS_Input())
@@ -170,7 +131,7 @@ func _walking_player_movement(delta):
 	input_dir = movement_vector()
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
 	if direction:
-		velocity.x = direction.x * _speed
+		velocity.x = direction.x * _speed 
 		velocity.z = direction.z * _speed
 		if Input.is_action_pressed("sprint") and is_on_floor() and movement_vector().y < 0:
 			if _is_crouching == true:
@@ -201,7 +162,7 @@ func update_camera(event):
 		self.rotate_y(-event.relative.x * MOUSE_SENSITIVITY) 
 	mouse_input = event.relative
 
-func update_camera_controller(right_stick_parameter):
+func update_camera_controller(right_stick_parameter): #0.02 is the sensitivity param
 	right_stick_input = right_stick_parameter
 	CAMERA_CONTROLLER.rotation.x += right_stick_input.y * 0.02
 	if isDriving():
@@ -216,7 +177,7 @@ func update_camera_controller(right_stick_parameter):
 func phone_n_cam_tilt(input_x, input_y, delta):
 	if PHONE:
 		if phonePosToggle == false: #if phone is not up close, add FarPosAnchor z rotation for flavor
-			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75 + FarPosAnchor.rotation.z, 10 * delta)
+			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75 + PHONE.PHONE_FAR_ANCHOR.rotation.z, 10 * delta)
 		else:
 			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75, 10 * delta)
 		PHONE.rotation.x = lerp(PHONE.rotation.x, input_y * tilt_amount * 0.75, 7 * delta)
@@ -301,3 +262,68 @@ func controller_RS_Input():
 
 func movement_vector():
 	return Input.get_vector("move_left","move_right","move_forward","move_backward")
+
+func phone_input_check(event):
+	#Toggle Phone holdQ logic
+	if Input.is_action_just_pressed("Toggle Phone"): #Input Q, holdQ logic to adjust phone position
+		await get_tree().create_timer(0.75).timeout
+		if Input.is_action_pressed("Toggle Phone") and Q_is_being_held == false:
+			Q_is_being_held = true
+			if PHONE.isInHand():
+				if phonePosToggle == true:
+					positionToUse4Phone = PHONE.PHONE_FAR_ANCHOR.position
+					phonePosToggle = false
+					return #THIS RETURN IS NECESSARY FOR FUNCTIONALITY 
+				elif phonePosToggle == false:
+					positionToUse4Phone =  PHONE.PHONE_CLOSE_ANCHOR.position
+					phonePosToggle = true
+					return #this one isnt but its nice and pretty
+			if !PHONE.isInHand():
+				positionToUse4Phone =  PHONE.PHONE_CLOSE_ANCHOR.position
+				phonePosToggle = true
+				PHONE.togglePhone()
+	if (Input.is_action_just_released("Toggle Phone")) and !Q_is_being_held:
+		positionToUse4Phone = PHONE.PHONE_FAR_ANCHOR.position
+		phonePosToggle = false
+		PHONE.togglePhone()
+	if (Input.is_action_just_released("Toggle Phone")) and Q_is_being_held:
+		Q_is_being_held = false
+
+	#basic 1-4 inputs
+	if PHONE.isInHand() and !PHONE.isDead() and PHONE.phoneAnimating == false:
+		if Input.is_action_just_pressed("phone_f"):#Input 1
+			PHONE.togglePhoneLight()
+		if PHONE.appChangeLock == false:
+			if Input.is_action_just_pressed("phone_1"):#Input app1
+				PHONE.PhoneCamOn(false)
+			if Input.is_action_just_pressed("phone_2"):#Input app2
+				PHONE.GalleryOn(false)
+			if Input.is_action_just_pressed("phone_3"):#Input app3
+				PHONE.DiagnosticsOn(false)
+			
+	#take picture
+	if event.is_action_pressed("left_click"):
+		if PHONE.isInHand():
+			PHONE.takePicture()
+			
+	#gallery scrolling
+	if event.is_action_pressed("scroll_down") and PHONE.galleryActive == true:
+		PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, 1)
+		if PHONE.loadImage(PHONE.ss_index, false) == false:
+			PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, -1)
+		else:
+			PHONE.loadImage(PHONE.ss_index, true)
+	elif event.is_action_pressed("scroll_up") and PHONE.galleryActive == true:
+		PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, -1)
+		if PHONE.loadImage(PHONE.ss_index, false) == false:
+			PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, 1)
+		else:
+			PHONE.loadImage(PHONE.ss_index, true)
+	
+	#camera zoom scrolling
+	if event.is_action_pressed("scroll_down") and PHONE.PHONE_CAM.isOn():
+		PHONE.zoom_index = PHONE.zoom_index_cycler(PHONE.zoom_index, -1)
+		PHONE.PHONE_CAM.zoom_cam(PHONE.zoom_index)
+	elif event.is_action_pressed("scroll_up") and PHONE.PHONE_CAM.isOn():
+		PHONE.zoom_index = PHONE.zoom_index_cycler(PHONE.zoom_index, 1)
+		PHONE.PHONE_CAM.zoom_cam(PHONE.zoom_index)
