@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://heeroj1isx3v"]
+[gd_scene load_steps=10 format=3 uid="uid://heeroj1isx3v"]
 
 [ext_resource type="Script" uid="uid://dlaqd2dovajl5" path="res://levels/level.gd" id="1_7p2q1"]
 [ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_manager.gd" id="2_lxvaa"]
@@ -11,9 +11,6 @@ vertices = PackedVector3Array(-12.25, -0.21662, -16, -11, -0.21662, -16, -11, -0
 polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(0, 3, 2), PackedInt32Array(2, 3, 4), PackedInt32Array(4, 3, 5), PackedInt32Array(3, 6, 5), PackedInt32Array(7, 1, 2), PackedInt32Array(10, 9, 8), PackedInt32Array(10, 8, 11), PackedInt32Array(7, 2, 12), PackedInt32Array(12, 2, 13), PackedInt32Array(13, 2, 11), PackedInt32Array(11, 2, 10), PackedInt32Array(15, 14, 13), PackedInt32Array(13, 14, 12), PackedInt32Array(16, 9, 10), PackedInt32Array(19, 18, 17), PackedInt32Array(20, 16, 10), PackedInt32Array(17, 20, 19), PackedInt32Array(19, 20, 21), PackedInt32Array(21, 20, 10), PackedInt32Array(24, 23, 22), PackedInt32Array(27, 26, 25), PackedInt32Array(28, 24, 29), PackedInt32Array(29, 24, 22), PackedInt32Array(29, 22, 27), PackedInt32Array(29, 27, 25), PackedInt32Array(32, 31, 30), PackedInt32Array(34, 33, 35), PackedInt32Array(35, 33, 36), PackedInt32Array(36, 33, 30), PackedInt32Array(30, 33, 32), PackedInt32Array(37, 35, 36), PackedInt32Array(40, 39, 38), PackedInt32Array(43, 42, 41), PackedInt32Array(44, 40, 41), PackedInt32Array(41, 40, 38), PackedInt32Array(41, 38, 45), PackedInt32Array(41, 45, 43), PackedInt32Array(46, 48, 47), PackedInt32Array(50, 49, 51), PackedInt32Array(51, 49, 52), PackedInt32Array(51, 52, 48), PackedInt32Array(51, 48, 46), PackedInt32Array(5, 6, 53), PackedInt32Array(56, 55, 54), PackedInt32Array(53, 57, 5), PackedInt32Array(5, 57, 58), PackedInt32Array(5, 58, 56), PackedInt32Array(5, 56, 54), PackedInt32Array(59, 58, 60), PackedInt32Array(60, 58, 57), PackedInt32Array(62, 61, 63), PackedInt32Array(63, 61, 64), PackedInt32Array(66, 65, 67), PackedInt32Array(67, 65, 68), PackedInt32Array(70, 59, 69), PackedInt32Array(69, 59, 60), PackedInt32Array(70, 69, 71), PackedInt32Array(68, 63, 64), PackedInt32Array(14, 15, 71), PackedInt32Array(71, 15, 72), PackedInt32Array(63, 68, 72), PackedInt32Array(72, 68, 65), PackedInt32Array(72, 65, 70), PackedInt32Array(72, 70, 71), PackedInt32Array(75, 74, 73), PackedInt32Array(76, 18, 19), PackedInt32Array(73, 77, 75), PackedInt32Array(75, 77, 78), PackedInt32Array(75, 78, 76), PackedInt32Array(75, 76, 19), PackedInt32Array(62, 78, 61), PackedInt32Array(61, 78, 77), PackedInt32Array(81, 80, 79), PackedInt32Array(84, 83, 82), PackedInt32Array(84, 82, 85), PackedInt32Array(85, 82, 86), PackedInt32Array(85, 86, 81), PackedInt32Array(85, 81, 79), PackedInt32Array(89, 88, 87), PackedInt32Array(92, 91, 90), PackedInt32Array(94, 93, 87), PackedInt32Array(87, 93, 89), PackedInt32Array(89, 93, 90), PackedInt32Array(90, 93, 92), PackedInt32Array(97, 96, 95), PackedInt32Array(100, 99, 98), PackedInt32Array(101, 100, 95), PackedInt32Array(95, 100, 98), PackedInt32Array(95, 98, 102), PackedInt32Array(95, 102, 97), PackedInt32Array(105, 104, 103), PackedInt32Array(107, 106, 108), PackedInt32Array(108, 106, 109), PackedInt32Array(109, 106, 105), PackedInt32Array(109, 105, 103), PackedInt32Array(112, 111, 110), PackedInt32Array(115, 114, 113), PackedInt32Array(110, 116, 112), PackedInt32Array(112, 116, 117), PackedInt32Array(112, 117, 115), PackedInt32Array(112, 115, 113), PackedInt32Array(67, 117, 66), PackedInt32Array(66, 117, 116), PackedInt32Array(113, 114, 118), PackedInt32Array(119, 74, 75), PackedInt32Array(118, 119, 113), PackedInt32Array(113, 119, 120), PackedInt32Array(120, 119, 75), PackedInt32Array(121, 111, 112), PackedInt32Array(112, 122, 121), PackedInt32Array(55, 122, 54), PackedInt32Array(54, 122, 123), PackedInt32Array(123, 122, 112)]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_dr2xo"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cjyga"]
-friction = 0.1
 
 [sub_resource type="BoxMesh" id="BoxMesh_beetp"]
 
@@ -48,7 +45,6 @@ transform = Transform3D(5.15568, 0, 0, 0, 7.22, 0, 0, 0, 6.35047, 12.135, 3.7533
 mesh = SubResource("CapsuleMesh_dr2xo")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Collisions"]
-physics_material_override = SubResource("PhysicsMaterial_cjyga")
 
 [node name="Floor" type="MeshInstance3D" parent="Collisions/StaticBody3D"]
 transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 50, 0, -1, 0)
@@ -68,15 +64,19 @@ script = ExtResource("2_lxvaa")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.4359, 0.948817, 10.1459)
 
 [node name="Enemy" parent="SpawnPoints/Node3D" instance=ExtResource("3_2yblu")]
-collision_layer = 0
 
 [node name="Node3D2" type="Node3D" parent="SpawnPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689984, 17.6658)
 
 [node name="Enemy" parent="SpawnPoints/Node3D2" instance=ExtResource("3_2yblu")]
-collision_layer = 0
 
 [node name="Protagonist" parent="." instance=ExtResource("4_kb7pc")]
 
 [node name="Vehicle" parent="." instance=ExtResource("5_bbmln")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.451973, -6.6784)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.461462, -6.6784)
+CAR_SPEED_DEFAULT = 8
+CAR_BRAKE_RATE = 0.3
+CAR_ACCEL_RATE = 0.3
+CAR_SPRINT_MULT = 1.5
+CAR_TURN_SPEED = 0.9
+CAR_DRIFTAWAY_SPEED = 0.1
