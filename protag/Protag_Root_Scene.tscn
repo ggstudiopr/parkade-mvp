@@ -1,6 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://dl60tvwy1elkf"]
+[gd_scene load_steps=15 format=3 uid="uid://dl60tvwy1elkf"]
 
 [ext_resource type="Script" uid="uid://cwfgwnkth6x74" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
+[ext_resource type="Script" uid="uid://ci0muygltpwcc" path="res://protag/RaycastAlign.gd" id="2_65wl4"]
 [ext_resource type="PackedScene" uid="uid://csjcseh76ann" path="res://protag/phone/Phone_Root_Scene.tscn" id="2_nqwbi"]
 [ext_resource type="PackedScene" uid="uid://d1w1jahqvppkf" path="res://UI/UI_Root_Scene.tscn" id="5_7uxf5"]
 [ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3" id="8_bhrfm"]
@@ -142,6 +143,8 @@ _data = {
 }
 
 [node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER")]
+collision_layer = 16
+collision_mask = 33
 script = ExtResource("1_yvqfv")
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
 
@@ -156,6 +159,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_mt81q")
 
 [node name="CrouchCollisionShapeCast" type="ShapeCast3D" parent="CollisionShape3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.447816, 0)
+visible = false
 shape = SubResource("SphereShape3D_ju561")
 target_position = Vector3(0, 0, 0)
 debug_shape_custom_color = Color(1.29953e-06, 0.670053, 0.480873, 1)
@@ -167,7 +171,6 @@ transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871558, 0, 0.0871558, 0.996195
 [node name="Camera3D" type="Camera3D" parent="CameraController"]
 physics_interpolation_mode = 1
 cull_mask = 1047553
-fov = 80.0
 
 [node name="PhonePositionalAnchors" type="Node3D" parent="CameraController/Camera3D"]
 
@@ -180,17 +183,14 @@ transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.1, -
 [node name="Away" type="Node3D" parent="CameraController/Camera3D/PhonePositionalAnchors"]
 transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.115, -0.3, -0.2)
 
-[node name="HeadAnimationPlayer" type="AnimationPlayer" parent="CameraController/Camera3D"]
-
 [node name="CarInteractRaycast" type="RayCast3D" parent="CameraController/Camera3D"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
-target_position = Vector3(5, 0, 0)
+target_position = Vector3(3, 0, 0)
 collision_mask = 2
-hit_from_inside = true
 collide_with_areas = true
 collide_with_bodies = false
 debug_shape_custom_color = Color(0, 1, 0, 1)
 debug_shape_thickness = 1
+script = ExtResource("2_65wl4")
 
 [node name="PhoneNode" parent="CameraController/Camera3D" instance=ExtResource("2_nqwbi")]
 physics_interpolation_mode = 1
@@ -203,6 +203,12 @@ libraries = {
 }
 
 [node name="UI" parent="." instance=ExtResource("5_7uxf5")]
+
+[node name="MiddleReticle" parent="UI/Player" index="0"]
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 39.0
+offset_bottom = 39.0
 
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("8_bhrfm")

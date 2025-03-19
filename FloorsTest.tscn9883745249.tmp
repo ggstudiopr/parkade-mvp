@@ -1,0 +1,66 @@
+[gd_scene load_steps=6 format=3 uid="uid://onnkx45uc0gs"]
+
+[ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_r2kix"]
+[ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="2_y8bn1"]
+
+[sub_resource type="Environment" id="Environment_3fefj"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r2kix"]
+size = Vector3(25, 1, 25)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_syflb"]
+size = Vector2(25, 25)
+
+[node name="FloorsTest" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3fefj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1746, 0)
+
+[node name="Protagonist" parent="." instance=ExtResource("1_r2kix")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.18436)
+
+[node name="Vehicle" parent="." instance=ExtResource("2_y8bn1")]
+
+[node name="Floor1" type="Node3D" parent="."]
+
+[node name="FloorStaticBody" type="StaticBody3D" parent="Floor1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor1/FloorStaticBody"]
+shape = SubResource("BoxShape3D_r2kix")
+
+[node name="FloorMesh" type="MeshInstance3D" parent="Floor1/FloorStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("PlaneMesh_syflb")
+skeleton = NodePath("../..")
+
+[node name="Floor2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.65382, -27.766)
+
+[node name="FloorStaticBody" type="StaticBody3D" parent="Floor2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor2/FloorStaticBody"]
+shape = SubResource("BoxShape3D_r2kix")
+
+[node name="FloorMesh" type="MeshInstance3D" parent="Floor2/FloorStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("PlaneMesh_syflb")
+skeleton = NodePath("../..")
+
+[node name="Floor3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866243, 0.499622, 0, -0.499622, 0.866243, 0, -6.24724, -23.3074)
+
+[node name="FloorStaticBody" type="StaticBody3D" parent="Floor3"]
+transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, -0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor3/FloorStaticBody"]
+shape = SubResource("BoxShape3D_r2kix")
+
+[node name="FloorMesh" type="MeshInstance3D" parent="Floor3/FloorStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("PlaneMesh_syflb")
+skeleton = NodePath("../..")

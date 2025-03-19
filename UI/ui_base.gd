@@ -3,21 +3,15 @@ extends Control
 @onready var PLAYER := $".."
 @onready var VEHICLE := $"../../Vehicle"
 
-enum PLAYER_STATE {
-	WALKING,
-	DRIVING
-}
 enum CAR_TRANSMISSION_AUTO {
 	DRIVE,
 	REVERSE,
 	PARK,
 	NEUTRAL,
-	D_R_TOGGLE
-}
-enum SEAT_STATUS{
-	OPEN,
-	TAKEN
-}
+	D_R_TOGGLE}
+
+enum InputType { KEYBOARD, CONTROLLER }
+var last_input_type := InputType.KEYBOARD  # Default to keyboard
 
 #labels
 @onready var VEHICLE_LABEL := $Car/VehicleLabel
@@ -34,12 +28,18 @@ enum SEAT_STATUS{
 
 func _physics_process(delta: float) -> void:
 	prompt_UI_labels()
-
+			
+func _input(event):
+	if event is InputEventKey or event is InputEventMouse:
+		last_input_type = InputType.KEYBOARD
+	elif event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		last_input_type = InputType.CONTROLLER
+	
 func check_interact():
 	if(PLAYER.CAR_LOOK_DIR_RAY.is_colliding()):
 		var player_is_looking_at = PLAYER.CAR_LOOK_DIR_RAY.get_collider().name
 		if(PLAYER.CAR_LOOK_DIR_RAY.get_collider().is_in_group("CarInteractColliders")):
-			if PLAYER.player_state == PLAYER_STATE.DRIVING:
+			if PLAYER.isDriving():
 				if (player_is_looking_at == RADIO_INTERACT):
 					if VEHICLE.isOn():
 						VEHICLE.radioInteract()
@@ -65,7 +65,7 @@ func check_interact():
 				elif (player_is_looking_at == HORN_INTERACT):
 						VEHICLE.carHornPlay()
 	
-			if PLAYER.player_state == PLAYER_STATE.WALKING and VEHICLE.seat == SEAT_STATUS.OPEN:
+			if !PLAYER.isDriving() and VEHICLE.isSeatAvailable():
 				if (player_is_looking_at == CAR_OUTER_DOOR):
 					PLAYER.playerEnterCar()
 
@@ -79,26 +79,31 @@ func prompt_UI_labels():
 					#VEHICLE_LABEL.text = interactable.text
 		#Car related UI prompts
 		if(PLAYER.CAR_LOOK_DIR_RAY.get_collider().is_in_group("CarInteractColliders")):
-			if PLAYER.player_state == PLAYER_STATE.DRIVING:
+			var carInteractButton
+			if last_input_type == InputType.KEYBOARD:
+				carInteractButton = "E"
+			elif last_input_type == InputType.CONTROLLER:
+				carInteractButton = "A"
+			if PLAYER.isDriving():
 				if (player_is_looking_at == CAR_INNER_DOOR):
-					VEHICLE_LABEL.text = str("Press E to exit")
+					VEHICLE_LABEL.text = str("Press "+carInteractButton+" to exit")
 				elif (player_is_looking_at == RADIO_INTERACT):
-					VEHICLE_LABEL.text = str("Press E to toggle radio")
+					VEHICLE_LABEL.text = str("Press "+carInteractButton+" to toggle radio")
 				elif (player_is_looking_at == AUTO_GEAR_TOG_INTERACT):
 					if VEHICLE.gear_shift == CAR_TRANSMISSION_AUTO.DRIVE:
-						VEHICLE_LABEL.text = str("Press E to toggle Gear Shift into Reverse")
+						VEHICLE_LABEL.text = str("Press "+carInteractButton+" to toggle Gear Shift into Reverse")
 					elif VEHICLE.gear_shift != CAR_TRANSMISSION_AUTO.DRIVE:
-						VEHICLE_LABEL.text = str("Press E to toggle Gear Shift into Drive")
+						VEHICLE_LABEL.text = str("Press "+carInteractButton+" to toggle Gear Shift into Drive")
 				elif (player_is_looking_at == AUTO_GEAR_PARK_INTERACT):
-					VEHICLE_LABEL.text = str("Press E to toggle Gear Shift into Park")
+					VEHICLE_LABEL.text = str("Press "+carInteractButton+" to toggle Gear Shift into Park")
 				elif (player_is_looking_at == IGNITION_INTERACT):
-					VEHICLE_LABEL.text = str("Press E to turn car ON/OFF")
+					VEHICLE_LABEL.text = str("Press "+carInteractButton+" to turn car ON/OFF")
 				elif (player_is_looking_at == HORN_INTERACT):
-					VEHICLE_LABEL.text = str("Press E to car horn")
+					VEHICLE_LABEL.text = str("Press "+carInteractButton+" to car horn")
 				
-			if PLAYER.player_state == PLAYER_STATE.WALKING and VEHICLE.seat == SEAT_STATUS.OPEN:
+			if !PLAYER.isDriving() and VEHICLE.isSeatAvailable():
 					if (player_is_looking_at == CAR_OUTER_DOOR):
-						VEHICLE_LABEL.text = str("Press E to enter car")
+						VEHICLE_LABEL.text = str("Press "+carInteractButton+" to enter car")
 
 	else:
 		VEHICLE_LABEL.text = str("")
@@ -116,14 +121,14 @@ func drainHealth (amount:float):
 func healthEmpty():
 	return true if $Player/HealthBar.isEmpty() else false
 
-func getHealth():
-	return $Player/HealthBar.value
-
-func getBattery():
-	return $Phone/BatteryBar.value
-
 func drainGas (amount:float):
 	$Car/GasolineBar.value -= amount
 
 func gasEmpty():
 	return true if $Car/GasolineBar.isEmpty() else false
+
+func getHealth():
+	return $Player/HealthBar.value
+
+func getBattery():
+	return $Phone/BatteryBar.value

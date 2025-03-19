@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://csjcseh76ann"]
+[gd_scene load_steps=18 format=3 uid="uid://csjcseh76ann"]
 
 [ext_resource type="Script" uid="uid://bwgcsja3nfwur" path="res://protag/phone/phone_base.gd" id="1_27mfi"]
 [ext_resource type="Script" uid="uid://1tync2pe52c" path="res://protag/phone/Flashlight.gd" id="2_0mhho"]
@@ -113,6 +113,10 @@ _data = {
 &"ShowPhone": SubResource("Animation_dfbam")
 }
 
+[sub_resource type="Environment" id="Environment_q526q"]
+
+[sub_resource type="Environment" id="Environment_887j7"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sx8jk"]
 
 [node name="PhoneNode" type="Node3D"]
@@ -163,6 +167,7 @@ render_target_update_mode = 4
 [node name="PhoneCamera" type="Camera3D" parent="SubViewport"]
 physics_interpolation_mode = 1
 cull_mask = 1047555
+environment = SubResource("Environment_q526q")
 fov = 50.0
 script = ExtResource("6_887j7")
 
@@ -175,6 +180,7 @@ render_target_update_mode = 4
 [node name="SnapshotCamera" type="Camera3D" parent="SnapViewport"]
 physics_interpolation_mode = 1
 cull_mask = 1047619
+environment = SubResource("Environment_887j7")
 fov = 50.0
 script = ExtResource("9_q526q")
 

@@ -10,9 +10,8 @@ func _ready() -> void:
 	var variable = 1
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	MIRROR_CAMERA.global_position = NODE2TRACK.global_position
-	MIRROR_CAMERA.global_rotation = NODE2TRACK.global_rotation
-	MIRROR_CAMERA.global_rotation.y += PI
-	
+	MIRROR_CAMERA.global_transform = NODE2TRACK.global_transform
+	MIRROR_CAMERA.global_rotation = Vector3(-NODE2TRACK.global_rotation.x, NODE2TRACK.global_rotation.y + PI, NODE2TRACK.global_rotation.z)
+
 func CamOn():
 	MIRROR_SCREEN.texture = SUBVIEW_DISPLAY_REAR.get_texture()
