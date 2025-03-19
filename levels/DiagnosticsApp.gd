@@ -1,15 +1,13 @@
 extends Node2D
-
-@onready var ProgressBarNode := $SubViewportContainer/SubViewport/ProgressBar
+@onready var PHONE := $".."
 @onready var subview := $SubViewportContainer/SubViewport
-@onready var temp_text := $SubViewportContainer/SubViewport/TempSprite/TempText
-@onready var heart_text := $SubViewportContainer/SubViewport/HeartSprite/HeartText
+
+
+#basic access node declarations
+@onready var ICONS := $SubViewportContainer/SubViewport/Icons
+@onready var temp_text := $SubViewportContainer/SubViewport/Icons/TempSprite/TempText
+@onready var heart_text := $SubViewportContainer/SubViewport/Icons/HeartSprite/HeartText
+@onready var ProgressBarNode := $SubViewportContainer/SubViewport/Icons/ProgressBar
 
 func _process(delta: float) -> void:
-	#print(delta)
-	#if ProgressBarNode.value < ProgressBarNode.max_value:
-		#print( "Adding ")
-		#ProgressBarNode.value = ProgressBarNode.value + (ProgressBarNode.step * 5) 
-	#else:
-		#ProgressBarNode.value = 0
 	pass

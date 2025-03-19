@@ -5,8 +5,7 @@ class_name Player
 @onready var PHONE := $CameraController/Camera3D/PhoneNode
 @onready var VEHICLE := $"../Vehicle"
 
-@onready var ANTLION := $"../SpawnPoints/Node3D/Enemy"
-
+@onready var ENEMY_MANAGER := $"../EnemyManager"
 #SPEED VALUES
 var _speed : float
 @export var SPEED_DEFAULT : float = 3
@@ -75,6 +74,8 @@ func _physics_process(delta: float) -> void:
 	_player_animation() #going to try and handle walking animations here later. for now only contains simple footstep loop. removed headbob
 	if controller_RS_Input(): #controller right stick support
 		update_camera_controller(controller_RS_Input())
+	
+	enemy_proximity_damage(delta)
 	
 	#var screen_center = get_viewport().get_visible_rect().size / 2
 	#print(screen_center)
@@ -224,6 +225,24 @@ func playerExitCar():
 
 func isDriving():
 	return true if player_state ==  PLAYER_STATE.DRIVING else false
+
+func enemy_proximity_damage(delta):
+	var damage_distance = 7.0  # Units of distance for damage to occur
+	var hurt_rate = 10 * delta # Damage per second, scaled by delta
+	if ENEMY_MANAGER:
+		var enemies_array = ENEMY_MANAGER.get_enemy_nodes()
+		var player_pos = self.global_position
+		var nearest_distance = INF  # Start with infinity as default distance
+		
+		# Find nearest enemy's distance
+		for enemy in enemies_array:
+			if enemy and is_instance_valid(enemy):
+				var distance = player_pos.distance_to(enemy.global_position)
+				if distance < nearest_distance:
+					nearest_distance = distance
+		if nearest_distance <= damage_distance:
+			var damage_multiplier = 2.0 if nearest_distance <= (damage_distance / 2.0) else 1.0
+			hurt(hurt_rate * damage_multiplier)
 
 func hurt(hurt_rate):
 	UI.drainHealth(hurt_rate)

@@ -266,20 +266,36 @@ func runDiagnostics():
 	diagnosticsApp.temp_text.text = str(entityProxTemp())
 	diagnosticsApp.heart_text.text = str(heartRate(PLAYER.UI.getHealth()))
 	
+	if PLAYER.phonePosToggle == true: #phone is in held up orientation
+		for icon in diagnosticsApp.ICONS.get_children():
+			icon.rotation = -PHONE.PHONE_FAR_ANCHOR.rotation.z
+	if PLAYER.phonePosToggle == false: #phone is in hand orientation
+		for icon in diagnosticsApp.ICONS.get_children():
+			icon.rotation = 0
+
 func heartRate(health):
 	var max_health = PLAYER.UI.HEALTH_BAR.max_value 
 	var health_percent = health / max_health
 	# Map health percentage (1->0) to heart rate (80->120)
 	var heart_rate = 80 + (1 - health_percent) * 40
 	return heart_rate
-	
+
 func entityProxTemp():
-	var distance
-	if PLAYER.ANTLION:
-		distance = PLAYER.global_position.distance_to(PLAYER.ANTLION.global_position)  
+	var distance = 999999  # Start with a large value
+	if PLAYER.ENEMY_MANAGER and PLAYER.ENEMY_MANAGER._enemies.size() > 0:
+		var player_pos = PLAYER.global_position
+		var nearest_distance = 999999
+		
+		#Loop through enemies in manager
+		for enemy in  PLAYER.ENEMY_MANAGER._enemies:
+			if enemy and is_instance_valid(enemy):  # Make sure enemy exists and is valid
+				var current_distance = player_pos.distance_to(enemy.global_position)
+				if current_distance < nearest_distance:
+					nearest_distance = current_distance
+		if nearest_distance < 999999:
+			distance = nearest_distance
 	else:
 		return ambient_temperature
-		
 	if distance > effect_radius:
 		return ambient_temperature
 	
@@ -290,5 +306,4 @@ func entityProxTemp():
 	# Apply falloff curve (higher exponent = sharper falloff)
 	var temperature_blend = pow(distance_ratio, falloff_exponent)
 	
-	# Interpolate between entity temperature and ambient temperature
 	return lerp(entity_temperature, ambient_temperature, temperature_blend)

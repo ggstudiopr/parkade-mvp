@@ -11,9 +11,11 @@ func _ready() -> void:
 	CamBool = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	MIRROR_CAMERA.global_position = NODE2TRACK.global_position
-	MIRROR_CAMERA.global_rotation = NODE2TRACK.global_rotation
-	MIRROR_CAMERA.global_rotation.y += PI
+	var vehicle_transform = NODE2TRACK.global_transform
+	MIRROR_CAMERA.global_position = vehicle_transform.origin
+	var mirror_basis = vehicle_transform.basis
+	var mirror_rotation = Basis(Vector3.UP, PI) # 180 degree rotation
+	MIRROR_CAMERA.global_transform.basis = mirror_basis * mirror_rotation
 	
 func CamOn():
 	CamBool = true

@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dlaqd2dovajl5" path="res://levels/level.gd" id="1_7p2q1"]
 [ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_manager.gd" id="2_lxvaa"]
 [ext_resource type="Script" uid="uid://12vilyhpeeo7" path="res://enemy/enemy_types/enemy_data.gd" id="3_3kqbg"]
-[ext_resource type="Resource" uid="uid://bjkcakoqksesx" path="res://enemy/enemy_types/Antlion.tres" id="4_2kjmu"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="4_kb7pc"]
 [ext_resource type="Resource" uid="uid://chjlv46hxiqi1" path="res://enemy/enemy_types/Freddy.tres" id="5_3kqbg"]
 [ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="5_bbmln"]
@@ -22,6 +21,14 @@ friction = 0.1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jtvp2"]
 size = Vector3(50, 1, 50)
+
+[sub_resource type="Resource" id="Resource_u3fgk"]
+script = ExtResource("3_3kqbg")
+name = "Default Enemy"
+type = 0
+hurt_rate = -1.0
+accel = 0.0
+metadata/_custom_type_script = "uid://12vilyhpeeo7"
 
 [node name="Level" type="Node3D" node_paths=PackedStringArray("enemy_manager", "enemy_spawns")]
 script = ExtResource("1_7p2q1")
@@ -65,7 +72,7 @@ shape = SubResource("BoxShape3D_jtvp2")
 
 [node name="EnemyManager" type="Node" parent="."]
 script = ExtResource("2_lxvaa")
-enemies = Array[ExtResource("3_3kqbg")]([ExtResource("4_2kjmu"), ExtResource("5_3kqbg")])
+enemies = Array[ExtResource("3_3kqbg")]([SubResource("Resource_u3fgk"), ExtResource("5_3kqbg")])
 
 [node name="SpawnPoints" type="Node" parent="."]
 
