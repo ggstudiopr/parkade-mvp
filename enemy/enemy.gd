@@ -3,49 +3,36 @@ class_name Enemy
 
 #TODO: Add animations based on state
 #TODO: Should be used later on, either state machine or behaviour tree implementation
-@export var behaviour = null
+#@export var behaviour = null
 
-#TODO: Add all BaseEnemy data to Resource
-var data : EnemyData
+@export var data : EnemyData
 
 enum ENEMY_STATE {
 	SEARCHING,
 	WAITING,
 }
-#Enemy Types: 
-#Viber: Searches for car, when the player is inside it. Lowers sanity while in range.
-#Chaser: Searches for player, when they're not in the car. Lowers player health when collided.
-enum ENEMY_TYPE {
-	CHASER,
-	VIBER
-}
 
 var text_mesh_instance : MeshInstance3D
 var enemy_mesh_instance : MeshInstance3D
 
-@export var acceleration = 750
+@onready var acceleration = data.accel * 750
+@onready var type := data.type
+@onready var hurt_rate := data.hurt_rate  #per second
 
-@export var type : ENEMY_TYPE
 @export var current_state : ENEMY_STATE = ENEMY_STATE.WAITING 
-var target : Node3D #: Player
-@export var hurt_rate = 2 #per second
 
 @onready var navigation_agent : NavigationAgent3D = $NavigationAgent3D
+var target : Node3D
 
 func _ready() -> void:
+	#Debug, remove/hide in actual game
 	text_mesh_instance = $MeshInstance3D2
 	var text_mesh := TextMesh.new()
-	text_mesh.text = "CHASER" if type == ENEMY_TYPE.CHASER else "VIBER"
+	text_mesh.text = data.name
 	text_mesh_instance.mesh = text_mesh
-	
-		
-	#$InteractableArea.connect("body_entered", on_body_entered)
-	#$InteractableArea.connect("body_exited", on_body_exited)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	#print(type, current_state, position)
-	#target = $"../../Protagonist"
 	if target and target.has_method("hurt"):
 		target.hurt(hurt_rate)
 		
@@ -72,7 +59,6 @@ func _physics_process(delta: float) -> void:
 
 func change_state(new_state: ENEMY_STATE):
 	current_state = new_state
-	#TODO: 
 
 #func on_body_entered(body: Node3D):
 	#if body.is_in_group("player"):
@@ -82,7 +68,6 @@ func change_state(new_state: ENEMY_STATE):
 	#if body.name == target.name:
 		#target = null
 
-
 func _on_interactable_area_body_entered(body: Node3D) -> void:
 	if body is Player:
 		target = body
@@ -90,5 +75,3 @@ func _on_interactable_area_body_entered(body: Node3D) -> void:
 func _on_interactable_area_body_exited(body: Node3D) -> void:
 	if body is Player:
 		target = null
-		
-		

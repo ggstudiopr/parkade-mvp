@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dfg3xoqxo8tr7"]
+[gd_scene load_steps=8 format=3 uid="uid://dfg3xoqxo8tr7"]
 
 [ext_resource type="Script" uid="uid://dm2xm4htv36ip" path="res://enemy/enemy.gd" id="1_vx6cw"]
+[ext_resource type="Resource" uid="uid://71eyhnkf3gi5" path="res://enemy/enemy_types/enemy_data.tres" id="2_ofsxj"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3q7ke"]
 albedo_color = Color(1, 0, 0.0588235, 1)
@@ -9,8 +10,8 @@ albedo_color = Color(1, 0, 0.0588235, 1)
 material = SubResource("StandardMaterial3D_3q7ke")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_urbxn"]
-height = 5.0
-radius = 2.67343
+height = 1.565
+radius = 3.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wrdmc"]
 
@@ -18,14 +19,17 @@ radius = 2.67343
 text = "Hello"
 
 [node name="Enemy" type="CharacterBody3D"]
+collision_layer = 0
 script = ExtResource("1_vx6cw")
+data = ExtResource("2_ofsxj")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_6bbo6")
 
-[node name="InteractableArea" type="Area3D" parent="."]
+[node name="HurtArea" type="Area3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableArea"]
+[node name="HurtRadius" type="CollisionShape3D" parent="HurtArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0331054, 0.047673, -0.0667474)
 shape = SubResource("CylinderShape3D_urbxn")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
@@ -36,7 +40,8 @@ shape = SubResource("CapsuleShape3D_wrdmc")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.14932, 0)
+layers = 513
 mesh = SubResource("TextMesh_fcani")
 
-[connection signal="body_entered" from="InteractableArea" to="." method="_on_interactable_area_body_entered"]
-[connection signal="body_exited" from="InteractableArea" to="." method="_on_interactable_area_body_exited"]
+[connection signal="body_entered" from="HurtArea" to="." method="_on_interactable_area_body_entered"]
+[connection signal="body_exited" from="HurtArea" to="." method="_on_interactable_area_body_exited"]

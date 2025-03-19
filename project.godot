@@ -164,6 +164,7 @@ aim_down={
 3d_render/layer_4="CarRearCamVisibleOnly"
 3d_render/layer_6="PlayerVisibleOnly"
 3d_render/layer_7="ScreenshotVisibleOnly"
+3d_render/layer_10="Debug Layer"
 3d_physics/layer_1="WorldLayer"
 3d_physics/layer_2="CarInteractLayer"
 3d_physics/layer_5="PlayerCollisionLayer"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://chjlv46hxiqi1"]
+
+[ext_resource type="Script" uid="uid://12vilyhpeeo7" path="res://enemy/enemy_types/enemy_data.gd" id="1_oqtdk"]
+
+[resource]
+script = ExtResource("1_oqtdk")
+name = "Fredy"
+type = 0
+hurt_rate = 2.0
+accel = 1.0
+metadata/_custom_type_script = "uid://12vilyhpeeo7"

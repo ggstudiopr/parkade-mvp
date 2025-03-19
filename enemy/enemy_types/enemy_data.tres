@@ -1,10 +1,7 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c1bj0xv2vi4yo"]
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://71eyhnkf3gi5"]
 
-[sub_resource type="GDScript" id="GDScript_ydggp"]
-script/source = "extends Resource
-class_name EnemyData
-
-"
+[ext_resource type="Script" uid="uid://12vilyhpeeo7" path="res://enemy/enemy_types/enemy_data.gd" id="1_h7k5o"]
 
 [resource]
-script = SubResource("GDScript_ydggp")
+script = ExtResource("1_h7k5o")
+metadata/_custom_type_script = "uid://12vilyhpeeo7"

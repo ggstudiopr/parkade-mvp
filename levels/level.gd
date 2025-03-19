@@ -8,18 +8,16 @@ class_name Level
 var player_scene = preload("res://protag/Protag_Root_Scene.tscn")
 var vehicle_scene = preload("res://vehicle/Vehicle_Root_Scene.tscn")
 var enemy_scene = preload("res://enemy/enemy.tscn")
+var antlion_data = preload("res://enemy/enemy_types/enemy_data.tres")
 
 @export_subgroup("Enemies")
 @export var enemy_manager : EnemyManager
-@export var enemy_spawns : Node 
+@export var enemy_spawns : Node
 var spawn_points : Array[Node3D] ## Node3D's to be used as enemy spawn points 
-#var enemies : Array[Enemy] = []
 
 @export_subgroup("Players")
 @export var vehicle : Vehicle
 @export var players : Array[Player] = []  
-
-var camera_viewport : SubViewport
 
 #TODO: UI EXISTS ON THIS LAYER
 
@@ -37,8 +35,7 @@ enum LEVEL_STATE {
 	END
 }
 
-var PLAYER_COUNT = 1 #TODO: Initialize player amount based on Game node/singleton
-const MAX_ENEMY_COUNT = 0
+var PLAYER_COUNT = 1 #TODO: Initialize player amount based on Game node/singleton.
 
 var current_state : LEVEL_STATE :
 	set(value):
@@ -53,49 +50,26 @@ func _init() -> void:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
-	#TODO: Godot currently does not support complete re-rendering/complete pipeline modification.
-	#To achieve the phone camera effect, we'll have to utilize other methods.
-	#OR, create our own C++ module that hijacks the pipeline to do what we want lmao
-	camera_viewport = get_tree().get_nodes_in_group("CameraViewport")[0]
-	
-	vehicle = vehicle_scene.instantiate()
+	vehicle = vehicle if vehicle else vehicle_scene.instantiate() 
 	
 	for player in range(PLAYER_COUNT):
-		var new_player = player_scene.instantiate()
-		#TODO: Set player to car.seat_position + player. Car should handle assigning players to specific seats
-		vehicle.add_child(new_player)
-		
-	players.append(vehicle.get_children() as Array[Player])
+		if players.size() < PLAYER_COUNT:
+			var new_player = player_scene.instantiate()
+			#TODO: Car should handle assigning and positioning players to specific seats.
+			#vehicle.add_occupant(new_player) #PSEUDOCODE
 	
-	#spawn_points = enemy_spawns.get_children() as Array[Node3D]
+	#players.append(vehicle.occupants as Array[Player]) #PSEUDOCODE
 	
-	#TODO: Should probably let enemy_manager handle this, or not. Who knows.
-	var index = -1
-	for enemy in range(MAX_ENEMY_COUNT):
-		index += 1
-		var new_enemy : Enemy = enemy_scene.instantiate()
-		#TODO: Either set up spawn_queue to spawn monsters ad-infinium OR make sure MAX_ENEMY_COUNT = len(spawn_points)
-		var new_position = spawn_points[index].global_position
-		new_enemy.global_position = new_position
-		new_enemy.type = index % 2 #WARNING: Alternates between first two enemy types. Change when more than 3 enemies.
-		#TODO: Probably use an xml/json like structure to set up enemy data/Resources?
-		print_debug(index)
-		print_debug(spawn_points[index].global_position)
-		print_debug(new_position)
-		print_debug(new_enemy.type)
-		print_debug(new_enemy.global_position)
-		match new_enemy.type:
-			#Enemy.ENEMY_TYPE.CHASER:
-				##Spawn under EnemyManager
-				#$EnemyManager.add_child(new_enemy)
-				#pass
-			#Enemy.ENEMY_TYPE.VIBER:
-				##Spawn under CameraViewport
-				#camera_viewport.add_child(new_enemy)
-				#pass
-			_:
-				$EnemyManager.add_child(new_enemy)
-	#enemies.append($EnemyManager.get_children() as Array[Enemy])
+	var spawn_nodes := enemy_spawns.get_children()
+	
+	var casted_nodes : Array[Node3D] #One day Godot will fix Array type casting. Today is not that day.
+	for node in spawn_nodes:
+		casted_nodes.append(node as Node3D)
+	
+	spawn_points = casted_nodes
+
+	for enemy in enemy_manager.spawn_initial_enemies(spawn_points):	#TODO: Determine how to set preferred spawn_points. Create SpawnPoint node that contains data of who it prefers, if any?
+		$EnemyManager.add_child(enemy)
 	
 	current_state = LEVEL_STATE.START
 

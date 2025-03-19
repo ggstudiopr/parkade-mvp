@@ -53,7 +53,8 @@ var bob_fq_base
 var player_state = PLAYER_STATE.WALKING
 enum PLAYER_STATE {
 	WALKING,
-	DRIVING}
+	DRIVING
+}
 
 #INITIALIZE
 func _ready():
