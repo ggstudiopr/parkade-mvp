@@ -35,7 +35,7 @@ var zoom_index
 var diagnosticsActive: bool
 @export var ambient_temperature = 80.0  # Normal room temperature
 @export var entity_temperature = 40.0   # Cold temperature near the entity
-@export var effect_radius = 20.0        # Distance at which temperature begins to drop
+@export var effect_radius = 10.0        # Distance at which temperature begins to drop
 @export var falloff_exponent = 2.0   
 
 enum ACTIVE_APP {

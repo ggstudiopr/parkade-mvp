@@ -34,6 +34,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if target and target.has_method("hurt"):
+
 		target.hurt(hurt_rate)
 		
 func _physics_process(delta: float) -> void:

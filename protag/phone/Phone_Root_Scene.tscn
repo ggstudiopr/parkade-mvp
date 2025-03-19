@@ -123,6 +123,7 @@ viewport_path = NodePath("SubViewport")
 [sub_resource type="Environment" id="Environment_887j7"]
 
 [node name="PhoneNode" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.440142, -0.375938, -0.56255)
 script = ExtResource("1_27mfi")
 
 [node name="HandPhone" type="MeshInstance3D" parent="."]
