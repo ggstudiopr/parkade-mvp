@@ -48,6 +48,12 @@ var phonePosToggle : bool
 var bob_am_base
 var bob_fq_base
 
+#temperature values
+@export var ambient_temperature = 80.0  # Normal room temperature
+@export var entity_temperature = 40.0   # Cold temperature near the entity
+@export var effect_radius = 10.0        # Distance at which temperature begins to drop
+@export var falloff_exponent = 2.0   
+
 #USED BY OTHER CLASSES
 var player_state = PLAYER_STATE.WALKING
 enum PLAYER_STATE {
@@ -76,7 +82,6 @@ func _physics_process(delta: float) -> void:
 		update_camera_controller(controller_RS_Input())
 	
 	enemy_proximity_damage(delta)
-	
 	#var screen_center = get_viewport().get_visible_rect().size / 2
 	#print(screen_center)
 
@@ -246,6 +251,34 @@ func enemy_proximity_damage(delta):
 
 func hurt(hurt_rate):
 	UI.drainHealth(hurt_rate)
+
+func entityProxTemp():
+	var distance = 999999  # Start with a large value
+	if self.ENEMY_MANAGER and self.ENEMY_MANAGER._enemies.size() > 0:
+		var player_pos = self.global_position
+		var nearest_distance = 999999
+		
+		#Loop through enemies in manager
+		for enemy in  self.ENEMY_MANAGER._enemies:
+			if enemy and is_instance_valid(enemy):  # Make sure enemy exists and is valid
+				var current_distance = player_pos.distance_to(enemy.global_position)
+				if current_distance < nearest_distance:
+					nearest_distance = current_distance
+		if nearest_distance < 999999:
+			distance = nearest_distance
+	else:
+		return ambient_temperature
+	if distance > effect_radius:
+		return ambient_temperature
+	
+	# Calculate how much the temperature should drop based on distance
+	# 0 = full effect (entity_temperature), 1 = no effect (ambient_temperature)
+	var distance_ratio = distance / effect_radius
+	
+	# Apply falloff curve (higher exponent = sharper falloff)
+	var temperature_blend = pow(distance_ratio, falloff_exponent)
+	
+	return lerp(entity_temperature, ambient_temperature, temperature_blend)
 
 func controller_RS_Input():
 	return Input.get_vector("aim_left","aim_right","aim_down","aim_up")

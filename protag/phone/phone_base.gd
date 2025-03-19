@@ -33,10 +33,6 @@ var zoom_index
 #diagnostics app
 @onready var diagnosticsApp := $DiagnosticsApp
 var diagnosticsActive: bool
-@export var ambient_temperature = 80.0  # Normal room temperature
-@export var entity_temperature = 40.0   # Cold temperature near the entity
-@export var effect_radius = 10.0        # Distance at which temperature begins to drop
-@export var falloff_exponent = 2.0   
 
 enum ACTIVE_APP {
 	CAM,
@@ -263,8 +259,8 @@ func pullPhoneAway(delta):
 	PHONE.position.z = lerp(PHONE.position.z, PHONE_AWAY_ANCHOR.position.z, 1 * delta)
 
 func runDiagnostics():
-	diagnosticsApp.temp_text.text = str(entityProxTemp())
-	diagnosticsApp.heart_text.text = str(heartRate(PLAYER.UI.getHealth()))
+	diagnosticsApp.temp_text.text = str(PLAYER.UI.getTemp())
+	diagnosticsApp.heart_text.text = str(PLAYER.UI.getHeartRate())
 	
 	if PLAYER.phonePosToggle == true: #phone is in held up orientation
 		for icon in diagnosticsApp.ICONS.get_children():
@@ -272,38 +268,3 @@ func runDiagnostics():
 	if PLAYER.phonePosToggle == false: #phone is in hand orientation
 		for icon in diagnosticsApp.ICONS.get_children():
 			icon.rotation = 0
-
-func heartRate(health):
-	var max_health = PLAYER.UI.HEALTH_BAR.max_value 
-	var health_percent = health / max_health
-	# Map health percentage (1->0) to heart rate (80->120)
-	var heart_rate = 80 + (1 - health_percent) * 40
-	return heart_rate
-
-func entityProxTemp():
-	var distance = 999999  # Start with a large value
-	if PLAYER.ENEMY_MANAGER and PLAYER.ENEMY_MANAGER._enemies.size() > 0:
-		var player_pos = PLAYER.global_position
-		var nearest_distance = 999999
-		
-		#Loop through enemies in manager
-		for enemy in  PLAYER.ENEMY_MANAGER._enemies:
-			if enemy and is_instance_valid(enemy):  # Make sure enemy exists and is valid
-				var current_distance = player_pos.distance_to(enemy.global_position)
-				if current_distance < nearest_distance:
-					nearest_distance = current_distance
-		if nearest_distance < 999999:
-			distance = nearest_distance
-	else:
-		return ambient_temperature
-	if distance > effect_radius:
-		return ambient_temperature
-	
-	# Calculate how much the temperature should drop based on distance
-	# 0 = full effect (entity_temperature), 1 = no effect (ambient_temperature)
-	var distance_ratio = distance / effect_radius
-	
-	# Apply falloff curve (higher exponent = sharper falloff)
-	var temperature_blend = pow(distance_ratio, falloff_exponent)
-	
-	return lerp(entity_temperature, ambient_temperature, temperature_blend)

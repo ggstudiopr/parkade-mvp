@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://d1w1jahqvppkf"]
+[gd_scene load_steps=8 format=3 uid="uid://d1w1jahqvppkf"]
 
 [ext_resource type="Texture2D" uid="uid://crt46aeclq25v" path="res://UI/crosshair.png" id="1_2ulgl"]
 [ext_resource type="Script" uid="uid://b7hwdd0a1md8x" path="res://UI/ui_base.gd" id="1_y33ob"]
 [ext_resource type="Script" uid="uid://b5w7nmc4eynko" path="res://UI/BatteryBar.gd" id="2_8vchb"]
 [ext_resource type="Script" uid="uid://btsjkyf48gvoi" path="res://UI/GasolineBar.gd" id="3_8vchb"]
 [ext_resource type="Script" uid="uid://b8wkst8358csi" path="res://UI/HealthBar.gd" id="3_ueqmu"]
+[ext_resource type="Script" uid="uid://cbyole6ahrhi6" path="res://UI/TempBar.gd" id="4_25uit"]
 
 [sub_resource type="Theme" id="Theme_7t5ai"]
 
@@ -53,10 +54,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 341.0
-offset_top = -52.0
-offset_right = 941.0
-offset_bottom = -25.0
+offset_left = -229.0
+offset_top = -122.0
+offset_right = 371.0
+offset_bottom = -95.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
@@ -74,6 +75,75 @@ text = "Health"
 fit_content = true
 autowrap_mode = 0
 
+[node name="HeartRate" type="ProgressBar" parent="Player"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -228.0
+offset_top = -61.0
+offset_right = 372.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+min_value = 70.0
+max_value = 140.0
+value = 90.0
+show_percentage = false
+script = ExtResource("3_ueqmu")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Player/HeartRate"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -26.0
+offset_right = 53.0
+offset_bottom = 14.0
+text = "HeartRate"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Display" type="Label" parent="Player/HeartRate"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.402
+anchor_bottom = 0.426
+offset_left = 268.0
+offset_top = 3.0
+offset_right = 66.8
+offset_bottom = 14.498
+
+[node name="TemperatureBar" type="ProgressBar" parent="Player"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -881.0
+offset_top = -60.0
+offset_right = -281.0
+offset_bottom = -33.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.763037, 0.448631, 0.0118875, 1)
+min_value = 40.0
+value = 80.0
+show_percentage = false
+script = ExtResource("4_25uit")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Player/TemperatureBar"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -26.0
+offset_right = 53.0
+offset_bottom = 14.0
+text = "Temp"
+fit_content = true
+autowrap_mode = 0
+
 [node name="Phone" type="Control" parent="."]
 anchors_preset = 0
 offset_right = 40.0
@@ -86,10 +156,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 1660.0
-offset_top = 959.0
-offset_right = 1883.0
-offset_bottom = 986.0
+offset_left = 1658.0
+offset_top = 999.0
+offset_right = 1881.0
+offset_bottom = 1026.0
 grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(0.983317, 0.798216)
@@ -150,10 +220,10 @@ vertical_alignment = 1
 
 [node name="GasolineBar" type="ProgressBar" parent="Car"]
 layout_mode = 0
-offset_left = 1684.0
-offset_top = 950.0
-offset_right = 1878.0
-offset_bottom = 977.0
+offset_left = 1681.0
+offset_top = 986.0
+offset_right = 1875.0
+offset_bottom = 1013.0
 theme = SubResource("Theme_7t5ai")
 theme_override_colors/font_color = Color(0.868562, 0.344983, 0, 1)
 max_value = 1000.0

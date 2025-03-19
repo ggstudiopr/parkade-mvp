@@ -3,7 +3,7 @@ extends Control
 @onready var PLAYER := $".."
 @onready var VEHICLE := $"../../Vehicle"
 @onready var HEALTH_BAR := $Player/HealthBar
-
+@onready var HEARTRATE_BAR := $Player/HeartRate
 
 enum CAR_TRANSMISSION_AUTO {
 	DRIVE,
@@ -27,10 +27,16 @@ var last_input_type := InputType.KEYBOARD  # Default to keyboard
 @onready var AUTO_GEAR_PARK_INTERACT := "AutoGearParkInteract"
 @onready var IGNITION_INTERACT := "IgnitionInteract"
 @onready var HORN_INTERACT := "HornInteract"
+var heart_rate
+var amb_temp
 
 func _physics_process(delta: float) -> void:
 	prompt_UI_labels()
-			
+	HEARTRATE_BAR.value = heartRate(getHealth())
+	$Player/HeartRate/Display.text = str(HEARTRATE_BAR.value)
+	if PLAYER:
+		setTemp(PLAYER.entityProxTemp())
+	
 func _input(event):
 	if event is InputEventKey or event is InputEventMouse:
 		last_input_type = InputType.KEYBOARD
@@ -134,3 +140,18 @@ func getHealth():
 
 func getBattery():
 	return $Phone/BatteryBar.value
+
+func getTemp():
+	return $Player/TemperatureBar.value
+
+func setTemp(new_val):
+	$Player/TemperatureBar.value = new_val
+
+func heartRate(curr_health):
+	var health_percent = curr_health / PLAYER.UI.HEALTH_BAR.max_value 
+	# Map health percentage (1->0) to heart rate (80->120)
+	var heart_rate = 80 + (1 - health_percent) * 40
+	return heart_rate
+
+func getHeartRate():
+		return HEARTRATE_BAR.value
