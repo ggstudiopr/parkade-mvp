@@ -184,6 +184,7 @@ transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.1, -
 transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.115, -0.3, -0.2)
 
 [node name="CarInteractRaycast" type="RayCast3D" parent="CameraController/Camera3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 target_position = Vector3(3, 0, 0)
 collision_mask = 2
 collide_with_areas = true
@@ -202,18 +203,14 @@ libraries = {
 &"": SubResource("AnimationLibrary_wpsm1")
 }
 
-[node name="UI" parent="." instance=ExtResource("5_7uxf5")]
-
-[node name="MiddleReticle" parent="UI/Player" index="0"]
-offset_left = -1.0
-offset_top = -1.0
-offset_right = 39.0
-offset_bottom = 39.0
-
 [node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("8_bhrfm")
 volume_db = -25.0
 script = ExtResource("9_f878c")
 
-[editable path="CameraController/Camera3D/PhoneNode"]
-[editable path="UI"]
+[node name="UI" parent="." instance=ExtResource("5_7uxf5")]
+visible = false
+offset_left = 2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = -2.0

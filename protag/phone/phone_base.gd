@@ -31,7 +31,12 @@ var ss_index
 var zoom_index
 
 #diagnostics app
+@onready var diagnosticsApp := $DiagnosticsApp
 var diagnosticsActive: bool
+@export var ambient_temperature = 80.0  # Normal room temperature
+@export var entity_temperature = 40.0   # Cold temperature near the entity
+@export var effect_radius = 20.0        # Distance at which temperature begins to drop
+@export var falloff_exponent = 2.0   
 
 enum ACTIVE_APP {
 	CAM,
@@ -179,6 +184,7 @@ func DiagnosticsOn(skipLoadscreen):
 			await get_tree().create_timer(loadScreenTimer).timeout
 		#load 2D diagnostics screen
 		await get_tree().create_timer(appChangeLockTimer).timeout
+		PHONE_SCREEN.texture = diagnosticsApp.subview.get_texture()
 		appChangeLock = false
 
 func loadImage(ss_to_load, trueImgLoad): 
@@ -257,8 +263,32 @@ func pullPhoneAway(delta):
 	PHONE.position.z = lerp(PHONE.position.z, PHONE_AWAY_ANCHOR.position.z, 1 * delta)
 
 func runDiagnostics():
-	print("----------------")
-	print("diagnostics info:")
-	print("current health: "+ str(PLAYER.UI.getHealth()))
-	print("current battery: "+ str(PLAYER.UI.getBattery()))
-	pass
+	diagnosticsApp.temp_text.text = str(entityProxTemp())
+	diagnosticsApp.heart_text.text = str(heartRate(PLAYER.UI.getHealth()))
+	
+func heartRate(health):
+	var max_health = PLAYER.UI.HEALTH_BAR.max_value 
+	var health_percent = health / max_health
+	# Map health percentage (1->0) to heart rate (80->120)
+	var heart_rate = 80 + (1 - health_percent) * 40
+	return heart_rate
+	
+func entityProxTemp():
+	var distance
+	if PLAYER.ANTLION:
+		distance = PLAYER.global_position.distance_to(PLAYER.ANTLION.global_position)  
+	else:
+		return ambient_temperature
+		
+	if distance > effect_radius:
+		return ambient_temperature
+	
+	# Calculate how much the temperature should drop based on distance
+	# 0 = full effect (entity_temperature), 1 = no effect (ambient_temperature)
+	var distance_ratio = distance / effect_radius
+	
+	# Apply falloff curve (higher exponent = sharper falloff)
+	var temperature_blend = pow(distance_ratio, falloff_exponent)
+	
+	# Interpolate between entity temperature and ambient temperature
+	return lerp(entity_temperature, ambient_temperature, temperature_blend)

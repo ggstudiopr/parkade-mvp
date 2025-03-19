@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var ProgressBarNode := $SubViewportContainer/SubViewport/ProgressBar
-
+@onready var subview := $SubViewportContainer/SubViewport
 func _process(delta: float) -> void:
 	print(delta)
 	if ProgressBarNode.value < ProgressBarNode.max_value:

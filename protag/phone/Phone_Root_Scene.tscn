@@ -1,15 +1,17 @@
-[gd_scene load_steps=18 format=3 uid="uid://csjcseh76ann"]
+[gd_scene load_steps=19 format=3 uid="uid://csjcseh76ann"]
 
 [ext_resource type="Script" uid="uid://bwgcsja3nfwur" path="res://protag/phone/phone_base.gd" id="1_27mfi"]
 [ext_resource type="Script" uid="uid://1tync2pe52c" path="res://protag/phone/Flashlight.gd" id="2_0mhho"]
 [ext_resource type="AudioStream" uid="uid://d3s448a0plbr6" path="res://protag/phone/Flashlight Sound Effect sfx.mp3" id="3_qcfi2"]
 [ext_resource type="Script" uid="uid://uxhwtw25fcb" path="res://protag/phone/FlashlightAudioPlayer.gd" id="4_sx8jk"]
-[ext_resource type="Texture2D" uid="uid://bdt3eychbninn" path="res://protag/phone/camOffIcon.png" id="5_q526q"]
 [ext_resource type="AudioStream" uid="uid://tnc0mjj5m1i3" path="res://protag/phone/soft_beep.mp3" id="5_sx8jk"]
 [ext_resource type="Script" uid="uid://cnf2d8tjli50t" path="res://protag/phone/PhoneCameraUpdate.gd" id="6_887j7"]
 [ext_resource type="Script" path="res://protag/phone/PhoneAudioPlayer.gd" id="6_q526q"]
 [ext_resource type="ArrayMesh" uid="uid://1xrvufpoku40" path="res://protag/phone/hand_phone.obj" id="7_0mhho"]
 [ext_resource type="Script" uid="uid://pium7ki06sws" path="res://protag/phone/SnapshotCamera.gd" id="9_q526q"]
+[ext_resource type="PackedScene" uid="uid://dntudjvbxrfga" path="res://levels/DiagnosticsApp.tscn" id="10_q526q"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sx8jk"]
 
 [sub_resource type="Animation" id="Animation_t2tbu"]
 resource_name = "HidePhone"
@@ -113,14 +115,20 @@ _data = {
 &"ShowPhone": SubResource("Animation_dfbam")
 }
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_sx8jk"]
+viewport_path = NodePath("SubViewport")
+
 [sub_resource type="Environment" id="Environment_q526q"]
 
 [sub_resource type="Environment" id="Environment_887j7"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sx8jk"]
-
 [node name="PhoneNode" type="Node3D"]
 script = ExtResource("1_27mfi")
+
+[node name="HandPhone" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.0114897, -0.170845, -0.0342158)
+mesh = ExtResource("7_0mhho")
+surface_material_override/0 = SubResource("StandardMaterial3D_sx8jk")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.02)
@@ -152,15 +160,16 @@ volume_db = -15.0
 script = ExtResource("6_q526q")
 
 [node name="PhoneScreen" type="Sprite3D" parent="."]
-transform = Transform3D(-6.55671e-10, -0.015, 0, 0.015, -6.55671e-10, 0, 0, 0, 0.015, 0, 0, -0.0112827)
+transform = Transform3D(-6.55671e-10, -0.015, 0, 0.015, -6.55671e-10, 0, 0, 0, 0.015, -0.0035342, 0, -0.0112827)
 double_sided = false
-texture = ExtResource("5_q526q")
+texture = SubResource("ViewportTexture_sx8jk")
 region_enabled = true
-region_rect = Rect2(80, 0, 344, 512)
+region_rect = Rect2(0, 0, 350, 597)
 
 [node name="SubViewport" type="SubViewport" parent="." groups=["CameraViewport"]]
 handle_input_locally = false
 gui_disable_input = true
+size = Vector2i(350, 597)
 render_target_clear_mode = 1
 render_target_update_mode = 4
 
@@ -174,6 +183,7 @@ script = ExtResource("6_887j7")
 [node name="SnapViewport" type="SubViewport" parent="." groups=["CameraViewport"]]
 handle_input_locally = false
 gui_disable_input = true
+size = Vector2i(350, 512)
 render_target_clear_mode = 1
 render_target_update_mode = 4
 
@@ -184,7 +194,5 @@ environment = SubResource("Environment_887j7")
 fov = 50.0
 script = ExtResource("9_q526q")
 
-[node name="HandPhone" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.0114897, -0.170845, -0.0342158)
-mesh = ExtResource("7_0mhho")
-surface_material_override/0 = SubResource("StandardMaterial3D_sx8jk")
+[node name="DiagnosticsApp" parent="." instance=ExtResource("10_q526q")]
+position = Vector2(-362, 60)

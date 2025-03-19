@@ -2,6 +2,8 @@ extends Control
 
 @onready var PLAYER := $".."
 @onready var VEHICLE := $"../../Vehicle"
+@onready var HEALTH_BAR := $Player/HealthBar
+
 
 enum CAR_TRANSMISSION_AUTO {
 	DRIVE,

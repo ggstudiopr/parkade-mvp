@@ -48,7 +48,7 @@ func _process(delta: float) -> void:
 	#target = $"../../Protagonist"
 	if target and target.has_method("hurt"):
 		target.hurt(hurt_rate)
-
+		
 func _physics_process(delta: float) -> void:
 	match current_state:
 		ENEMY_STATE.SEARCHING:

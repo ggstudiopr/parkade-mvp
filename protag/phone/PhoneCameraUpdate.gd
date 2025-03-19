@@ -7,14 +7,17 @@ extends Camera3D
 var ssCount = 1
 var CameraBool : bool
 var zoom_value
+
 func _ready() -> void:
 	CameraBool = false
-	zoom_value = 1	
+	zoom_value = 1
+	
 func _process(delta: float) -> void:
 	PHONE_CAMERA.global_position = NODE2TRACK.global_position
 	PHONE_CAMERA.global_rotation = NODE2TRACK.global_rotation
 	PHONE_CAMERA.global_rotation.z += deg_to_rad(90)
 	zoom_cam(zoom_value)
+	
 func CamOn():
 		if !NODE2TRACK.isDead():
 			print("Phone Camera loaded!")
