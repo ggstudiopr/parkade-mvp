@@ -8,7 +8,7 @@ class_name Player
 @onready var ENEMY_MANAGER := $"../EnemyManager"
 #SPEED VALUES
 var _speed : float
-@export var SPEED_DEFAULT : float = 3
+@export var SPEED_DEFAULT : float = 2
 @export var SPEED_CROUCH : float = 1
 @export var SPRINT_MULT : float = 1.5
 var input_dir
@@ -132,7 +132,7 @@ func update_camera(event):
 		self_total_rot = clamp(self_total_rot, -80, 80) 
 		#self.rotation.y = VEHICLE.rotation.y + deg_to_rad(self_total_rot)
 	elif !isDriving():
-		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,-1.25,1.5)
+		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,-1.25,0.55)
 		self.rotate_y(-event.relative.x * MOUSE_SENSITIVITY) 
 	mouse_input = event.relative
 

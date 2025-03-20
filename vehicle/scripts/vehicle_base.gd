@@ -29,7 +29,9 @@ class_name Vehicle
 @export var ENGINE_POWER = 1000.0
 @export var MAX_STEER = 0.285
 @export var BRAKE_FORCE = 50.0  
-@export var CAR_SPRINT_MULT = 1.5
+@export var CAR_SPRINT_MULT = 7.5
+@export var max_speed = 6.0  # Set your desired top speed here
+var speed_ratio
 @export var roll_strength = 0.75 # Adjust this value to control roll away speed when car is unparked
 var _is_car_sprinting = false
 
@@ -76,8 +78,9 @@ func _physics_process(delta):
 	_drain_gas()
 	if PLAYER.isDriving():
 		playerClampToCar()
-
+	speed_ratio = linear_velocity.length() / max_speed
 func _driving_car_movement(delta):
+	
 	if self.isOn() and PLAYER.isDriving():
 		steering = move_toward(steering, Input.get_axis("move_right", "move_left") * MAX_STEER, delta * 20)
 		var forward_input = Input.get_action_strength("move_forward")
@@ -87,13 +90,15 @@ func _driving_car_movement(delta):
 			forward_input *= CAR_SPRINT_MULT
 			backward_input  *= CAR_SPRINT_MULT
 			_is_car_sprinting = true
+			max_speed = 12
 		else:
 			_is_car_sprinting = false
+			max_speed = 6
 			
 		if forward_input > 0 and canMoveForward():
-			engine_force = forward_input * ENGINE_POWER
+			engine_force = forward_input * ENGINE_POWER * (1.0 - speed_ratio)
 		elif backward_input > 0 and canMoveBackward():
-			engine_force = -backward_input * ENGINE_POWER
+			engine_force = -backward_input * ENGINE_POWER * (1.0 - speed_ratio)
 		else:
 			engine_force = 0.0
 			brake = BRAKE_FORCE
@@ -106,9 +111,9 @@ func _driving_car_movement(delta):
 func _car_drift_away():
 	if self.isOn() and !self.isParked() and !PLAYER.isDriving():
 		if  canMoveForward():
-			engine_force = roll_strength * ENGINE_POWER
+			engine_force = roll_strength * ENGINE_POWER * (1.0 - speed_ratio)
 		if  canMoveBackward():
-			engine_force = -roll_strength * ENGINE_POWER
+			engine_force = -roll_strength * ENGINE_POWER* (1.0 - speed_ratio)
 		if brake > 0:
 			brake = 0
 	if self.isOn() and self.isParked():

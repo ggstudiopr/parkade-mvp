@@ -213,3 +213,12 @@ offset_left = 2.0
 offset_top = -2.0
 offset_right = 2.0
 offset_bottom = -2.0
+
+[node name="self_light" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.3, 0)
+light_color = Color(0.136826, 0.136826, 0.136826, 1)
+light_energy = 0.5
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+spot_range = 2.0
+spot_angle = 89.4612

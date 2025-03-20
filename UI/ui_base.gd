@@ -30,10 +30,15 @@ var last_input_type := InputType.KEYBOARD  # Default to keyboard
 var heart_rate
 var amb_temp
 
+var time: float = 0.0
+var fluctuation_strength: float = 1.0  
+var fluctuation_speed: float = 0.5  
+var fluctuation
+
 func _physics_process(delta: float) -> void:
 	prompt_UI_labels()
-	HEARTRATE_BAR.value = heartRate(getHealth())
-	$Player/HeartRate/Display.text = str(HEARTRATE_BAR.value)
+	HEARTRATE_BAR.value = heartRate(delta, getHealth())
+	
 	if PLAYER:
 		setTemp(PLAYER.entityProxTemp())
 	
@@ -147,11 +152,15 @@ func getTemp():
 func setTemp(new_val):
 	$Player/TemperatureBar.value = new_val
 
-func heartRate(curr_health):
+func heartRate(delta, curr_health):
+	time += delta
+	fluctuation = sin(time * fluctuation_speed) * fluctuation_strength
+	
 	var health_percent = curr_health / PLAYER.UI.HEALTH_BAR.max_value 
-	# Map health percentage (1->0) to heart rate (80->120)
-	var heart_rate = 80 + (1 - health_percent) * 40
-	return heart_rate
-
+	# Map health percentage (1->0) to heart rate (70->175)
+	var heart_rate = 70 + (1 - health_percent) * 105
+	$Player/HeartRate/Display.text = str(int(HEARTRATE_BAR.value))
+	return heart_rate + fluctuation
+	
 func getHeartRate():
 		return HEARTRATE_BAR.value
