@@ -114,6 +114,7 @@ _data = {
 
 [node name="Vehicle" type="VehicleBody3D"]
 collision_layer = 32
+collision_mask = 5
 mass = 1000.0
 physics_material_override = SubResource("PhysicsMaterial_vheon")
 center_of_mass_mode = 1

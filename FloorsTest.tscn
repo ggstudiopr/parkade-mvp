@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://onnkx45uc0gs"]
+[gd_scene load_steps=23 format=3 uid="uid://onnkx45uc0gs"]
 
 [ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_manager.gd" id="1_mup1u"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_r2kix"]
@@ -8,7 +8,10 @@
 [ext_resource type="Resource" uid="uid://chjlv46hxiqi1" path="res://enemy/enemy_types/Freddy.tres" id="3_y5vcc"]
 [ext_resource type="Texture2D" uid="uid://l332ldiqi0q7" path="res://textures/concrete_floor_worn_001_disp_4k.png" id="3_y8bn1"]
 [ext_resource type="Texture2D" uid="uid://ths56okiqs02" path="res://textures/Concrete.png" id="4_3fefj"]
+[ext_resource type="PackedScene" uid="uid://b22axq6wumtjv" path="res://csg_models_smallassets/fluo_light_bar.tscn" id="5_1br1x"]
 [ext_resource type="Texture2D" uid="uid://depolff6t2qmw" path="res://textures/conc_w02.jpg" id="5_syflb"]
+[ext_resource type="PackedScene" uid="uid://dug687n3bkdyt" path="res://csg_models_smallassets/wheel_stopper.tscn" id="5_y5vcc"]
+[ext_resource type="PackedScene" uid="uid://dsaopf0eafy8q" path="res://csg_models_smallassets/overhead_pipe_rack.tscn" id="6_n48c3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3fefj"]
 albedo_color = Color(1, 0.0823529, 0.0823529, 1)
@@ -148,11 +151,29 @@ shape = SubResource("ConcavePolygonShape3D_y5vcc")
 
 [node name="SpotLight3D5" type="OmniLight3D" parent="FloorMain/Lights"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -20.0256, 1.81234, -1.36636)
+visible = false
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 distance_fade_begin = 0.0
 distance_fade_shadow = 0.0
 omni_range = 150.0
+
+[node name="Fluo_Light_Bar" parent="FloorMain/Lights" instance=ExtResource("5_1br1x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15961, -2.36614)
+
+[node name="SmallAssets" type="Node3D" parent="FloorMain"]
+
+[node name="WheelStopper" parent="FloorMain/SmallAssets" instance=ExtResource("5_y5vcc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.983, -2.01615, -4.2165)
+
+[node name="OverheadPipeRack" parent="FloorMain/SmallAssets" instance=ExtResource("6_n48c3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8449, 1.22244, -3.2021)
+
+[node name="OverheadPipeRack2" parent="FloorMain/SmallAssets/OverheadPipeRack" instance=ExtResource("6_n48c3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.97594)
+
+[node name="OverheadPipeRack3" parent="FloorMain/SmallAssets/OverheadPipeRack" instance=ExtResource("6_n48c3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00435758, 0.00109577, -5.96837)
 
 [node name="FloorB1" type="Node3D" parent="."]
 
@@ -244,7 +265,6 @@ height = 73.746
 material = SubResource("StandardMaterial3D_b6k0r")
 
 [node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="FloorB1/FloorStaticBody"]
-visible = false
 shape = SubResource("ConcavePolygonShape3D_ybyny")
 
 [node name="Lights" type="Node3D" parent="FloorB1"]

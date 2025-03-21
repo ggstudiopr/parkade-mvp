@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3 uid="uid://dug687n3bkdyt"]
+
+[ext_resource type="Texture2D" uid="uid://ths56okiqs02" path="res://textures/Concrete.png" id="1_5poan"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c1qde"]
+albedo_texture = ExtResource("1_5poan")
+albedo_texture_force_srgb = true
+uv1_triplanar_sharpness = 0.435277
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cfk7l"]
+albedo_texture = ExtResource("1_5poan")
+albedo_texture_force_srgb = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rls87"]
+albedo_texture = ExtResource("1_5poan")
+albedo_texture_force_srgb = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5poan"]
+albedo_texture = ExtResource("1_5poan")
+albedo_texture_force_srgb = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fxxpm"]
+albedo_texture = ExtResource("1_5poan")
+albedo_texture_force_srgb = true
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_fxxpm"]
+data = PackedVector3Array(0, 0, 0, 0, 0, -2, 0, 0.2, -2, 0, 0, -2, 0, 0, 0, 0.319944, 0.00253266, 0, 0.2, 0.2, -2, 0, 0.2, -2, 0, 0, -2, 0, 0.2, 0, 0, 0.2, -2, 0.2, 0.2, -2, 0, 0.2, -2, 0, 0.2, 0, 0, 0, 0, 0, 0, 0, 0, 0.2, 0, 0.2, 0.2, 0, 0.2, 0.2, -2, 0.2, 0.2, 0, 0, 0.2, 0, 0.319944, 0.00253266, 0, 0.319944, 0.00253266, -2, 0, 0, -2, 0, 0, -2, 0.319944, 0.00253266, -2, 0.2, 0.2, -2, 0.2, 0.2, 0, 0.319944, 0.00253266, 0, 0, 0, 0, 0.319944, 0.00253266, -2, 0.319944, 0.00253266, 0, 0.2, 0.2, 0, 0.2, 0.2, 0, 0.2, 0.2, -2, 0.319944, 0.00253266, -2)
+backface_collision = true
+
+[node name="WheelStopper" type="StaticBody3D"]
+transform = Transform3D(1.25, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+polygon = PackedVector2Array(0, 0, 0, 0.2, 0.2, 0.2, 0.319944, 0.00253266)
+depth = 2.0
+material = SubResource("StandardMaterial3D_c1qde")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGPolygon3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.11, -1.75)
+operation = 2
+radius = 0.02
+height = 0.2
+material = SubResource("StandardMaterial3D_cfk7l")
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="CSGPolygon3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.11, -0.25)
+operation = 2
+radius = 0.02
+height = 0.2
+material = SubResource("StandardMaterial3D_rls87")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGPolygon3D"]
+transform = Transform3D(1, 0, 3.90224e-07, 0, 1, 0, 0, 0, 1, 0.146, 0.02, -1.5)
+operation = 2
+size = Vector3(0.35, 0.025, 0.5)
+material = SubResource("StandardMaterial3D_5poan")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGPolygon3D"]
+transform = Transform3D(1, 0, 3.27826e-07, 0, 1, 0, 0, 0, 1, 0.143, 0.02, -0.5)
+operation = 2
+size = Vector3(0.35, 0.025, 0.5)
+material = SubResource("StandardMaterial3D_fxxpm")
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_fxxpm")

@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://b22axq6wumtjv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_le1nw"]
+emission_enabled = true
+emission = Color(1, 1, 0.784314, 1)
+emission_energy_multiplier = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oqppj"]
+albedo_color = Color(0.299547, 0.299547, 0.299547, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1jp5i"]
+albedo_color = Color(0.262932, 0.262932, 0.262932, 1)
+
+[node name="Fluo_Light_Bar" type="Node3D"]
+
+[node name="CSGSphere3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+radius = 0.1
+height = 2.5
+material = SubResource("StandardMaterial3D_le1nw")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0505587, 0)
+size = Vector3(0.3, 0.1, 2.65)
+material = SubResource("StandardMaterial3D_oqppj")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 1)
+radius = 0.025
+height = 1.0
+material = SubResource("StandardMaterial3D_1jp5i")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -1)
+radius = 0.025
+height = 1.0
+material = SubResource("StandardMaterial3D_1jp5i")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.09, 0)
+shadow_enabled = true
