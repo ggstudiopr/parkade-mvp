@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://onnkx45uc0gs"]
+[gd_scene load_steps=25 format=3 uid="uid://onnkx45uc0gs"]
 
 [ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_manager.gd" id="1_mup1u"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_r2kix"]
@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://depolff6t2qmw" path="res://textures/conc_w02.jpg" id="5_syflb"]
 [ext_resource type="PackedScene" uid="uid://dug687n3bkdyt" path="res://csg_models_smallassets/wheel_stopper.tscn" id="5_y5vcc"]
 [ext_resource type="PackedScene" uid="uid://dsaopf0eafy8q" path="res://csg_models_smallassets/overhead_pipe_rack.tscn" id="6_n48c3"]
+[ext_resource type="PackedScene" uid="uid://chrb1byrs2h2l" path="res://csg_models_smallassets/overhead_pipe_single.tscn" id="8_4o2pm"]
+[ext_resource type="PackedScene" uid="uid://dknxn15l7xas2" path="res://csg_models_smallassets/handrail.tscn" id="9_wejee"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3fefj"]
 albedo_color = Color(1, 0.0823529, 0.0823529, 1)
@@ -151,7 +153,6 @@ shape = SubResource("ConcavePolygonShape3D_y5vcc")
 
 [node name="SpotLight3D5" type="OmniLight3D" parent="FloorMain/Lights"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -20.0256, 1.81234, -1.36636)
-visible = false
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 distance_fade_begin = 0.0
@@ -174,6 +175,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.97594)
 
 [node name="OverheadPipeRack3" parent="FloorMain/SmallAssets/OverheadPipeRack" instance=ExtResource("6_n48c3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00435758, 0.00109577, -5.96837)
+
+[node name="OverheadPipeRack2" parent="FloorMain/SmallAssets" instance=ExtResource("8_4o2pm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00418, 1.23558, -3.19447)
+
+[node name="Handrail" parent="FloorMain/SmallAssets" instance=ExtResource("9_wejee")]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0.766936, -1.70957, 0)
 
 [node name="FloorB1" type="Node3D" parent="."]
 

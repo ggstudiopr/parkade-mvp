@@ -387,9 +387,8 @@ shadow_enabled = true
 distance_fade_enabled = true
 distance_fade_begin = 0.0
 distance_fade_length = 2467.6
-spot_range = 20.0
+spot_range = 50.0
 spot_attenuation = 1.5
-spot_angle = 45.0906
 script = ExtResource("2_hg1yu")
 
 [node name="CarEngine" type="AudioStreamPlayer3D" parent="Front"]

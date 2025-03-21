@@ -133,8 +133,11 @@ light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.3
 shadow_enabled = true
 distance_fade_enabled = true
-spot_range = 6.0
+spot_range = 8.0
+spot_attenuation = 2.0
+spot_angle = 50.0
 script = ExtResource("2_0mhho")
+lightOn = 0.8
 
 [node name="FlashlightClick" type="AudioStreamPlayer3D" parent="SpotLight3D"]
 stream = ExtResource("3_qcfi2")

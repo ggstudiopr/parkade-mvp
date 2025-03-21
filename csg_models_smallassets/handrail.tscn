@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=3 uid="uid://dknxn15l7xas2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_divij"]
+albedo_color = Color(1, 0.833333, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xl6oh"]
+albedo_color = Color(1, 0.835294, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h6unu"]
+albedo_color = Color(1, 0.835294, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_exrfx"]
+albedo_color = Color(1, 0.835294, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hk8ff"]
+albedo_color = Color(1, 0.835294, 0, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fybjm"]
+size = Vector3(3.99048, 1.66986, 0.001)
+
+[node name="Handrail" type="StaticBody3D"]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0, 0)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+radius = 0.1
+height = 1.0
+material = SubResource("StandardMaterial3D_divij")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.585421, 0.5, 0)
+outer_radius = 0.7
+sides = 15
+ring_sides = 8
+material = SubResource("StandardMaterial3D_xl6oh")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCylinder3D/CSGTorus3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -0.5)
+operation = 1
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="CSGCylinder3D"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4, 0, 0)
+radius = 0.1
+height = 1.0
+material = SubResource("StandardMaterial3D_h6unu")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="CSGCylinder3D/CSGCylinder3D3"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.585421, 0.5, 0)
+outer_radius = 0.7
+sides = 15
+ring_sides = 8
+material = SubResource("StandardMaterial3D_exrfx")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCylinder3D/CSGCylinder3D3/CSGTorus3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -0.5)
+operation = 1
+
+[node name="CSGCylinder3D4" type="CSGCylinder3D" parent="CSGCylinder3D"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 2, 0.355152, 0)
+radius = 0.1
+height = 4.0
+material = SubResource("StandardMaterial3D_hk8ff")
+
+[node name="CSGCylinder3D5" type="CSGCylinder3D" parent="CSGCylinder3D"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 2, 1.09, 0)
+radius = 0.1
+height = 3.0
+material = SubResource("StandardMaterial3D_hk8ff")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.335, 0)
+shape = SubResource("BoxShape3D_fybjm")

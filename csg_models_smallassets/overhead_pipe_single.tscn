@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://chrb1byrs2h2l"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vxjgy"]
+albedo_color = Color(0.303233, 0.303233, 0.303233, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j3sfh"]
+albedo_color = Color(0.118581, 0.118581, 0.118581, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eu8t4"]
+albedo_color = Color(0.288518, 0.288518, 0.288518, 1)
+metallic = 1.0
+
+[node name="OverheadPipeRack" type="Node3D"]
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+radius = 0.1
+height = 6.0
+material = SubResource("StandardMaterial3D_vxjgy")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -2.15355e-08, 0.492676)
+radius = 0.02
+height = 1.0
+material = SubResource("StandardMaterial3D_j3sfh")
+
+[node name="CSGBox3D" type="CSGTorus3D" parent="CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, 1, -1.06581e-14, 0, 1.06581e-14, 1, 0, 0, 0)
+inner_radius = 0.05
+outer_radius = 0.125
+material = SubResource("StandardMaterial3D_eu8t4")
+
+[node name="CSGBox3D2" type="CSGTorus3D" parent="CSGCylinder3D/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, -6.55671e-08)
+inner_radius = 0.05
+outer_radius = 0.125
+material = SubResource("StandardMaterial3D_eu8t4")
+
+[node name="CSGBox3D" type="CSGTorus3D" parent="CSGCylinder3D/CSGBox3D/CSGBox3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+inner_radius = 0.05
+outer_radius = 0.125
+material = SubResource("StandardMaterial3D_eu8t4")
+
+[node name="CSGBox3D3" type="CSGTorus3D" parent="CSGCylinder3D/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 1.31134e-07)
+inner_radius = 0.05
+outer_radius = 0.125
+material = SubResource("StandardMaterial3D_eu8t4")
+
+[node name="CSGBox3D" type="CSGTorus3D" parent="CSGCylinder3D/CSGBox3D/CSGBox3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+inner_radius = 0.05
+outer_radius = 0.125
+material = SubResource("StandardMaterial3D_eu8t4")

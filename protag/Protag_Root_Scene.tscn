@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://dl60tvwy1elkf"]
+[gd_scene load_steps=16 format=3 uid="uid://dl60tvwy1elkf"]
 
 [ext_resource type="Script" uid="uid://cwfgwnkth6x74" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
 [ext_resource type="Script" uid="uid://ci0muygltpwcc" path="res://protag/RaycastAlign.gd" id="2_65wl4"]
 [ext_resource type="PackedScene" uid="uid://csjcseh76ann" path="res://protag/phone/Phone_Root_Scene.tscn" id="2_nqwbi"]
+[ext_resource type="Script" uid="uid://bl4epvu7js8dq" path="res://protag/MainCam.gd" id="2_uq3ot"]
 [ext_resource type="PackedScene" uid="uid://d1w1jahqvppkf" path="res://UI/UI_Root_Scene.tscn" id="5_7uxf5"]
 [ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3" id="8_bhrfm"]
 [ext_resource type="Script" uid="uid://qkgymnnknv6n" path="res://protag/scripts/FootstepAudioPlayer.gd" id="9_f878c"]
@@ -164,6 +165,8 @@ shape = SubResource("SphereShape3D_ju561")
 target_position = Vector3(0, 0, 0)
 debug_shape_custom_color = Color(1.29953e-06, 0.670053, 0.480873, 1)
 
+[node name="CameraAnchor" type="Node3D" parent="."]
+
 [node name="CameraController" type="Node3D" parent="."]
 physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871558, 0, 0.0871558, 0.996195, 0, 1.5, 0)
@@ -171,6 +174,7 @@ transform = Transform3D(1, 0, 0, 0, 0.996195, -0.0871558, 0, 0.0871558, 0.996195
 [node name="Camera3D" type="Camera3D" parent="CameraController"]
 physics_interpolation_mode = 1
 cull_mask = 1047553
+script = ExtResource("2_uq3ot")
 
 [node name="PhonePositionalAnchors" type="Node3D" parent="CameraController/Camera3D"]
 
@@ -196,6 +200,15 @@ script = ExtResource("2_65wl4")
 [node name="PhoneNode" parent="CameraController/Camera3D" instance=ExtResource("2_nqwbi")]
 physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.440142, -0.375938, -0.56255)
+
+[node name="FlashLight" type="Node3D" parent="CameraController/Camera3D"]
+visible = false
+
+[node name="SpotLight3D" type="SpotLight3D" parent="CameraController/Camera3D/FlashLight"]
+light_volumetric_fog_energy = 0.0
+spot_range = 20.0
+spot_attenuation = 2.0
+spot_angle = 10.0
 
 [node name="BodyAnimationPlayer" type="AnimationPlayer" parent="CameraController"]
 root_node = NodePath("../..")

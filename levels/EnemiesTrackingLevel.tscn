@@ -86,3 +86,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689984, 17.6658)
 
 [node name="Vehicle" parent="." instance=ExtResource("5_bbmln")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.451973, -6.6784)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.348474, 0, -0.937319, 0, 1, 0, 0.937319, 0, 0.348474, -1.3291, 1.0488, -6.90061)

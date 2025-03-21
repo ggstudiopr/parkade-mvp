@@ -8,13 +8,14 @@ class_name Player
 @onready var ENEMY_MANAGER := $"../EnemyManager"
 #SPEED VALUES
 var _speed : float
-@export var SPEED_DEFAULT : float = 2
+@export var SPEED_DEFAULT : float = 1.25
 @export var SPEED_CROUCH : float = 1
-@export var SPRINT_MULT : float = 1.5
+@export var SPRINT_MULT : float = 2.25
 var input_dir
 var direction
 
 #CAMERA RELATED VARIABLES
+@onready var HEAD_ANCHOR := $CameraAnchor
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90)
 @export var TILT_UPPER_LIMIT := deg_to_rad(90)
 @export var CAMERA_CONTROLLER := Camera3D
@@ -122,6 +123,7 @@ func _walking_player_movement(delta):
 	#these can be moved to the phone_script but are they really hurting anybody
 	phone_n_cam_tilt(input_dir.x, input_dir.y, delta)
 	phone_sway(delta)
+	head_bobbing(velocity.length(),delta)
 	phone_bobbing(velocity.length(),delta)
 	
 func update_camera(event):
@@ -153,18 +155,32 @@ func phone_n_cam_tilt(input_x, input_y, delta):
 		if phonePosToggle == false: #if phone is not up close, add FarPosAnchor z rotation for flavor
 			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75 + PHONE.PHONE_FAR_ANCHOR.rotation.z, 10 * delta)
 		else:
-			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75, 10 * delta)
+			if _is_sprinting == true:
+				PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 1.55, 10 * delta)
+			elif _is_sprinting == false:
+				PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75, 10 * delta)
 		PHONE.rotation.x = lerp(PHONE.rotation.x, input_y * tilt_amount * 0.75, 7 * delta)
 	if CAMERA_CONTROLLER:#this CAN be nauseating, conmsider removing altogether but its nice immersion flavor
-		CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.05, 10 * delta)
+		if _is_crouching == true:
+			CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.15, 3 * delta)
+		elif _is_crouching == false:
+			if _is_sprinting == true:
+				CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.35, 3 * delta)
+			elif _is_sprinting == false:
+				CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.05, 3 * delta)
 		
 func phone_sway(delta):
+	var sprint_mult 
+	if _is_sprinting == true:
+		sprint_mult = 1.5
+	if _is_sprinting == false:
+		sprint_mult = 1
 	mouse_input = lerp(mouse_input + right_stick_input,Vector2.ZERO,10*delta)
-	PHONE.rotation.x = lerp(PHONE.rotation.x, -mouse_input.y * sway_amount , 10 * delta)
-	PHONE.rotation.y = lerp(PHONE.rotation.y, -mouse_input.x * sway_amount , 10 * delta)
+	PHONE.rotation.x = lerp(PHONE.rotation.x, -mouse_input.y * sway_amount * sprint_mult, 10 * delta)
+	PHONE.rotation.y = lerp(PHONE.rotation.y, -mouse_input.x * sway_amount * sprint_mult * 0.75, 10 * delta)
 	#adds a lil realism but nauseating when implemented
 	#if CAMERA_CONTROLLER:
-		#CAMERA_CONTROLLER.rotation.y = lerp(CAMERA_CONTROLLER.rotation.y, mouse_input.x * sway_amount , 25 * delta)
+		#CAMERA_CONTROLLER.rotation.y = lerp(CAMERA_CONTROLLER.rotation.y, mouse_input.x * sway_amount , 30 * delta)
 			
 func phone_bobbing(vel : float, delta):
 	if PHONE.isInHand():
@@ -188,6 +204,28 @@ func phone_bobbing(vel : float, delta):
 		PHONE.position.x = lerp(PHONE.position.x, positionToUse4Phone.x + sin(Time.get_ticks_msec() * bob_fq_base * 0.5) * bob_am_base* 0.2, 2* delta)
 		PHONE.position.y = lerp(PHONE.position.y, positionToUse4Phone.y + sin(Time.get_ticks_msec() * bob_fq_base* 0.3) * bob_am_base * 0.3,  2*delta)
 		PHONE.position.z = lerp(PHONE.position.z, positionToUse4Phone.z + sin(Time.get_ticks_msec() * bob_fq_base * 0.5) * bob_am_base* 0.1,  2*delta)
+
+func head_bobbing(vel, delta):
+	if CAMERA_CONTROLLER:
+		bob_am_base = bob_amount * 7
+		bob_fq_base = bob_freq
+		if vel > 0 and is_on_floor():#jiggle head on movement
+			if isDriving() == false:#only when walking
+				if _is_sprinting == true:#add bobbing if sprinting
+					bob_am_base += 0.05
+					bob_fq_base += 0.005
+				if _is_crouching == true:
+					bob_am_base -= 0.001
+					bob_fq_base -= 0.005
+				#CAMERA_CONTROLLER.position.x = lerp(CAMERA_CONTROLLER.position.x, CAMERA_CONTROLLER.position.x + sin(Time.get_ticks_msec() * bob_fq_base) * bob_am_base * 0.5, 20 * delta)
+				CAMERA_CONTROLLER.position.y = lerp(CAMERA_CONTROLLER.position.y, CAMERA_CONTROLLER.position.y + sin(Time.get_ticks_msec() * bob_fq_base) * bob_am_base,5 * delta)
+		else:#positional anchoring on no movement
+			CAMERA_CONTROLLER.position.x = lerp(CAMERA_CONTROLLER.position.x, HEAD_ANCHOR.position.x, 10 * delta)
+			CAMERA_CONTROLLER.position.y = lerp(CAMERA_CONTROLLER.position.y, HEAD_ANCHOR.position.y, 10 * delta)
+			CAMERA_CONTROLLER.position.z = lerp(CAMERA_CONTROLLER.position.z, HEAD_ANCHOR.position.z, 10 * delta)
+		#generic unconditional sway to add realism
+		CAMERA_CONTROLLER.position.x = lerp(CAMERA_CONTROLLER.position.x, HEAD_ANCHOR.position.x + sin(Time.get_ticks_msec() * bob_fq_base * 0.08) * bob_am_base* 0.5, 2* delta)
+		CAMERA_CONTROLLER.position.z = lerp(CAMERA_CONTROLLER.position.z, HEAD_ANCHOR.position.z + sin(Time.get_ticks_msec() * bob_fq_base * 0.2) * bob_am_base* 0.5,  2*delta)
 
 func _player_animation():
 	if (movement_vector()) and _is_crouching == false and !self.isDriving() and _is_sprinting == false:
