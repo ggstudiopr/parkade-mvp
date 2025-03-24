@@ -4,4 +4,8 @@
 
 [resource]
 script = ExtResource("1_h7k5o")
+name = "Default Enemy"
+type = 0
+hurt_rate = -1.0
+accel = 0.0
 metadata/_custom_type_script = "uid://12vilyhpeeo7"
