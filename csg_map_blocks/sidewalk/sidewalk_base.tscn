@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=4 uid="uid://h7ofamxkvx3a"]
+
+[ext_resource type="Texture2D" uid="uid://ths56okiqs02" path="res://textures/Concrete.png" id="1_lhtnv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2se0"]
+albedo_texture = ExtResource("1_lhtnv")
+uv1_triplanar = true
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_t84v5"]
+data = PackedVector3Array(-1, -0.25, 0, -1, -0.25, -2, -1, 0.25, -2, 1, -0.25, -2, -1, -0.25, -2, -1, -0.25, 0, -1, 0.25, -2, -1, -0.25, -2, 1, -0.25, -2, -1, 0.25, -2, -1, 0.25, 0, -1, -0.25, 0, -1, -0.25, 0, -1, 0.25, 0, 1, 0.25, 0, 1, 0.25, 0, -1, 0.25, 0, -1, 0.25, -2, -1, -0.25, 0, 1, -0.25, 0, 1, -0.25, -2, 1, 0.25, 0, 1, -0.25, 0, -1, -0.25, 0, 1, -0.25, -2, 1, -0.25, 0, 1, 0.25, 0, 1, -0.25, -2, 1, 0.25, -2, -1, 0.25, -2, -1, 0.25, -2, 1, 0.25, -2, 1, 0.25, 0, 1, 0.25, 0, 1, 0.25, -2, 1, -0.25, -2)
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_sii8h"]
+_surfaces = [{
+"aabb": AABB(-1, -0.25, -2, 2, 0.5, 2),
+"attribute_data": PackedByteArray("AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/"),
+"format": 34359738391,
+"material": SubResource("StandardMaterial3D_i2se0"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("AACAvwAAgL4AAAAAAACAvwAAgL4AAADAAACAvwAAgD4AAADAAACAPwAAgL4AAADAAACAvwAAgL4AAADAAACAvwAAgL4AAAAAAACAvwAAgD4AAADAAACAvwAAgL4AAADAAACAPwAAgL4AAADAAACAvwAAgD4AAADAAACAvwAAgD4AAAAAAACAvwAAgL4AAAAAAACAvwAAgL4AAAAAAACAvwAAgD4AAAAAAACAPwAAgD4AAAAAAACAPwAAgD4AAAAAAACAvwAAgD4AAAAAAACAvwAAgD4AAADAAACAvwAAgL4AAAAAAACAPwAAgL4AAAAAAACAPwAAgL4AAADAAACAPwAAgD4AAAAAAACAPwAAgL4AAAAAAACAvwAAgL4AAAAAAACAPwAAgL4AAADAAACAPwAAgL4AAAAAAACAPwAAgD4AAAAAAACAPwAAgL4AAADAAACAPwAAgD4AAADAAACAvwAAgD4AAADAAACAvwAAgD4AAADAAACAPwAAgD4AAADAAACAPwAAgD4AAAAAAACAPwAAgD4AAAAAAACAPwAAgD4AAADAAACAPwAAgL4AAADAAAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/")
+}]
+
+[node name="SidewalkBase" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+visible = false
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+size = Vector3(2, 0.5, 2)
+material = SubResource("StandardMaterial3D_i2se0")
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+shape = SubResource("ConcavePolygonShape3D_t84v5")
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+mesh = SubResource("ArrayMesh_sii8h")
