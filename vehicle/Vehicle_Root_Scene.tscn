@@ -444,8 +444,6 @@ transform = Transform3D(1, 0, 0, 0, 0.575933, 0.817497, 0, -0.817497, 0.575933, 
 light_color = Color(0.243137, 1, 1, 1)
 light_energy = 0.3
 spot_range = 1.3417
-spot_angle = 64.82
-=======
 spot_angle = 29.1075
 
 [node name="Seats" type="Node" parent="."]
