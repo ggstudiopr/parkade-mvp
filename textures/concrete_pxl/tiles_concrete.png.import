@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://depolff6t2qmw"
-path.s3tc="res://.godot/imported/conc_w02.jpg-1936f083011b9da5e38e490f1c192780.s3tc.ctex"
+uid="uid://bxghp3iqf27o8"
+path.s3tc="res://.godot/imported/tiles_concrete.png-1a42b024ab435664ae743bfb4b9d0011.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://textures/conc_w02.jpg"
-dest_files=["res://.godot/imported/conc_w02.jpg-1936f083011b9da5e38e490f1c192780.s3tc.ctex"]
+source_file="res://textures/concrete_pxl/tiles_concrete.png"
+dest_files=["res://.godot/imported/tiles_concrete.png-1a42b024ab435664ae743bfb4b9d0011.s3tc.ctex"]
 
 [params]
 

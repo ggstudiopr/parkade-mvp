@@ -1,11 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://dsaopf0eafy8q"]
+[gd_scene load_steps=6 format=3 uid="uid://dsaopf0eafy8q"]
+
+[ext_resource type="Texture2D" uid="uid://cax7oplcpw265" path="res://textures/concrete_pxl/base_texture.png" id="1_wjp8j"]
+[ext_resource type="Texture2D" uid="uid://dqsj8ws0e0sak" path="res://textures/metal/rusty_metal_sheet_disp_1k.png" id="2_aqq5j"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lgwd3"]
-albedo_color = Color(1, 0.933333, 0, 1)
+albedo_color = Color(1, 0.958914, 0.549981, 1)
+albedo_texture = ExtResource("1_wjp8j")
+uv1_scale = Vector3(0.995, 0.995, 0.995)
+uv1_offset = Vector3(0.115, 0, 0)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 0.482969
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eu8t4"]
 albedo_color = Color(0.288518, 0.288518, 0.288518, 1)
+albedo_texture = ExtResource("2_aqq5j")
 metallic = 1.0
+uv1_triplanar = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jpbu1"]
 albedo_color = Color(0.262932, 0.262932, 0.262932, 1)

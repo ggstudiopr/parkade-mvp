@@ -8,6 +8,6 @@ func _ready():
 	canvas_layer.add_child(rect)
 	
 	var material = ShaderMaterial.new()
-	material.shader = preload("res://protag/fisheye.gdshader")
+	material.shader = preload("res://protag/main_cam.gdshader")
 	
 	rect.material = material

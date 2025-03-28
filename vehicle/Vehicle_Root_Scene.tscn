@@ -387,7 +387,7 @@ shadow_enabled = true
 distance_fade_enabled = true
 distance_fade_begin = 0.0
 distance_fade_length = 2467.6
-spot_range = 50.0
+spot_range = 70.0
 spot_attenuation = 1.5
 script = ExtResource("2_hg1yu")
 
@@ -456,4 +456,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.46627, 0.887985, 0)
 
 [node name="Node3D3" type="Node3D" parent="Seats"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.929326, 0.953964)
-
