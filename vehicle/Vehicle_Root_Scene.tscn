@@ -316,6 +316,7 @@ region_enabled = true
 region_rect = Rect2(65, 140, 400, 250)
 
 [node name="SubViewportRight" type="SubViewport" parent="Mirrors/RightMirror"]
+scaling_3d_scale = 0.65
 render_target_update_mode = 4
 
 [node name="MirrorReflectionRight" type="Camera3D" parent="Mirrors/RightMirror/SubViewportRight"]
@@ -341,6 +342,7 @@ region_enabled = true
 region_rect = Rect2(65, 140, 400, 250)
 
 [node name="SubViewportLeft" type="SubViewport" parent="Mirrors/LeftMirror"]
+scaling_3d_scale = 0.65
 render_target_update_mode = 4
 
 [node name="MirrorReflectionLeft" type="Camera3D" parent="Mirrors/LeftMirror/SubViewportLeft"]
@@ -368,6 +370,7 @@ region_enabled = true
 region_rect = Rect2(157, 208.5, 242, 92)
 
 [node name="SubViewportRear" type="SubViewport" parent="Mirrors/RearMirror"]
+scaling_3d_scale = 0.65
 render_target_update_mode = 4
 
 [node name="MirrorReflectionRear" type="Camera3D" parent="Mirrors/RearMirror/SubViewportRear"]
@@ -381,8 +384,8 @@ script = ExtResource("5_lm5gg")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5)
 
 [node name="Headlight" type="SpotLight3D" parent="Front"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00287801, 0.652833)
-light_volumetric_fog_energy = 0.733
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.804601, 1.0744, 0.450092)
+light_volumetric_fog_energy = 0.75
 shadow_enabled = true
 distance_fade_enabled = true
 distance_fade_begin = 0.0
@@ -390,6 +393,16 @@ distance_fade_length = 2467.6
 spot_range = 70.0
 spot_attenuation = 1.5
 script = ExtResource("2_hg1yu")
+
+[node name="Headlight2" type="SpotLight3D" parent="Front/Headlight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, 0)
+light_volumetric_fog_energy = 0.75
+shadow_enabled = true
+distance_fade_enabled = true
+distance_fade_begin = 0.0
+distance_fade_length = 2467.6
+spot_range = 70.0
+spot_attenuation = 1.5
 
 [node name="CarEngine" type="AudioStreamPlayer3D" parent="Front"]
 stream = ExtResource("3_p2q0p")
@@ -414,6 +427,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_3ppir")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2.6)
 
 [node name="SubViewportBackCam" type="SubViewport" parent="Back"]
+scaling_3d_scale = 0.65
 
 [node name="BackCam" type="Camera3D" parent="Back/SubViewportBackCam"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.334545, 0.76026, 2.26345)

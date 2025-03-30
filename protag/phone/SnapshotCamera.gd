@@ -7,6 +7,7 @@ var SAVE_SS_PATH = "user://phoneImg/"
 var ss_dir = DirAccess.make_dir_absolute(SAVE_SS_PATH)
 
 func _ready() -> void:
+
 	ss_dir = DirAccess.open(SAVE_SS_PATH)
 	for file in ss_dir.get_files():
 		ss_dir.remove(file)

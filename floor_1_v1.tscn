@@ -1,11 +1,11 @@
-[gd_scene load_steps=36 format=3 uid="uid://bhprx4d2og2lv"]
+[gd_scene load_steps=35 format=3 uid="uid://bhprx4d2og2lv"]
 
 [ext_resource type="Texture2D" uid="uid://l332ldiqi0q7" path="res://textures/concrete/concrete_floor_worn_001_disp_4k.png" id="1_l55u5"]
 [ext_resource type="Texture2D" uid="uid://bf3xmnir3pryj" path="res://textures/orange/texture_10.png" id="2_u1f27"]
 [ext_resource type="Texture2D" uid="uid://8vdofhsnxhpp" path="res://textures/concrete_pxl/brushed_concrete.png" id="3_cbeam"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="4_5svdl"]
 [ext_resource type="PackedScene" uid="uid://d2aj53y47hmjq" path="res://csg_map_blocks/spacers/car_spacer_asset.tscn" id="5_3sddy"]
-[ext_resource type="Texture2D" uid="uid://4pjb7bd4sq8v" path="res://textures/concrete/concrete_wall_004_disp_1k.png" id="5_cbeam"]
+[ext_resource type="Texture2D" uid="uid://dfoecg0iaoutq" path="res://textures/concrete_pxl/layered_concrete.png" id="5_hytye"]
 [ext_resource type="Texture2D" uid="uid://cglv4avh2hdsn" path="res://textures/green/texture_10.png" id="5_vg875"]
 [ext_resource type="PackedScene" uid="uid://boify4oa57lwj" path="res://csg_map_blocks/spacers/car_spacer_wideclearance_asset.tscn" id="6_lfkke"]
 [ext_resource type="PackedScene" uid="uid://crwtxl054tv0g" path="res://csg_map_blocks/sidewalk/sidewalk_inner_s.tscn" id="7_5svdl"]
@@ -44,7 +44,7 @@ data = PackedVector3Array(-200, 0.5, 200, 200, 0.5, 200, -200, -0.5, 200, 200, -
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ks5r2"]
 albedo_color = Color(0.758192, 0.758192, 0.758192, 1)
-albedo_texture = ExtResource("5_cbeam")
+albedo_texture = ExtResource("5_hytye")
 uv1_scale = Vector3(0.2, 0.2, 0.2)
 uv1_triplanar = true
 
@@ -57,8 +57,6 @@ albedo_texture = ExtResource("7_wfg2c")
 uv1_triplanar = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vcms4"]
-
-[sub_resource type="Environment" id="Environment_4gpjs"]
 
 [node name="Floor1v0_1" type="Node3D"]
 
@@ -204,6 +202,7 @@ size = Vector3(67, 1, 1)
 
 [node name="SpacerAsset" parent="Segment1" instance=ExtResource("5_3sddy")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.5, 0, 68)
+visible = false
 
 [node name="SpacerAsset_Wide2" parent="Segment1/SpacerAsset" instance=ExtResource("6_lfkke")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -27, 0, 34)
@@ -915,6 +914,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
 
 [node name="Vehicle" parent="." instance=ExtResource("7_u1f27")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.897, 0, -103.534)
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_4gpjs")

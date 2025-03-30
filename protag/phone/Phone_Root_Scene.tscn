@@ -130,7 +130,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_sx8jk")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.02)
 light_energy = 0.0
 light_indirect_energy = 0.0
-light_volumetric_fog_energy = 0.3
+light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 distance_fade_enabled = true
 spot_range = 8.0
@@ -164,10 +164,11 @@ region_rect = Rect2(0, 0, 350, 597)
 
 [node name="SubViewport" type="SubViewport" parent="." groups=["CameraViewport"]]
 handle_input_locally = false
+scaling_3d_scale = 0.65
+canvas_item_default_texture_filter = 0
 gui_disable_input = true
 size = Vector2i(350, 597)
-render_target_clear_mode = 1
-render_target_update_mode = 4
+render_target_update_mode = 3
 
 [node name="PhoneCamera" type="Camera3D" parent="SubViewport"]
 physics_interpolation_mode = 1
@@ -177,10 +178,10 @@ script = ExtResource("6_887j7")
 
 [node name="SnapViewport" type="SubViewport" parent="." groups=["CameraViewport"]]
 handle_input_locally = false
+scaling_3d_scale = 0.65
 gui_disable_input = true
 size = Vector2i(350, 597)
-render_target_clear_mode = 1
-render_target_update_mode = 4
+render_target_update_mode = 3
 
 [node name="SnapshotCamera" type="Camera3D" parent="SnapViewport"]
 physics_interpolation_mode = 1
