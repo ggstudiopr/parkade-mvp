@@ -54,7 +54,7 @@ var bob_fq_base
 @export var entity_temperature = 40.0   # Cold temperature near the entity
 @export var effect_radius = 10.0        # Distance at which temperature begins to drop
 @export var falloff_exponent = 2.0   
-
+var step_accumulated
 #USED BY OTHER CLASSES
 var player_state = PLAYER_STATE.WALKING
 enum PLAYER_STATE {
@@ -72,7 +72,8 @@ func _ready():
 	positionToUse4Phone = PHONE.PHONE_AWAY_ANCHOR.position
 	phonePosToggle = false
 	self_total_rot = 0
-
+	step_accumulated = 0
+	
 func _process(delta) -> void:
 	Global.player_position = global_position
 
@@ -87,7 +88,14 @@ func _physics_process(delta: float) -> void:
 	#print(screen_center)
 
 func _input(event):
-	if event.is_action_pressed("exit"):#kill game
+	if event.is_action_pressed("pause"):
+		#TODO: pause screen/pause manager
+		pass
+	if event.is_action_pressed("alt_flashlight"):
+		$CameraController/Camera3D/AltFlashlight.toggleLight()
+	if event.is_action_pressed("debug_ui"):
+		UI.toggleVisibility()
+	if event.is_action_pressed("exit"):#remapped to backspace
 		get_tree().quit()
 	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_STATE.WALKING:
 		crouch_toggle()
@@ -103,6 +111,7 @@ func _input(event):
 func _walking_player_movement(delta):
 	if not is_on_floor() and player_state ==  PLAYER_STATE.WALKING:
 		velocity += get_gravity() * delta
+	var previous_position = self.global_transform.origin
 	input_dir = movement_vector()
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
 	if direction and !self.isDriving():
@@ -119,7 +128,12 @@ func _walking_player_movement(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, _speed)
 		velocity.z = move_toward(velocity.z, 0, _speed)
+	
 	move_and_slide()
+	if direction and !self.isDriving():
+		var moved_distance = previous_position.distance_to(self.global_transform.origin)
+		step_accumulated += moved_distance * 1.5
+		UI.setSteps(step_accumulated)
 	#these can be moved to the phone_script but are they really hurting anybody
 	phone_n_cam_tilt(input_dir.x, input_dir.y, delta)
 	phone_sway(delta)
@@ -271,7 +285,7 @@ func isDriving():
 
 func enemy_proximity_damage(delta):
 	var damage_distance = 7.0  # Units of distance for damage to occur
-	var hurt_rate = 10 * delta # Damage per second, scaled by delta
+	var hurt_rate = 250 * delta # Damage per second, scaled by delta
 	if ENEMY_MANAGER:
 		var enemies_array = ENEMY_MANAGER.get_enemy_nodes()
 		var player_pos = self.global_position

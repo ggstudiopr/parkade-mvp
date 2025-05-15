@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://d1w1jahqvppkf"]
+[gd_scene load_steps=9 format=3 uid="uid://d1w1jahqvppkf"]
 
 [ext_resource type="Texture2D" uid="uid://crt46aeclq25v" path="res://UI/crosshair.png" id="1_2ulgl"]
 [ext_resource type="Script" uid="uid://b7hwdd0a1md8x" path="res://UI/ui_base.gd" id="1_y33ob"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://btsjkyf48gvoi" path="res://UI/GasolineBar.gd" id="3_8vchb"]
 [ext_resource type="Script" uid="uid://b8wkst8358csi" path="res://UI/HealthBar.gd" id="3_ueqmu"]
 [ext_resource type="Script" uid="uid://cbyole6ahrhi6" path="res://UI/TempBar.gd" id="4_25uit"]
+[ext_resource type="Script" uid="uid://dk3w4cudj5swk" path="res://UI/StrikesBar.gd" id="4_wqcmp"]
 
 [sub_resource type="Theme" id="Theme_7t5ai"]
 
@@ -74,6 +75,50 @@ offset_bottom = 14.0
 text = "Health"
 fit_content = true
 autowrap_mode = 0
+
+[node name="Dead" type="Label" parent="Player/HealthBar"]
+layout_mode = 0
+offset_left = 274.0
+offset_top = -25.0
+offset_right = 314.0
+offset_bottom = -2.0
+
+[node name="Strikes" type="ProgressBar" parent="Player"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -228.0
+offset_top = -179.0
+offset_right = 372.0
+offset_bottom = -152.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+max_value = 3.0
+step = 1.0
+show_percentage = false
+script = ExtResource("4_wqcmp")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Player/Strikes"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -26.0
+offset_right = 53.0
+offset_bottom = 14.0
+text = "Strikes
+"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Count" type="Label" parent="Player/Strikes"]
+layout_mode = 0
+offset_left = 273.0
+offset_top = 2.0
+offset_right = 313.0
+offset_bottom = 25.0
 
 [node name="HeartRate" type="ProgressBar" parent="Player"]
 layout_mode = 1
@@ -144,12 +189,18 @@ text = "Temp"
 fit_content = true
 autowrap_mode = 0
 
+[node name="Steps" type="Label" parent="Player"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="Phone" type="Control" parent="."]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="BatteryBar" type="ProgressBar" parent="Phone"]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -219,6 +270,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GasolineBar" type="ProgressBar" parent="Car"]
+visible = false
 layout_mode = 0
 offset_left = 1681.0
 offset_top = 986.0

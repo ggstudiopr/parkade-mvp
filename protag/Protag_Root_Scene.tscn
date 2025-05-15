@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dl60tvwy1elkf"]
+[gd_scene load_steps=18 format=3 uid="uid://dl60tvwy1elkf"]
 
 [ext_resource type="Script" uid="uid://cwfgwnkth6x74" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
 [ext_resource type="Script" uid="uid://ci0muygltpwcc" path="res://protag/RaycastAlign.gd" id="2_65wl4"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://bl4epvu7js8dq" path="res://protag/MainCam.gd" id="2_uq3ot"]
 [ext_resource type="Environment" uid="uid://blmt4nohw4gso" path="res://base_enviro.tres" id="2_xrwh2"]
 [ext_resource type="PackedScene" uid="uid://d1w1jahqvppkf" path="res://UI/UI_Root_Scene.tscn" id="5_7uxf5"]
+[ext_resource type="Script" uid="uid://c77o88po4dpmm" path="res://protag/alt_flashlight.gd" id="6_grnn1"]
 [ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3" id="8_bhrfm"]
 [ext_resource type="Script" uid="uid://qkgymnnknv6n" path="res://protag/scripts/FootstepAudioPlayer.gd" id="9_f878c"]
 
@@ -213,6 +214,14 @@ spot_range = 20.0
 spot_attenuation = 2.0
 spot_angle = 10.0
 
+[node name="AltFlashlight" type="SpotLight3D" parent="CameraController/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.188396, -0.202303, -0.0363795)
+light_energy = 0.0
+shadow_enabled = true
+spot_range = 14.655
+spot_angle = 29.8712
+script = ExtResource("6_grnn1")
+
 [node name="BodyAnimationPlayer" type="AnimationPlayer" parent="CameraController"]
 root_node = NodePath("../..")
 libraries = {
@@ -225,7 +234,6 @@ volume_db = -25.0
 script = ExtResource("9_f878c")
 
 [node name="UI" parent="." instance=ExtResource("5_7uxf5")]
-visible = false
 offset_left = 2.0
 offset_top = -2.0
 offset_right = 2.0

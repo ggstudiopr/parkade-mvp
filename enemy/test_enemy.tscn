@@ -21,4 +21,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26725, -7.441)
 
 [node name="Enemy2" parent="EnemyManager" instance=ExtResource("1_4qm2i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0542, 0, 0)
-type = 1

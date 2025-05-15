@@ -59,6 +59,7 @@ uv1_triplanar = true
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vcms4"]
 
 [node name="Floor1v0_1" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.1016, 2.60179, -4.69135)
 
 [node name="Base" type="StaticBody3D" parent="."]
 
@@ -71,6 +72,7 @@ material = SubResource("StandardMaterial3D_0dmw0")
 
 [node name="BaseShell" type="CSGBox3D" parent="Base/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.50029, 0)
+visible = false
 size = Vector3(400, 6, 400)
 material = SubResource("StandardMaterial3D_pwljo")
 
@@ -82,6 +84,7 @@ material = SubResource("StandardMaterial3D_pwljo")
 
 [node name="Ceiling" type="CSGBox3D" parent="Base/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 0)
+visible = false
 size = Vector3(400, 1, 400)
 material = SubResource("StandardMaterial3D_vg875")
 

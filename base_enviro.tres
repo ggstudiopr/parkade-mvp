@@ -1,6 +1,6 @@
 [gd_resource type="Environment" format=3 uid="uid://blmt4nohw4gso"]
 
 [resource]
-background_energy_multiplier = 0.56
+background_energy_multiplier = 0.0
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.0065

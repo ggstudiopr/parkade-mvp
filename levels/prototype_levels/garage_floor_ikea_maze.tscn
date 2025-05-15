@@ -71,7 +71,11 @@ fog_enabled = true
 [node name="Floor" parent="StaticBody3D/CSGCombiner3D" index="0"]
 material = SubResource("StandardMaterial3D_8fllo")
 
+[node name="BaseShell" parent="StaticBody3D/CSGCombiner3D" index="1"]
+visible = false
+
 [node name="Ceiling" parent="StaticBody3D/CSGCombiner3D" index="2"]
+visible = false
 material = SubResource("StandardMaterial3D_4c6pv")
 
 [node name="Sections" type="StaticBody3D" parent="." index="3"]

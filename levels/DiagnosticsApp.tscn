@@ -45,6 +45,18 @@ offset_bottom = -36.9395
 theme_override_font_sizes/font_size = 100
 text = "MIKU MIKU"
 
+[node name="StepsSprite" type="Sprite2D" parent="SubViewportContainer/SubViewport/Icons"]
+position = Vector2(134.5, 391.5)
+scale = Vector2(0.168945, 0.141602)
+
+[node name="StepsText" type="Label" parent="SubViewportContainer/SubViewport/Icons/StepsSprite"]
+offset_left = -394.0
+offset_top = -420.0
+offset_right = 1730.0
+offset_bottom = 109.0
+theme_override_font_sizes/font_size = 300
+text = "MIKU MIKU"
+
 [node name="ProgressBar" type="ProgressBar" parent="SubViewportContainer/SubViewport/Icons"]
 offset_left = 244.0
 offset_top = 409.0

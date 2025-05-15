@@ -7,6 +7,7 @@ extends Node2D
 @onready var ICONS := $SubViewportContainer/SubViewport/Icons
 @onready var temp_text := $SubViewportContainer/SubViewport/Icons/TempSprite/TempText
 @onready var heart_text := $SubViewportContainer/SubViewport/Icons/HeartSprite/HeartText
+@onready var steps_text := $SubViewportContainer/SubViewport/Icons/StepsSprite/StepsText
 @onready var ProgressBarNode := $SubViewportContainer/SubViewport/Icons/ProgressBar
 
 func _process(delta: float) -> void:

@@ -261,7 +261,7 @@ func pullPhoneAway(delta):
 func runDiagnostics():
 	diagnosticsApp.temp_text.text = str(PLAYER.UI.getTemp())
 	diagnosticsApp.heart_text.text = str(int(PLAYER.UI.getHeartRate()))
-	
+	diagnosticsApp.steps_text.text = str(PLAYER.UI.getSteps())
 	if PLAYER.phonePosToggle == true: #phone is in held up orientation
 		for icon in diagnosticsApp.ICONS.get_children():
 			icon.rotation = -PHONE.PHONE_FAR_ANCHOR.rotation.z

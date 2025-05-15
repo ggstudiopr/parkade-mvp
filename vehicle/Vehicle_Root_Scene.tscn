@@ -316,7 +316,6 @@ region_enabled = true
 region_rect = Rect2(65, 140, 400, 250)
 
 [node name="SubViewportRight" type="SubViewport" parent="Mirrors/RightMirror"]
-scaling_3d_scale = 0.65
 render_target_update_mode = 4
 
 [node name="MirrorReflectionRight" type="Camera3D" parent="Mirrors/RightMirror/SubViewportRight"]
@@ -342,7 +341,6 @@ region_enabled = true
 region_rect = Rect2(65, 140, 400, 250)
 
 [node name="SubViewportLeft" type="SubViewport" parent="Mirrors/LeftMirror"]
-scaling_3d_scale = 0.65
 render_target_update_mode = 4
 
 [node name="MirrorReflectionLeft" type="Camera3D" parent="Mirrors/LeftMirror/SubViewportLeft"]
@@ -370,7 +368,6 @@ region_enabled = true
 region_rect = Rect2(157, 208.5, 242, 92)
 
 [node name="SubViewportRear" type="SubViewport" parent="Mirrors/RearMirror"]
-scaling_3d_scale = 0.65
 render_target_update_mode = 4
 
 [node name="MirrorReflectionRear" type="Camera3D" parent="Mirrors/RearMirror/SubViewportRear"]
@@ -427,7 +424,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_3ppir")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2.6)
 
 [node name="SubViewportBackCam" type="SubViewport" parent="Back"]
-scaling_3d_scale = 0.65
 
 [node name="BackCam" type="Camera3D" parent="Back/SubViewportBackCam"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.334545, 0.76026, 2.26345)
