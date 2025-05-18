@@ -251,7 +251,7 @@ func check_app_memory(functionToUse):
 			GalleryOn(true)
 		if app_memory == ACTIVE_APP.DIAG:
 			print("Autoloaded into Diagnostics...")
-			DiagnosticsOn(false)
+			DiagnosticsOn(true)
 
 func pullPhoneAway(delta):
 	PHONE.position.x = lerp(PHONE.position.x, PHONE_AWAY_ANCHOR.position.x, 1.5 * delta)

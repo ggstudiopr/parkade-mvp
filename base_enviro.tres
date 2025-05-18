@@ -2,5 +2,8 @@
 
 [resource]
 background_energy_multiplier = 0.0
+fog_light_color = Color(0, 0, 0, 1)
+fog_light_energy = 10.92
+fog_density = 0.2057
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.0065

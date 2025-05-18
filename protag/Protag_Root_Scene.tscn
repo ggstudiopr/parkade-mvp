@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://bl4epvu7js8dq" path="res://protag/MainCam.gd" id="2_uq3ot"]
 [ext_resource type="Environment" uid="uid://blmt4nohw4gso" path="res://base_enviro.tres" id="2_xrwh2"]
 [ext_resource type="PackedScene" uid="uid://d1w1jahqvppkf" path="res://UI/UI_Root_Scene.tscn" id="5_7uxf5"]
-[ext_resource type="Script" path="res://protag/alt_flashlight.gd" id="6_grnn1"]
+[ext_resource type="Script" uid="uid://c77o88po4dpmm" path="res://protag/alt_flashlight.gd" id="6_grnn1"]
 [ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3" id="8_bhrfm"]
 [ext_resource type="Script" uid="uid://qkgymnnknv6n" path="res://protag/scripts/FootstepAudioPlayer.gd" id="9_f878c"]
 

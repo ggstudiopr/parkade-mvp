@@ -39,7 +39,13 @@ var _is_crouching : bool
 var _is_sprinting : bool
 var Q_is_being_held : bool
 
+
+
 #phone cam swaying
+var q_hold_start_time = 0
+var q_hold_threshold = 0.75  # seconds needed to count as a hold
+var q_is_processed = false 
+
 var positionToUse4Phone : Vector3
 var phonePosToggle : bool
 @export var tilt_amount := 0.1
@@ -335,33 +341,42 @@ func entityProxTemp():
 func controller_RS_Input():
 	return Input.get_vector("aim_left","aim_right","aim_down","aim_up")
 
+func _handle_phone_position_toggle():
+	if PHONE.isInHand():
+		phonePosToggle = not phonePosToggle
+		positionToUse4Phone = PHONE.PHONE_CLOSE_ANCHOR.position if phonePosToggle else PHONE.PHONE_FAR_ANCHOR.position
+	else:
+		positionToUse4Phone = PHONE.PHONE_CLOSE_ANCHOR.position
+		phonePosToggle = true
+		PHONE.togglePhone()
+
+func _handle_phone_toggle():
+	positionToUse4Phone = PHONE.PHONE_FAR_ANCHOR.position
+	phonePosToggle = false
+	PHONE.togglePhone()
+
 func phone_input_check(event):
 	#Toggle Phone holdQ logic
-	if Input.is_action_just_pressed("Toggle Phone"): #Input Q, holdQ logic to adjust phone position
-		await get_tree().create_timer(0.75).timeout
-		if Input.is_action_pressed("Toggle Phone") and Q_is_being_held == false:
-			Q_is_being_held = true
-			if PHONE.isInHand():
-				if phonePosToggle == true:
-					positionToUse4Phone = PHONE.PHONE_FAR_ANCHOR.position
-					phonePosToggle = false
-					return #THIS RETURN IS NECESSARY FOR FUNCTIONALITY 
-				elif phonePosToggle == false:
-					positionToUse4Phone =  PHONE.PHONE_CLOSE_ANCHOR.position
-					phonePosToggle = true
-					return #this one isnt but its nice and pretty
-			if !PHONE.isInHand():
-				positionToUse4Phone =  PHONE.PHONE_CLOSE_ANCHOR.position
-				phonePosToggle = true
-				PHONE.togglePhone()
-	if (Input.is_action_just_released("Toggle Phone")) and !Q_is_being_held:
-		positionToUse4Phone = PHONE.PHONE_FAR_ANCHOR.position
-		phonePosToggle = false
-		PHONE.togglePhone()
-	if (Input.is_action_just_released("Toggle Phone")) and Q_is_being_held:
-		Q_is_being_held = false
+	if Input.is_action_just_pressed("Toggle Phone"):
+		q_hold_start_time = Time.get_ticks_msec()
+		q_is_processed = false
+	
+	# Handle hold detection
+	if Input.is_action_pressed("Toggle Phone") and not q_is_processed:
+		var hold_time = (Time.get_ticks_msec() - q_hold_start_time) / 1000.0
+		if hold_time >= q_hold_threshold:
+			q_is_processed = true
+			_handle_phone_position_toggle()
+	
+	# Handle quick press (release before threshold)
+	if Input.is_action_just_released("Toggle Phone"):
+		if not q_is_processed:
+			# This was a quick tap
+			_handle_phone_toggle()
+			q_hold_start_time = 0
+			q_is_processed = false
 
-	#basic 1-4 inputs
+	#basic 1-3 inputs
 	if PHONE.isInHand() and !PHONE.isDead() and PHONE.phoneAnimating == false:
 		if Input.is_action_just_pressed("phone_f"):#Input 1
 			PHONE.togglePhoneLight()

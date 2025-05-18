@@ -200,7 +200,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="BatteryBar" type="ProgressBar" parent="Phone"]
-visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -270,7 +269,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GasolineBar" type="ProgressBar" parent="Car"]
-visible = false
 layout_mode = 0
 offset_left = 1681.0
 offset_top = 986.0

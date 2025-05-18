@@ -381,25 +381,23 @@ script = ExtResource("5_lm5gg")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5)
 
 [node name="Headlight" type="SpotLight3D" parent="Front"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.804601, 1.0744, 0.450092)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.804601, 0.944006, 0.270926)
 light_volumetric_fog_energy = 0.75
 shadow_enabled = true
-distance_fade_enabled = true
+shadow_bias = 0.12
 distance_fade_begin = 0.0
 distance_fade_length = 2467.6
 spot_range = 70.0
-spot_attenuation = 1.5
 script = ExtResource("2_hg1yu")
 
 [node name="Headlight2" type="SpotLight3D" parent="Front/Headlight"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, 0)
 light_volumetric_fog_energy = 0.75
 shadow_enabled = true
-distance_fade_enabled = true
+shadow_bias = 0.12
 distance_fade_begin = 0.0
 distance_fade_length = 2467.6
 spot_range = 70.0
-spot_attenuation = 1.5
 
 [node name="CarEngine" type="AudioStreamPlayer3D" parent="Front"]
 stream = ExtResource("3_p2q0p")
