@@ -35,6 +35,10 @@ var fluctuation_strength: float = 1.0
 var fluctuation_speed: float = 0.5  
 var fluctuation
 
+func _ready():
+	#$Player.visible = true
+	toggleVisibility()
+	
 func toggleVisibility():
 	if $Player.visible == true:
 		$Player.visible = false

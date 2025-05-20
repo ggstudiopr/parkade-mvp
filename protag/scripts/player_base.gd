@@ -31,6 +31,12 @@ var self_total_rot
 @onready var BODY_ANIMATOR := $CameraController/BodyAnimationPlayer #transforms parent body on crouch/stand
 @onready var Footstep_Audio_Player :=$FootstepAudioPlayer
 
+#Pause Menu 
+@onready var PAUSE_MENU := $CanvasLayer/PauseMenu
+
+#test features
+@onready var ALT_LIGHT := $CameraController/Camera3D/AltFlashlight
+@onready var COLD_AIR := $ColdAirPuffs
 #Car Interact Ray
 @onready var CAR_LOOK_DIR_RAY := $CameraController/Camera3D/CarInteractRaycast
 
@@ -38,8 +44,6 @@ var self_total_rot
 var _is_crouching : bool
 var _is_sprinting : bool
 var Q_is_being_held : bool
-
-
 
 #phone cam swaying
 var q_hold_start_time = 0
@@ -79,6 +83,7 @@ func _ready():
 	phonePosToggle = false
 	self_total_rot = 0
 	step_accumulated = 0
+	COLD_AIR.hide()
 	
 func _process(delta) -> void:
 	Global.player_position = global_position
@@ -88,19 +93,27 @@ func _physics_process(delta: float) -> void:
 	_player_animation() #going to try and handle walking animations here later. for now only contains simple footstep loop. removed headbob
 	if controller_RS_Input(): #controller right stick support
 		update_camera_controller(controller_RS_Input())
-	
+	if UI.getTemp() < 60:
+		COLD_AIR.show()
+	else:
+		COLD_AIR.hide()
 	enemy_proximity_damage(delta)
 	#var screen_center = get_viewport().get_visible_rect().size / 2
 	#print(screen_center)
 
 func _input(event):
 	if event.is_action_pressed("pause"):
-		#TODO: pause screen/pause manager
-		pass
+		PAUSE_MENU.pause()
 	if event.is_action_pressed("alt_flashlight"):
-		$CameraController/Camera3D/AltFlashlight.toggleLight()
+		ALT_LIGHT.toggleLight()
+		
 	if event.is_action_pressed("debug_ui"):
 		UI.toggleVisibility()
+	if event.is_action_pressed("debug_light_bright"):
+		CAMERA_CONTROLLER.environment.background_energy_multiplier = 1
+	if event.is_action_pressed("debug_light_dark"):
+		CAMERA_CONTROLLER.environment.background_energy_multiplier = 0
+		
 	if event.is_action_pressed("exit"):#remapped to backspace
 		get_tree().quit()
 	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_STATE.WALKING:

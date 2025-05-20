@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://l332ldiqi0q7" path="res://textures/concrete/concrete_floor_worn_001_disp_4k.png" id="4_oxf0q"]
 [ext_resource type="Texture2D" uid="uid://b4c850uvd3bja" path="res://textures/red/texture_08.png" id="4_tftnd"]
 [ext_resource type="Texture2D" uid="uid://dlypq1fmmhnwy" path="res://textures/green/texture_06.png" id="5_hllge"]
-[ext_resource type="PackedScene" uid="uid://c2fgudpkm57lv" path="res://levels/prototype_levels/small_room_test.tscn" id="6_o8s83"]
+[ext_resource type="PackedScene" uid="uid://c2fgudpkm57lv" path="res://levels/prototype_levels/test_levels/small_room_test.tscn" id="6_o8s83"]
 [ext_resource type="PackedScene" uid="uid://dug687n3bkdyt" path="res://csg_map_blocks/car_space_obstacles/wheel_stopper.tscn" id="7_45fnb"]
 [ext_resource type="PackedScene" uid="uid://b22axq6wumtjv" path="res://csg_map_blocks/lights/fluo_light_bar.tscn" id="9_o8s83"]
 [ext_resource type="PackedScene" uid="uid://dsaopf0eafy8q" path="res://csg_map_blocks/pipes/overhead_pipe_rack.tscn" id="10_8fllo"]

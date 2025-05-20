@@ -1,12 +1,12 @@
 [gd_scene load_steps=5 format=3 uid="uid://dntudjvbxrfga"]
 
-[ext_resource type="Script" uid="uid://cjmq5x1yccdod" path="res://levels/DiagnosticsApp.gd" id="1_35om0"]
-[ext_resource type="Texture2D" uid="uid://bwx6lbklg3swi" path="res://protag/phone/diagnostics assets/HEART_PNG.png" id="2_35om0"]
-[ext_resource type="Texture2D" uid="uid://b0enf1h3anukc" path="res://protag/phone/diagnostics assets/thermo.png" id="3_cbd4u"]
-[ext_resource type="Texture2D" uid="uid://b5hofo5wws5ha" path="res://protag/phone/diagnostics assets/16x9 frame.png" id="4_s6r45"]
+[ext_resource type="Script" uid="uid://cjmq5x1yccdod" path="res://protag/phone/diagnostics assets/DiagnosticsApp.gd" id="1_8pxx6"]
+[ext_resource type="Texture2D" uid="uid://bwx6lbklg3swi" path="res://protag/phone/diagnostics assets/HEART_PNG.png" id="2_gg4b6"]
+[ext_resource type="Texture2D" uid="uid://b0enf1h3anukc" path="res://protag/phone/diagnostics assets/thermo.png" id="3_cd41i"]
+[ext_resource type="Texture2D" uid="uid://b5hofo5wws5ha" path="res://protag/phone/diagnostics assets/16x9 frame.png" id="4_sfc5r"]
 
 [node name="DiagnosticsApp" type="Node2D"]
-script = ExtResource("1_35om0")
+script = ExtResource("1_8pxx6")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 offset_right = 40.0
@@ -22,7 +22,7 @@ render_target_update_mode = 4
 [node name="HeartSprite" type="Sprite2D" parent="SubViewportContainer/SubViewport/Icons"]
 position = Vector2(107, 91)
 scale = Vector2(0.340506, 0.32781)
-texture = ExtResource("2_35om0")
+texture = ExtResource("2_gg4b6")
 
 [node name="HeartText" type="Label" parent="SubViewportContainer/SubViewport/Icons/HeartSprite"]
 offset_left = -23.4945
@@ -35,7 +35,7 @@ text = "MIKU MIKU"
 [node name="TempSprite" type="Sprite2D" parent="SubViewportContainer/SubViewport/Icons"]
 position = Vector2(99, 248)
 scale = Vector2(0.160487, 0.160976)
-texture = ExtResource("3_cbd4u")
+texture = ExtResource("3_cd41i")
 
 [node name="TempText" type="Label" parent="SubViewportContainer/SubViewport/Icons/TempSprite"]
 offset_left = 174.469
@@ -68,4 +68,4 @@ z_index = -5
 position = Vector2(175, 258)
 rotation = 1.5708
 scale = Vector2(0.7, 0.7)
-texture = ExtResource("4_s6r45")
+texture = ExtResource("4_sfc5r")

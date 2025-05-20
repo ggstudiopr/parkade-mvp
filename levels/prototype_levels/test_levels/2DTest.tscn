@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://dvvmwq2frp88d"]
 
-[ext_resource type="Script" uid="uid://daw2033rqljyx" path="res://levels/2d_test.gd" id="1_hdk5h"]
-[ext_resource type="Texture2D" uid="uid://dgxaed0whgfeo" path="res://vehicle/piku.jpg" id="1_owtul"]
+[ext_resource type="Script" uid="uid://daw2033rqljyx" path="res://levels/prototype_levels/test_levels/2d_test.gd" id="1_b2aea"]
+[ext_resource type="Texture2D" uid="uid://dgxaed0whgfeo" path="res://vehicle/piku.jpg" id="2_42rol"]
 
 [node name="Test" type="Node2D"]
-script = ExtResource("1_hdk5h")
+script = ExtResource("1_b2aea")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 offset_right = 40.0
@@ -17,7 +17,7 @@ render_target_update_mode = 4
 [node name="Sprite2D" type="Sprite2D" parent="SubViewportContainer/SubViewport"]
 position = Vector2(244, 218)
 scale = Vector2(1.38546, 1.38546)
-texture = ExtResource("1_owtul")
+texture = ExtResource("2_42rol")
 
 [node name="TextEdit" type="Label" parent="SubViewportContainer/SubViewport"]
 offset_left = 197.0

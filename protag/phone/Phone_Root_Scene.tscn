@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://protag/phone/PhoneAudioPlayer.gd" id="6_q526q"]
 [ext_resource type="ArrayMesh" uid="uid://1xrvufpoku40" path="res://protag/phone/hand_phone.obj" id="7_0mhho"]
 [ext_resource type="Script" uid="uid://pium7ki06sws" path="res://protag/phone/SnapshotCamera.gd" id="9_q526q"]
-[ext_resource type="PackedScene" uid="uid://dntudjvbxrfga" path="res://levels/DiagnosticsApp.tscn" id="10_q526q"]
+[ext_resource type="PackedScene" uid="uid://dntudjvbxrfga" path="res://protag/phone/diagnostics assets/DiagnosticsApp.tscn" id="10_q526q"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sx8jk"]
 
