@@ -1,14 +1,15 @@
 extends CharacterBody3D
 class_name Player
 
+@onready var PAUSE_MENU := $CanvasLayer/PauseMenu
 @onready var UI := $UI
 @onready var PHONE := $CameraController/Camera3D/PhoneNode
 @onready var VEHICLE := $"../Vehicle"
-
 @onready var ENEMY_MANAGER := $"../EnemyManager"
-#SPEED VALUES
-var _speed : float
+
+#MOVEMENT/SPEED VALUES
 @export var SPEED_DEFAULT : float = 1.25
+var _speed : float = SPEED_DEFAULT
 @export var SPEED_CROUCH : float = 1
 @export var SPRINT_MULT : float = 2.25
 var input_dir
@@ -25,36 +26,32 @@ var direction
 @export var CAR_CAM_TILT_LOWER_LIMIT := deg_to_rad(-55)
 var mouse_input : Vector2
 var right_stick_input : Vector2
-var self_total_rot
+var self_total_rot : float = 0
 
 #ANIMATION RELATED NODE DECLARATIONS
 @onready var BODY_ANIMATOR := $CameraController/BodyAnimationPlayer #transforms parent body on crouch/stand
 @onready var Footstep_Audio_Player :=$FootstepAudioPlayer
 
-#Pause Menu 
-@onready var PAUSE_MENU := $CanvasLayer/PauseMenu
-
 #test features
 @onready var ALT_LIGHT := $CameraController/Camera3D/AltFlashlight
 @onready var COLD_AIR := $ColdAirPuffs
-#Car Interact Ray
-@onready var CAR_LOOK_DIR_RAY := $CameraController/Camera3D/CarInteractRaycast
 
-#PhoneCamRay
+#Player relevant raycasts
+@onready var CAR_LOOK_DIR_RAY := $CameraController/Camera3D/CarInteractRaycast 
 @onready var PHONE_LOOK_RAY = PHONE.PHONE_LOOK_RAY
 
 #BOOLS FOR MOVEMENT LOGIC
-var _is_crouching : bool
-var _is_sprinting : bool
-var Q_is_being_held : bool
+var _is_crouching : bool = false
+var _is_sprinting : bool = false
+var Q_is_being_held : bool = false
 
-#phone cam swaying
+#phone posiition 
+@onready var positionToUse4Phone : Vector3 = PHONE.PHONE_AWAY_ANCHOR.position
+var phonePosToggle : bool = false
 var q_hold_start_time = 0
-var q_hold_threshold = 0.75  # seconds needed to count as a hold
+var q_hold_threshold = 0.75  #seconds needed to count as a hold
 var q_is_processed = false 
-
-var positionToUse4Phone : Vector3
-var phonePosToggle : bool
+#phone swaying
 @export var tilt_amount := 0.1
 @export var sway_amount := 0.01
 @export var bob_amount : float = 0.002
@@ -62,12 +59,16 @@ var phonePosToggle : bool
 var bob_am_base
 var bob_fq_base
 
-#temperature values
+#enemy proximity temperature values
 @export var ambient_temperature = 80.0  # Normal room temperature
 @export var entity_temperature = 40.0   # Cold temperature near the entity
 @export var effect_radius = 10.0        # Distance at which temperature begins to drop
 @export var falloff_exponent = 2.0   
-var step_accumulated
+
+#diagnostics app value tracking distance traveled on player walk
+var step_accumulated : int = 0
+var previous_position
+
 #USED BY OTHER CLASSES
 var player_state = PLAYER_STATE.WALKING
 enum PLAYER_STATE {
@@ -78,14 +79,6 @@ enum PLAYER_STATE {
 #INITIALIZE
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	_is_crouching = false
-	_is_sprinting = false
-	Q_is_being_held = false
-	_speed = SPEED_DEFAULT
-	positionToUse4Phone = PHONE.PHONE_AWAY_ANCHOR.position
-	phonePosToggle = false
-	self_total_rot = 0
-	step_accumulated = 0
 	COLD_AIR.hide()
 	
 func _process(delta) -> void:
@@ -97,13 +90,10 @@ func _physics_process(delta: float) -> void:
 	if controller_RS_Input(): #controller right stick support
 		update_camera_controller(controller_RS_Input())
 	
-	if UI.getTemp() < 60:
-		COLD_AIR.show()
-	else:
-		COLD_AIR.hide()
-	
-	#proof of concept function to track enemy proximity
+	#proof of concept function to track enemy proximity to hurt player
 	enemy_proximity_damage(delta)
+	#proof of concept function to visually show enemy proximity
+	enemy_proximity_particles()
 	
 	#proof of concept of making things disappear when phone cam snaps it
 	#Collision layer 4
@@ -115,22 +105,22 @@ func _physics_process(delta: float) -> void:
 func _input(event):
 	if event.is_action_pressed("pause"):
 		PAUSE_MENU.pause()
-	if event.is_action_pressed("alt_flashlight"):
-		ALT_LIGHT.toggleLight()
+	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_STATE.WALKING:
+		crouch_toggle()
+	if event.is_action_pressed("interact"):
+		UI.check_interact()
 		
+	if event.is_action_pressed("alt_flashlight"):
+		ALT_LIGHT.toggleLight()	
+	
 	if event.is_action_pressed("debug_ui"):
 		UI.toggleVisibility()
 	if event.is_action_pressed("debug_light_bright"):
 		CAMERA_CONTROLLER.environment.background_energy_multiplier = 1
 	if event.is_action_pressed("debug_light_dark"):
 		CAMERA_CONTROLLER.environment.background_energy_multiplier = 0
-		
 	if event.is_action_pressed("exit"):#remapped to backspace
 		get_tree().quit()
-	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_STATE.WALKING:
-		crouch_toggle()
-	if event.is_action_pressed("interact"):
-		UI.check_interact()
 	
 	if !CAMERA_CONTROLLER: return
 	if event is InputEventMouseMotion:
@@ -138,10 +128,74 @@ func _input(event):
 	
 	phone_input_check(event) #threw all phone related inputs into here to clean readability
 
+func phone_input_check(event):
+	#Toggle Phone holdQ logic
+	if Input.is_action_just_pressed("Toggle Phone"):
+		q_hold_start_time = Time.get_ticks_msec()
+		q_is_processed = false
+	
+	# Handle hold detection
+	if Input.is_action_pressed("Toggle Phone") and not q_is_processed:
+		var hold_time = (Time.get_ticks_msec() - q_hold_start_time) / 1000.0
+		if hold_time >= q_hold_threshold:
+			q_is_processed = true
+			_handle_phone_position_toggle()
+	
+	# Handle quick press (release before threshold)
+	if Input.is_action_just_released("Toggle Phone"):
+		if not q_is_processed:
+			# This was a quick tap
+			_handle_phone_toggle()
+			q_hold_start_time = 0
+			q_is_processed = false
+
+	#basic 1-3 inputs
+	if PHONE.isInHand() and !PHONE.isDead() and PHONE.phoneAnimating == false:
+		if Input.is_action_just_pressed("phone_f"):#Input 1
+			PHONE.togglePhoneLight()
+		if PHONE.appChangeLock == false:
+			if Input.is_action_just_pressed("phone_1"):#Input app1
+				PHONE.PhoneCamOn(false)
+			if Input.is_action_just_pressed("phone_2"):#Input app2
+				PHONE.GalleryOn(false)
+			if Input.is_action_just_pressed("phone_3"):#Input app3
+				PHONE.DiagnosticsOn(false)
+			
+	#take picture
+	if event.is_action_pressed("left_click"):
+		if PHONE.isInHand():
+			PHONE.takePicture()
+			
+	#gallery scrolling
+	if event.is_action_pressed("scroll_down") and PHONE.galleryActive == true:
+		PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, 1)
+		if PHONE.loadImage(PHONE.ss_index, false) == false:
+			PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, -1)
+		else:
+			PHONE.loadImage(PHONE.ss_index, true)
+	elif event.is_action_pressed("scroll_up") and PHONE.galleryActive == true:
+		PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, -1)
+		if PHONE.loadImage(PHONE.ss_index, false) == false:
+			PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, 1)
+		else:
+			PHONE.loadImage(PHONE.ss_index, true)
+	
+	#camera zoom scrolling
+	if event.is_action_pressed("scroll_down") and PHONE.PHONE_CAM.isOn():
+		PHONE.zoom_index = PHONE.zoom_index_cycler(PHONE.zoom_index, -1)
+		PHONE.PHONE_CAM.zoom_cam(PHONE.zoom_index)
+	elif event.is_action_pressed("scroll_up") and PHONE.PHONE_CAM.isOn():
+		PHONE.zoom_index = PHONE.zoom_index_cycler(PHONE.zoom_index, 1)
+		PHONE.PHONE_CAM.zoom_cam(PHONE.zoom_index)
+
+func movement_vector():
+	return Input.get_vector("move_left","move_right","move_forward","move_backward")
+
 func _walking_player_movement(delta):
+	#base player walking
 	if not is_on_floor() and player_state ==  PLAYER_STATE.WALKING:
 		velocity += get_gravity() * delta
-	var previous_position = self.global_transform.origin
+	previous_position = self.global_transform.origin
 	input_dir = movement_vector()
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
 	if direction and !self.isDriving():
@@ -158,13 +212,15 @@ func _walking_player_movement(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, _speed)
 		velocity.z = move_toward(velocity.z, 0, _speed)
-	
 	move_and_slide()
+	
+	#steps accumulated logic for diagnostics app
 	if direction and !self.isDriving():
 		var moved_distance = previous_position.distance_to(self.global_transform.origin)
 		step_accumulated += moved_distance * 1.5
 		UI.setSteps(step_accumulated)
-	#these can be moved to the phone_script but are they really hurting anybody
+	
+	#player movement input affects phone orientation
 	phone_n_cam_tilt(input_dir.x, input_dir.y, delta)
 	phone_sway(delta)
 	head_bobbing(velocity.length(),delta)
@@ -183,6 +239,7 @@ func update_camera(event):
 	mouse_input = event.relative
 
 func update_camera_controller(right_stick_parameter): 
+	#duplicate function of update_camera(event) but uses right_stick input from a controller
 	right_stick_input = right_stick_parameter
 	CAMERA_CONTROLLER.rotation.x += right_stick_input.y * CONTROLLER_SENSITIVITY
 	if isDriving():
@@ -334,6 +391,12 @@ func enemy_proximity_damage(delta):
 func hurt(hurt_rate):
 	UI.drainHealth(hurt_rate)
 
+func enemy_proximity_particles():
+	if UI.getTemp() < 60:
+		COLD_AIR.show()
+	else:
+		COLD_AIR.hide()
+
 func entityProxTemp():
 	#proof of concept that we can measure distance to nearest entity spawned by ENEMY_MANAGER
 	var distance = 999999  # Start with a large value
@@ -379,66 +442,3 @@ func _handle_phone_toggle():
 	positionToUse4Phone = PHONE.PHONE_FAR_ANCHOR.position
 	phonePosToggle = false
 	PHONE.togglePhone()
-
-func phone_input_check(event):
-	#Toggle Phone holdQ logic
-	if Input.is_action_just_pressed("Toggle Phone"):
-		q_hold_start_time = Time.get_ticks_msec()
-		q_is_processed = false
-	
-	# Handle hold detection
-	if Input.is_action_pressed("Toggle Phone") and not q_is_processed:
-		var hold_time = (Time.get_ticks_msec() - q_hold_start_time) / 1000.0
-		if hold_time >= q_hold_threshold:
-			q_is_processed = true
-			_handle_phone_position_toggle()
-	
-	# Handle quick press (release before threshold)
-	if Input.is_action_just_released("Toggle Phone"):
-		if not q_is_processed:
-			# This was a quick tap
-			_handle_phone_toggle()
-			q_hold_start_time = 0
-			q_is_processed = false
-
-	#basic 1-3 inputs
-	if PHONE.isInHand() and !PHONE.isDead() and PHONE.phoneAnimating == false:
-		if Input.is_action_just_pressed("phone_f"):#Input 1
-			PHONE.togglePhoneLight()
-		if PHONE.appChangeLock == false:
-			if Input.is_action_just_pressed("phone_1"):#Input app1
-				PHONE.PhoneCamOn(false)
-			if Input.is_action_just_pressed("phone_2"):#Input app2
-				PHONE.GalleryOn(false)
-			if Input.is_action_just_pressed("phone_3"):#Input app3
-				PHONE.DiagnosticsOn(false)
-			
-	#take picture
-	if event.is_action_pressed("left_click"):
-		if PHONE.isInHand():
-			PHONE.takePicture()
-			
-	#gallery scrolling
-	if event.is_action_pressed("scroll_down") and PHONE.galleryActive == true:
-		PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, 1)
-		if PHONE.loadImage(PHONE.ss_index, false) == false:
-			PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, -1)
-		else:
-			PHONE.loadImage(PHONE.ss_index, true)
-	elif event.is_action_pressed("scroll_up") and PHONE.galleryActive == true:
-		PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, -1)
-		if PHONE.loadImage(PHONE.ss_index, false) == false:
-			PHONE.ss_index = PHONE.ss_index_cycler(PHONE.ss_index, 1)
-		else:
-			PHONE.loadImage(PHONE.ss_index, true)
-	
-	#camera zoom scrolling
-	if event.is_action_pressed("scroll_down") and PHONE.PHONE_CAM.isOn():
-		PHONE.zoom_index = PHONE.zoom_index_cycler(PHONE.zoom_index, -1)
-		PHONE.PHONE_CAM.zoom_cam(PHONE.zoom_index)
-	elif event.is_action_pressed("scroll_up") and PHONE.PHONE_CAM.isOn():
-		PHONE.zoom_index = PHONE.zoom_index_cycler(PHONE.zoom_index, 1)
-		PHONE.PHONE_CAM.zoom_cam(PHONE.zoom_index)
-
-func movement_vector():
-	return Input.get_vector("move_left","move_right","move_forward","move_backward")
