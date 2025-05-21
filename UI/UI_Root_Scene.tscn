@@ -83,6 +83,33 @@ offset_top = -25.0
 offset_right = 314.0
 offset_bottom = -2.0
 
+[node name="StaminaBar" type="ProgressBar" parent="Player"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -229.0
+offset_top = -241.0
+offset_right = 371.0
+offset_bottom = -214.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.272283, 0.63153, 0, 1)
+value = 100.0
+script = ExtResource("3_ueqmu")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Player/StaminaBar"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -26.0
+offset_right = 53.0
+offset_bottom = 14.0
+text = "Stamina"
+fit_content = true
+autowrap_mode = 0
+
 [node name="Strikes" type="ProgressBar" parent="Player"]
 layout_mode = 1
 anchors_preset = 7

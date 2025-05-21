@@ -1,7 +1,8 @@
 extends CharacterBody3D
 class_name Player
 
-@onready var PAUSE_MENU := $CanvasLayer/PauseMenu
+@onready var PAUSE_MENU := $CanvasLayer2/PauseMenu
+@onready var INVENTORY_MENU := $CanvasLayer/Inventory
 @onready var UI := $UI
 @onready var PHONE := $CameraController/Camera3D/PhoneNode
 @onready var VEHICLE := $"../Vehicle"
@@ -44,7 +45,7 @@ var self_total_rot : float = 0
 var _is_crouching : bool = false
 var _is_sprinting : bool = false
 var Q_is_being_held : bool = false
-
+var _stamina_depleted : bool = false
 #phone posiition 
 @onready var positionToUse4Phone : Vector3 = PHONE.PHONE_AWAY_ANCHOR.position
 var phonePosToggle : bool = false
@@ -66,9 +67,9 @@ var bob_fq_base
 @export var falloff_exponent = 2.0   
 
 #diagnostics app value tracking distance traveled on player walk
-var step_accumulated : int = 0
+var step_accumulated : float = 0
 var previous_position
-
+var moved_distance
 #USED BY OTHER CLASSES
 var player_state = PLAYER_STATE.WALKING
 enum PLAYER_STATE {
@@ -103,8 +104,10 @@ func _physics_process(delta: float) -> void:
 			phone_is_looking_at.visible = false
 			
 func _input(event):
-	if event.is_action_pressed("pause"):
+	if event.is_action_pressed("pause") and !PAUSE_MENU.input_locked():
 		PAUSE_MENU.pause()
+	if event.is_action_pressed("inventory") and !INVENTORY_MENU.input_locked():
+		INVENTORY_MENU.openInv()
 	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_STATE.WALKING:
 		crouch_toggle()
 	if event.is_action_pressed("interact"):
@@ -123,7 +126,7 @@ func _input(event):
 		get_tree().quit()
 	
 	if !CAMERA_CONTROLLER: return
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and !INVENTORY_MENU.Active():
 		update_camera(event)
 	
 	phone_input_check(event) #threw all phone related inputs into here to clean readability
@@ -201,23 +204,32 @@ func _walking_player_movement(delta):
 	if direction and !self.isDriving():
 		velocity.x = direction.x * _speed 
 		velocity.z = direction.z * _speed
-		if Input.is_action_pressed("sprint") and is_on_floor() and movement_vector().y < 0:
-			if _is_crouching == true:
-				crouch_toggle()
-			velocity.z *= SPRINT_MULT
-			velocity.x *= SPRINT_MULT
-			_is_sprinting = true
+		if Input.is_action_pressed("sprint") and is_on_floor() and movement_vector().y < 0 and !_stamina_depleted:
+			if UI.getStamina() > 0:
+				if _is_crouching == true:
+					crouch_toggle()
+				UI.drainStamina(8 * delta)
+				velocity.z *= SPRINT_MULT
+				velocity.x *= SPRINT_MULT
+				_is_sprinting = true
+				if UI.getStamina()<=0:
+					_stamina_depleted = true
 		else:
-			_is_sprinting = false 
+			_is_sprinting = false
 	else:
 		velocity.x = move_toward(velocity.x, 0, _speed)
 		velocity.z = move_toward(velocity.z, 0, _speed)
+		_is_sprinting = false
+	if !_is_sprinting:
+		UI.restoreStamina(6*delta)
+		if UI.getStamina() > 30:
+			_stamina_depleted = false
 	move_and_slide()
-	
+
 	#steps accumulated logic for diagnostics app
 	if direction and !self.isDriving():
-		var moved_distance = previous_position.distance_to(self.global_transform.origin)
-		step_accumulated += moved_distance * 1.5
+		moved_distance = previous_position.distance_to(self.global_transform.origin)
+		step_accumulated += moved_distance * 1
 		UI.setSteps(step_accumulated)
 	
 	#player movement input affects phone orientation

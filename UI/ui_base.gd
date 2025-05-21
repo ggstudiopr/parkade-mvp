@@ -4,6 +4,7 @@ extends Control
 @onready var VEHICLE := $"../../Vehicle"
 @onready var HEALTH_BAR := $Player/HealthBar
 @onready var HEARTRATE_BAR := $Player/HeartRate
+@onready var STAMINA_BAR := $Player/StaminaBar
 
 enum CAR_TRANSMISSION_AUTO {
 	DRIVE,
@@ -187,6 +188,7 @@ func heartRate(delta, curr_health):
 	var health_percent = curr_health / PLAYER.UI.HEALTH_BAR.max_value 
 	# Map health percentage (1->0) to heart rate (70->175)
 	var heart_rate = 70 + (1 - health_percent) * 105
+	
 	$Player/HeartRate/Display.text = str(int(HEARTRATE_BAR.value))
 	return heart_rate + fluctuation
 	
@@ -198,3 +200,12 @@ func setSteps(amount):
 
 func getSteps():
 	return int($Player/Steps.text)
+
+func drainStamina(amount):
+	STAMINA_BAR.value -= amount
+
+func restoreStamina(amount):
+	STAMINA_BAR.value += amount
+
+func getStamina():
+	return STAMINA_BAR.value

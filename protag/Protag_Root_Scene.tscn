@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dl60tvwy1elkf"]
+[gd_scene load_steps=21 format=3 uid="uid://dl60tvwy1elkf"]
 
 [ext_resource type="Script" uid="uid://cwfgwnkth6x74" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
 [ext_resource type="Script" uid="uid://ci0muygltpwcc" path="res://protag/RaycastAlign.gd" id="2_65wl4"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://c77o88po4dpmm" path="res://protag/alt_flashlight.gd" id="6_grnn1"]
 [ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3" id="8_bhrfm"]
 [ext_resource type="Script" uid="uid://qkgymnnknv6n" path="res://protag/scripts/FootstepAudioPlayer.gd" id="9_f878c"]
+[ext_resource type="PackedScene" uid="uid://cbn8a4pe4nskn" path="res://protag/inventory_menu_root.tscn" id="10_cvd2c"]
 [ext_resource type="PackedScene" uid="uid://d4m2wc7e2f46u" path="res://protag/pause_menu_root.tscn" id="10_jlnjc"]
 [ext_resource type="PackedScene" uid="uid://rotxwcdcvhym" path="res://protag/cold_air_puffs.tscn" id="11_glbnd"]
 
@@ -237,11 +238,21 @@ spot_angle = 89.4612
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("10_jlnjc")]
-offset_left = 244.0
-offset_top = 73.0
-offset_right = 244.0
-offset_bottom = 73.0
+[node name="Inventory" parent="CanvasLayer" instance=ExtResource("10_cvd2c")]
+offset_left = 72.0
+offset_top = 37.0
+offset_right = 72.0
+offset_bottom = 37.0
+scale = Vector2(0.912423, 0.888125)
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="PauseMenu" parent="CanvasLayer2" instance=ExtResource("10_jlnjc")]
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 3.0
+offset_bottom = 5.0
 
 [node name="UI" parent="." instance=ExtResource("5_7uxf5")]
 offset_left = 2.0
