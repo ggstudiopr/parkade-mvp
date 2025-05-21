@@ -40,6 +40,9 @@ var self_total_rot
 #Car Interact Ray
 @onready var CAR_LOOK_DIR_RAY := $CameraController/Camera3D/CarInteractRaycast
 
+#PhoneCamRay
+@onready var PHONE_LOOK_RAY = PHONE.PHONE_LOOK_RAY
+
 #BOOLS FOR MOVEMENT LOGIC
 var _is_crouching : bool
 var _is_sprinting : bool
@@ -93,14 +96,22 @@ func _physics_process(delta: float) -> void:
 	_player_animation() #going to try and handle walking animations here later. for now only contains simple footstep loop. removed headbob
 	if controller_RS_Input(): #controller right stick support
 		update_camera_controller(controller_RS_Input())
+	
 	if UI.getTemp() < 60:
 		COLD_AIR.show()
 	else:
 		COLD_AIR.hide()
+	
+	#proof of concept function to track enemy proximity
 	enemy_proximity_damage(delta)
-	#var screen_center = get_viewport().get_visible_rect().size / 2
-	#print(screen_center)
-
+	
+	#proof of concept of making things disappear when phone cam snaps it
+	#Collision layer 4
+	if(PHONE_LOOK_RAY.is_colliding() and PHONE.picTaken()):
+		if(PHONE_LOOK_RAY.get_collider().is_in_group("DisappearOnPictureTaken")):
+			var phone_is_looking_at = PHONE_LOOK_RAY.get_collider()
+			phone_is_looking_at.visible = false
+			
 func _input(event):
 	if event.is_action_pressed("pause"):
 		PAUSE_MENU.pause()
@@ -324,6 +335,7 @@ func hurt(hurt_rate):
 	UI.drainHealth(hurt_rate)
 
 func entityProxTemp():
+	#proof of concept that we can measure distance to nearest entity spawned by ENEMY_MANAGER
 	var distance = 999999  # Start with a large value
 	if self.ENEMY_MANAGER and self.ENEMY_MANAGER._enemies.size() > 0:
 		var player_pos = self.global_position

@@ -32,11 +32,11 @@ PICTURES"
 
 [sub_resource type="Skin" id="Skin_wdsnx"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wdsnx"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yf706"]
 albedo_color = Color(1, 0, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_j0b7v"]
-material = SubResource("StandardMaterial3D_wdsnx")
+material = SubResource("StandardMaterial3D_yf706")
 
 [sub_resource type="Skin" id="Skin_uixl8"]
 

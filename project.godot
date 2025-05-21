@@ -29,6 +29,7 @@ CarViewBoundaries="read the name bro"
 PlayerCollider=""
 CarInteractColliders="read name, bro"
 pause_manager=""
+DisappearOnPictureTaken=""
 
 [input]
 
@@ -192,6 +193,7 @@ debug_light_dark={
 3d_physics/layer_1="WorldLayer"
 3d_physics/layer_2="CarInteractLayer"
 3d_physics/layer_3="CarBumpSmallAssets"
+3d_physics/layer_4="CameraAim"
 3d_physics/layer_5="PlayerCollisionLayer"
 3d_physics/layer_6="CarColliderLayer"
 

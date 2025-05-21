@@ -14,6 +14,9 @@ extends Node3D
 @onready var PHONE_CLOSE_ANCHOR := $"../PhonePositionalAnchors/Close"
 @onready var PHONE_FAR_ANCHOR :=$"../PhonePositionalAnchors/Far"
 
+@onready var PHONE_LOOK_RAY := $PhoneCamRay
+var pictureJustTaken : bool = false
+
 @export var loadScreenTimer = 0.75
 @export var appChangeLockTimer = 0.5
 var appChangeLock : bool
@@ -125,7 +128,10 @@ func togglePhoneLight():
 func takePicture():
 	if PHONE_CAM.isOn() and !isDead():
 		PHONE_LIGHT.pictureFlash() #img creation logic within here to line up with spotlight values for effect
-
+		pictureJustTaken = true
+		await get_tree().create_timer(1).timeout
+		pictureJustTaken = false
+		
 func togglePhoneCam():
 	print("Toggling Phone Camera ON/OFF")
 	if !PHONE_CAM.isOn():
@@ -268,3 +274,6 @@ func runDiagnostics():
 	if PLAYER.phonePosToggle == false: #phone is in hand orientation
 		for icon in diagnosticsApp.ICONS.get_children():
 			icon.rotation = 0
+
+func picTaken():
+	return true if pictureJustTaken else false

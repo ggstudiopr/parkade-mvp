@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bhprx4d2og2lv"]
+[gd_scene load_steps=44 format=3 uid="uid://bhprx4d2og2lv"]
 
 [ext_resource type="Texture2D" uid="uid://l332ldiqi0q7" path="res://textures/concrete/concrete_floor_worn_001_disp_4k.png" id="1_1o1sh"]
 [ext_resource type="Texture2D" uid="uid://bf3xmnir3pryj" path="res://textures/orange/texture_10.png" id="2_185g5"]
@@ -57,6 +57,40 @@ albedo_texture = ExtResource("7_rjbds")
 uv1_triplanar = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vcms4"]
+
+[sub_resource type="TextMesh" id="TextMesh_1o1sh"]
+text = "I AM ONLY
+READABLE IN
+PICTURES"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wdsnx"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_185g5"]
+material = SubResource("StandardMaterial3D_wdsnx")
+
+[sub_resource type="Skin" id="Skin_r8055"]
+
+[sub_resource type="TextMesh" id="TextMesh_ahbui"]
+text = "I AM ONLY 
+READABLE IN 
+CAMERA"
+autowrap_mode = 1
+
+[sub_resource type="Skin" id="Skin_wisk5"]
+
+[sub_resource type="TextMesh" id="TextMesh_y3h5i"]
+text = "I AM 
+IN BOTH"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1o1sh"]
+radius = 0.841474
+
+[sub_resource type="TextMesh" id="TextMesh_185g5"]
+text = "I DISAPPEAR
+WHEN U 
+TAKE A 
+CLOSE PICTURE"
 
 [node name="Floor1v0_1" type="Node3D"]
 
@@ -911,6 +945,63 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
 
 [node name="Fluo_Light_Bar3" parent="Segment1/Lights/Fluo_Light_Bar/Fluo_Light_Bar5/Fluo_Light_Bar4/Fluo_Light_Bar4" instance=ExtResource("25_1qfqh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+
+[node name="PictureOnlyMesh" type="MeshInstance3D" parent="Segment1"]
+transform = Transform3D(-0.0511242, -0.0214088, -0.998462, 0.00237135, 0.999764, -0.0215581, 0.998689, -0.00346984, -0.0510614, 31.6638, 1.4521, 2.61636)
+layers = 64
+mesh = SubResource("TextMesh_1o1sh")
+
+[node name="PictureOnlyMesh" type="MeshInstance3D" parent="Segment1/PictureOnlyMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 0.1, 0, -0.0812082, -0.0969381)
+layers = 64
+mesh = SubResource("BoxMesh_185g5")
+skin = SubResource("Skin_r8055")
+
+[node name="CameraOnlyMesh" type="MeshInstance3D" parent="Segment1/PictureOnlyMesh"]
+transform = Transform3D(1, 0, 0, -3.72529e-09, 1, -1.60653e-08, 0, -4.58676e-08, 1, 1.36401, 0.0855598, -0.0716743)
+layers = 2
+mesh = SubResource("TextMesh_ahbui")
+skin = SubResource("Skin_wisk5")
+skeleton = NodePath("../..")
+
+[node name="PictureOnlyMesh" type="MeshInstance3D" parent="Segment1/PictureOnlyMesh/CameraOnlyMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 0.1, 0, -0.0812082, -0.0969381)
+layers = 2
+mesh = SubResource("BoxMesh_185g5")
+skin = SubResource("Skin_r8055")
+
+[node name="PhoneOnlyMesh" type="MeshInstance3D" parent="Segment1/PictureOnlyMesh"]
+transform = Transform3D(1, 0, 0, -3.72529e-09, 1, -1.60653e-08, 0, -4.58676e-08, 1, 0.490593, 1.27031, -1.06418)
+layers = 66
+mesh = SubResource("TextMesh_y3h5i")
+skin = SubResource("Skin_wisk5")
+skeleton = NodePath("../..")
+
+[node name="PictureOnlyMesh" type="MeshInstance3D" parent="Segment1/PictureOnlyMesh/PhoneOnlyMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 0.1, 0, -0.0812082, -0.0969381)
+layers = 66
+mesh = SubResource("BoxMesh_185g5")
+skin = SubResource("Skin_r8055")
+
+[node name="Disappear1" type="Area3D" parent="Segment1/PictureOnlyMesh" groups=["DisappearOnPictureTaken"]]
+transform = Transform3D(1, -2.32831e-10, 3.35276e-08, -5.3551e-09, 1, -3.29455e-08, -3.35276e-08, -4.61587e-08, 1, 3.19389, 0.0350271, -0.0402451)
+collision_layer = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Segment1/PictureOnlyMesh/Disappear1" groups=["DisappearOnPictureTaken"]]
+shape = SubResource("SphereShape3D_1o1sh")
+
+[node name="DisappearPicture" type="MeshInstance3D" parent="Segment1/PictureOnlyMesh/Disappear1" groups=["DisappearOnPictureTaken"]]
+transform = Transform3D(1, -2.32831e-10, 0, -2.32831e-10, 1, 2.32831e-09, 0, 3.49246e-10, 1, -7.62939e-06, -8.9407e-08, 7.62939e-06)
+layers = 66
+mesh = SubResource("TextMesh_185g5")
+skin = SubResource("Skin_wisk5")
+skeleton = NodePath("../../..")
+
+[node name="PictureOnlyMesh" type="MeshInstance3D" parent="Segment1/PictureOnlyMesh/Disappear1/DisappearPicture" groups=["DisappearOnPictureTaken"]]
+transform = Transform3D(1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 0.1, 0, -0.0812082, -0.0969381)
+layers = 66
+mesh = SubResource("BoxMesh_185g5")
+skin = SubResource("Skin_r8055")
 
 [node name="Vehicle" parent="." instance=ExtResource("26_cgyfu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.897, 0, -103.534)
