@@ -93,6 +93,7 @@ TAKE A
 CLOSE PICTURE"
 
 [node name="Floor1v0_1" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17588, 0.046463, 6.10352e-05)
 
 [node name="Base" type="StaticBody3D" parent="."]
 
@@ -1005,3 +1006,4 @@ skin = SubResource("Skin_r8055")
 
 [node name="Vehicle" parent="." instance=ExtResource("26_cgyfu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60.897, 0, -103.534)
+mass = 700.0

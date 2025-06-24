@@ -9,7 +9,7 @@ extends Node3D
 @onready var PHONE_SCREEN := $PhoneScreen
 @onready var PHONE_MODEL := $HandPhone
 @onready var PHONE_ANIMATOR := $PhoneAnimationPlayer
-@onready var PHONE_AUDIO := $PhoneAnimationPlayer/PhoneAudio
+@onready var PHONE_AUDIO := $Sounds/PhoneAudio
 @onready var PHONE_AWAY_ANCHOR := $"../PhonePositionalAnchors/Away"
 @onready var PHONE_CLOSE_ANCHOR := $"../PhonePositionalAnchors/Close"
 @onready var PHONE_FAR_ANCHOR :=$"../PhonePositionalAnchors/Far"
@@ -96,16 +96,18 @@ func togglePhone():
 		if PhoneInHandBool == true: #if true, phone is being pulled out
 			PHONE_MODEL.show()
 			PHONE_SCREEN.show()
+			PHONE_AUDIO._play_SHOW_sound()
 			if !isDead():
 				if flashlight_memory == true:
 					print("Phone Light was on last time it was put away so it will be automatically re-enabled.")
 					togglePhoneLight()
-				PHONE_AUDIO._play_ON_sound()
+				
 				print("Booting phone...")
 				PHONE_SCREEN.texture = load("res://protag/phone/wallpaper.png") #base boot wallpaper
 				await get_tree().create_timer(loadScreenTimer).timeout
 				check_app_memory(true) #load app memory
 		elif PhoneInHandBool == false: #if false, phone is being put away
+			PHONE_AUDIO._play_AWAY_sound()
 			if PHONE_LIGHT.isOn():
 				flashlight_memory = true
 			else:
@@ -216,6 +218,7 @@ func _force_phone_OFF(): #handles resetting app related bools and statuses
 func _force_phone_DEAD():
 	print("Phone battery has died!")
 	reset_all_states(true)
+	PHONE_AUDIO._play_vibrate_sound()
 	PHONE_SCREEN.texture = load("res://protag/phone/batteryImage.png")
 	
 func isInHand():

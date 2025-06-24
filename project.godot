@@ -30,6 +30,7 @@ PlayerCollider=""
 CarInteractColliders="read name, bro"
 pause_manager=""
 DisappearOnPictureTaken=""
+AMB_FLUO_LIGHT_SOUND="for light source static sounds"
 
 [input]
 

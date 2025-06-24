@@ -4,7 +4,7 @@ extends SpotLight3D
 @export var lightOff : float = 0
 @export var lightFlash : float = 6
 @onready var LIGHT := $"."
-@onready var SOUND := $FlashlightClick
+@onready var SOUND := $"../Sounds/FlashlightClick"
 @onready var PHONE_SNAP := $"../SnapViewport/SnapshotCamera"
 var LightBool : bool
 
@@ -18,7 +18,8 @@ func flashlightOn():
 		
 func flashlightOff():
 		LIGHT.light_energy = lightOff
-		SOUND._play_click()
+		if !$"..".isDead():
+			SOUND._play_click()
 		LightBool = false
 
 func _process(delta: float) -> void:

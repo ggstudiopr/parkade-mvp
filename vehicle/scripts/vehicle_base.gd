@@ -18,19 +18,17 @@ class_name Vehicle
 @onready var GEAR_SHIFT_TEXT := $Interactables/AutoGearShiftToggle/TransmissionTextMesh
 #audio playbacks
 @onready var CAR_HORN_AUDIO := $Interactables/CarHorn/CarHornAudio
-@onready var ENGINE_SOUND := $Front/CarEngine
-@onready var RADIO_AUDIO := $Interactables/Radio/RadioAudio
-#@onready var WHEEL_AUDIO := $Front/WheelSound
-#@onready var ENGINE_SPRINT_SOUND := $Front/CarEngine/CarEngineSprintAudio
+@onready var ENGINE_SOUND := $Sounds/CarEngine
+@onready var RADIO_AUDIO := $Sounds/RadioAudio
 #animation player
 @onready var CAR_ANIMATOR := $CarAnimationPlayer
 
 # VehicleBody3D movement parameters
-@export var ENGINE_POWER = 1000.0
+@export var ENGINE_POWER = 650.0
 @export var MAX_STEER = 0.285
 @export var BRAKE_FORCE = 50.0  
 @export var CAR_SPRINT_MULT = 7.5
-@export var max_speed = 6.0  # Set your desired top speed here
+var max_speed = 0  # Set your desired top speed here
 var speed_ratio
 @export var roll_strength = 0.75 # Adjust this value to control roll away speed when car is unparked
 var _is_car_sprinting = false
@@ -90,15 +88,18 @@ func _driving_car_movement(delta):
 			forward_input *= CAR_SPRINT_MULT
 			backward_input  *= CAR_SPRINT_MULT
 			_is_car_sprinting = true
-			max_speed = 12
+			max_speed = 17
 		else:
 			_is_car_sprinting = false
-			max_speed = 6
+			max_speed = 9
 			
 		if forward_input > 0 and canMoveForward():
 			engine_force = forward_input * ENGINE_POWER * (1.0 - speed_ratio)
-		elif backward_input > 0 and canMoveBackward():
-			engine_force = -backward_input * ENGINE_POWER * (1.0 - speed_ratio)
+		elif (forward_input>0 or backward_input>0) and canMoveBackward():
+			if forward_input > 0:
+				engine_force = -forward_input * ENGINE_POWER * (1.0 - speed_ratio)
+			elif backward_input > 0:
+				engine_force = -backward_input * ENGINE_POWER * (1.0 - speed_ratio)
 		else:
 			engine_force = 0.0
 			brake = BRAKE_FORCE
@@ -123,7 +124,8 @@ func _car_drift_away():
 func shiftGears(new_gear_state):
 	if linear_velocity.length() > 1.0:
 		print("bad gear shift")
-		
+		engine_force = 0.0
+		brake = BRAKE_FORCE
 	if new_gear_state == CAR_TRANSMISSION_AUTO.PARK:
 		self.gear_shift = CAR_TRANSMISSION_AUTO.PARK
 		text_mesh.text = "PARK"

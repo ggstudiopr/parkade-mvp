@@ -4,12 +4,16 @@ extends AudioStreamPlayer3D
 @onready var phone_audio: AudioStreamPlayer3D = $"."
 @onready var phone := $"../.."
 
-func _play_ON_sound():
-	if !phone.isDead():
-		phone_audio.stream = load("res://protag/phone/soft_beep.mp3")
-		phone_audio.play()
+func _play_SHOW_sound():
+	phone_audio.stream = load("res://sounds/phone-audio/Clothes_Item_Phone.wav")
+	phone_audio.play()
+func _play_AWAY_sound():
+	phone_audio.stream = load("res://sounds/phone-audio/Clothes Sounds_Clothes Short 3.wav")
+	phone_audio.play()
 func _play_charging_sound():
-	
 	if !(phone.isDead()) and phone.isCharging:
-		phone_audio.stream = load("res://protag/phone/PhoneCharging.mp3")
+		phone_audio.stream = load("res://sounds/phone-audio/PhoneCharging.mp3")
+		phone_audio.play()
+func _play_vibrate_sound():
+		phone_audio.stream = load("res://sounds/phone-audio/Phone Vibrations_Phone Vibrate 1.wav")
 		phone_audio.play()

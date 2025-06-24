@@ -81,10 +81,10 @@ layers = 64
 mesh = SubResource("BoxMesh_j0b7v")
 skin = SubResource("Skin_uixl8")
 
-[node name="Fluo_Light_Test" type="SpotLight3D" parent="." groups=["AMB_FLUO_LIGHT_SOUND"]]
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -5.77291, 2.24357, -5.63728)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Fluo_Light_Test"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SpotLight3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0439398)
 mesh = SubResource("SphereMesh_yf706")
 surface_material_override/0 = SubResource("StandardMaterial3D_ku3ef")

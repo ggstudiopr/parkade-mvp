@@ -2,7 +2,7 @@ extends AudioStreamPlayer3D
 #JUST AUDIO PLAYER FUNCTION WHEN CALLED, CURRENTLY ONLY CALLED IN FLASHLIGHT SCRIPT
 @onready var flashlight_audio: AudioStreamPlayer3D = $"."
 func _play_click():
-	flashlight_audio.stream = load("res://protag/phone/Flashlight Sound Effect sfx.mp3")
+	flashlight_audio.stream = load("res://sounds/phone-audio/Phone Taps_Phone Tap 1.wav")
 	flashlight_audio.pitch_scale = randf_range(0.9,1.1)
 	flashlight_audio.play()
 func _play_flash():

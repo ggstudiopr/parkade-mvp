@@ -1,13 +1,16 @@
-[gd_scene load_steps=21 format=3 uid="uid://dl60tvwy1elkf"]
+[gd_scene load_steps=24 format=3 uid="uid://dl60tvwy1elkf"]
 
 [ext_resource type="Script" uid="uid://cwfgwnkth6x74" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
 [ext_resource type="Script" uid="uid://ci0muygltpwcc" path="res://protag/RaycastAlign.gd" id="2_65wl4"]
+[ext_resource type="AudioStream" uid="uid://bq11tey4ecy0m" path="res://sounds/protagonist-tied-ambient/Static background Noise.mp3" id="2_jnuwb"]
 [ext_resource type="PackedScene" uid="uid://csjcseh76ann" path="res://protag/phone/Phone_Root_Scene.tscn" id="2_nqwbi"]
 [ext_resource type="Script" uid="uid://bl4epvu7js8dq" path="res://protag/MainCam.gd" id="2_uq3ot"]
 [ext_resource type="Environment" uid="uid://blmt4nohw4gso" path="res://base_enviro.tres" id="2_xrwh2"]
+[ext_resource type="AudioStream" uid="uid://drqttfhtpkpeo" path="res://sounds/protagonist-tied-ambient/Ambient Fluorescent sounds_Insert 1.wav" id="3_jnuwb"]
+[ext_resource type="Script" uid="uid://rrr2laeg8ndw" path="res://protag/fluorescent_prox_audio.gd" id="4_dk6wf"]
+[ext_resource type="AudioStream" uid="uid://bbjn3y1e0snb2" path="res://sounds/protagonist-tied-ambient/Foot steps_Walk 1.wav" id="4_xe5yb"]
 [ext_resource type="PackedScene" uid="uid://d1w1jahqvppkf" path="res://UI/UI_Root_Scene.tscn" id="5_7uxf5"]
 [ext_resource type="Script" uid="uid://c77o88po4dpmm" path="res://protag/alt_flashlight.gd" id="6_grnn1"]
-[ext_resource type="AudioStream" uid="uid://cf3ky2gprqugr" path="res://protag/assets/Concrete Footstep 1 SOUND Effect.mp3" id="8_bhrfm"]
 [ext_resource type="Script" uid="uid://qkgymnnknv6n" path="res://protag/scripts/FootstepAudioPlayer.gd" id="9_f878c"]
 [ext_resource type="PackedScene" uid="uid://cbn8a4pe4nskn" path="res://protag/inventory_menu_root.tscn" id="10_cvd2c"]
 [ext_resource type="PackedScene" uid="uid://d4m2wc7e2f46u" path="res://protag/pause_menu_root.tscn" id="10_jlnjc"]
@@ -155,6 +158,23 @@ script = ExtResource("1_yvqfv")
 SPEED_CROUCH = 0.75
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
 
+[node name="Audio" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52081, 0)
+
+[node name="Ambiance" type="AudioStreamPlayer3D" parent="Audio"]
+stream = ExtResource("2_jnuwb")
+autoplay = true
+
+[node name="FluorescentProxAudio" type="AudioStreamPlayer3D" parent="Audio"]
+stream = ExtResource("3_jnuwb")
+autoplay = true
+script = ExtResource("4_dk6wf")
+
+[node name="Footstep" type="AudioStreamPlayer3D" parent="Audio"]
+stream = ExtResource("4_xe5yb")
+volume_db = -25.0
+script = ExtResource("9_f878c")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." groups=["PlayerCollider"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_ni7be")
@@ -221,11 +241,6 @@ root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_wpsm1")
 }
-
-[node name="FootstepAudioPlayer" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("8_bhrfm")
-volume_db = -25.0
-script = ExtResource("9_f878c")
 
 [node name="self_light" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.3, 0)

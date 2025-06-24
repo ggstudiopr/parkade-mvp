@@ -6,10 +6,10 @@ func _play_audio():
 	self_audio.play()
 
 func engineOn():
-	self_audio.stream = load("res://vehicle/sounds/EngineStart.mp3")
+	self_audio.stream = load("res://sounds/vehicle-audio/EngineStart.mp3")
 	self_audio.play()
 	await self_audio.finished
-	self_audio.stream = load("res://vehicle/sounds/EngineRunningLoop.mp3")
+	self_audio.stream = load("res://sounds/vehicle-audio/EngineRunningLoop.mp3")
 	engineRunningLoop()
 	
 func engineRunningLoop():#can be rewritten/redone to make loop sound better, milisecond of hearing it start in phys process

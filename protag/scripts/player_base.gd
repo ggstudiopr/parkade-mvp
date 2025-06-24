@@ -9,7 +9,7 @@ class_name Player
 @onready var ENEMY_MANAGER := $"../EnemyManager"
 
 #MOVEMENT/SPEED VALUES
-@export var SPEED_DEFAULT : float = 1.25
+@export var SPEED_DEFAULT : float = 2
 var _speed : float = SPEED_DEFAULT
 @export var SPEED_CROUCH : float = 1
 @export var SPRINT_MULT : float = 2.25
@@ -31,7 +31,7 @@ var self_total_rot : float = 0
 
 #ANIMATION RELATED NODE DECLARATIONS
 @onready var BODY_ANIMATOR := $CameraController/BodyAnimationPlayer #transforms parent body on crouch/stand
-@onready var Footstep_Audio_Player :=$FootstepAudioPlayer
+@onready var Footstep_Audio_Player :=$Audio/Footstep
 
 #test features
 @onready var ALT_LIGHT := $CameraController/Camera3D/AltFlashlight
@@ -201,6 +201,7 @@ func _walking_player_movement(delta):
 	previous_position = self.global_transform.origin
 	input_dir = movement_vector()
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
+	_speed = SPEED_DEFAULT + (0.125 * UI.getStrikes())
 	if direction and !self.isDriving():
 		velocity.x = direction.x * _speed 
 		velocity.z = direction.z * _speed
@@ -233,10 +234,11 @@ func _walking_player_movement(delta):
 		UI.setSteps(step_accumulated)
 	
 	#player movement input affects phone orientation
-	phone_n_cam_tilt(input_dir.x, input_dir.y, delta)
+	phone_n_cam_tilt(input_dir.x, input_dir.y, delta, UI.getStrikes())
 	phone_sway(delta)
+
 	head_bobbing(velocity.length(),delta)
-	phone_bobbing(velocity.length(),delta)
+	phone_bobbing(velocity.length(),delta, UI.getStrikes())
 	
 func update_camera(event):
 	CAMERA_CONTROLLER.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
@@ -263,7 +265,7 @@ func update_camera_controller(right_stick_parameter):
 		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,-1.25,1.5)
 		self.rotate_y(-right_stick_input.x * CONTROLLER_SENSITIVITY) 
 	
-func phone_n_cam_tilt(input_x, input_y, delta):
+func phone_n_cam_tilt(input_x, input_y, delta, strikes):
 	if PHONE:
 		if phonePosToggle == false: #if phone is not up close, add FarPosAnchor z rotation for flavor
 			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75 + PHONE.PHONE_FAR_ANCHOR.rotation.z, 10 * delta)
@@ -295,10 +297,11 @@ func phone_sway(delta):
 	#if CAMERA_CONTROLLER:
 		#CAMERA_CONTROLLER.rotation.y = lerp(CAMERA_CONTROLLER.rotation.y, mouse_input.x * sway_amount , 30 * delta)
 			
-func phone_bobbing(vel : float, delta):
+func phone_bobbing(vel : float, delta, strikes):
 	if PHONE.isInHand():
-		bob_am_base = bob_amount
-		bob_fq_base = bob_freq
+		var shake_offset = (randf() - 0.5) * 0.20 * strikes * 0.01
+		bob_am_base = bob_amount 
+		bob_fq_base = bob_freq 
 		if vel > 0 and is_on_floor():#jiggle phone on movement
 			if isDriving() == false:#only when walking
 				if _is_sprinting == true:#add bobbing if sprinting
@@ -314,7 +317,7 @@ func phone_bobbing(vel : float, delta):
 			PHONE.position.y = lerp(PHONE.position.y, positionToUse4Phone.y, 10 * delta)
 			PHONE.position.z= lerp(PHONE.position.z, positionToUse4Phone.z, 10 * delta)
 		#generic unconditional sway to add realism
-		PHONE.position.x = lerp(PHONE.position.x, positionToUse4Phone.x + sin(Time.get_ticks_msec() * bob_fq_base * 0.5) * bob_am_base* 0.2, 2* delta)
+		PHONE.position.x = lerp(PHONE.position.x, positionToUse4Phone.x +shake_offset+ sin(Time.get_ticks_msec() * bob_fq_base * 0.5) * bob_am_base* 0.2, 2* delta)
 		PHONE.position.y = lerp(PHONE.position.y, positionToUse4Phone.y + sin(Time.get_ticks_msec() * bob_fq_base* 0.3) * bob_am_base * 0.3,  2*delta)
 		PHONE.position.z = lerp(PHONE.position.z, positionToUse4Phone.z + sin(Time.get_ticks_msec() * bob_fq_base * 0.5) * bob_am_base* 0.1,  2*delta)
 
@@ -346,7 +349,7 @@ func _player_animation():
 			if !Footstep_Audio_Player.is_playing():
 				Footstep_Audio_Player._play_footstep()
 	elif (movement_vector()) and _is_crouching == true:
-	
+			
 		pass
 
 func crouch_toggle():
