@@ -1,19 +1,17 @@
-[gd_scene load_steps=41 format=3 uid="uid://ykg03vys3buy"]
+[gd_scene load_steps=39 format=3 uid="uid://ykg03vys3buy"]
 
 [ext_resource type="Script" uid="uid://daukphcpp2rum" path="res://vehicle/scripts/vehicle_base.gd" id="1_elk10"]
 [ext_resource type="Script" uid="uid://c3tu4jh4obsrx" path="res://vehicle/scripts/EngineAudio.gd" id="2_echwb"]
 [ext_resource type="Script" uid="uid://bipadkdw1u3m1" path="res://vehicle/scripts/CarHeadlights.gd" id="2_hg1yu"]
 [ext_resource type="AudioStream" uid="uid://jksouwbnj23u" path="res://vehicle/sounds/Miku.mp3" id="3_1681n"]
 [ext_resource type="Script" uid="uid://cva7co4k3rewb" path="res://vehicle/scripts/RadioAudio.gd" id="3_i0utq"]
-[ext_resource type="AudioStream" uid="uid://of4mbtrq2uv5" path="res://vehicle/sounds/EngineStart.mp3" id="3_p2q0p"]
+[ext_resource type="AudioStream" uid="uid://of4mbtrq2uv5" path="res://sounds/vehicle-audio/EngineStart.mp3" id="3_p2q0p"]
 [ext_resource type="Script" uid="uid://bvbb6mfnxn2ub" path="res://vehicle/scripts/MirrorReflectionLeft.gd" id="3_xmco5"]
 [ext_resource type="Script" uid="uid://cnmdbv2drttra" path="res://vehicle/scripts/MirrorReflectioRight.gd" id="4_gxq1t"]
 [ext_resource type="Script" uid="uid://c5twtxie73va7" path="res://vehicle/scripts/BackCam.gd" id="5_0k2mh"]
-[ext_resource type="AudioStream" uid="uid://bkpblki1ngjfs" path="res://vehicle/sounds/CarHorn.wav" id="5_knwov"]
+[ext_resource type="AudioStream" uid="uid://bkpblki1ngjfs" path="res://sounds/vehicle-audio/CarHorn.wav" id="5_knwov"]
 [ext_resource type="Script" uid="uid://cpsflumb6m35a" path="res://vehicle/scripts/MirrorReflectionRear.gd" id="5_lm5gg"]
-[ext_resource type="Script" uid="uid://bqiyqfh8ywp4o" path="res://vehicle/scripts/EngineAudioSprinting.gd" id="5_qnrr6"]
 [ext_resource type="Script" uid="uid://c7jlcfuxcwwnt" path="res://vehicle/scripts/HornAudio.gd" id="5_qtwpx"]
-[ext_resource type="Script" uid="uid://bxap6lt6cwk6q" path="res://vehicle/scripts/WheelAudio.gd" id="7_pdxqd"]
 [ext_resource type="Script" uid="uid://cu50voscq5c26" path="res://vehicle/scripts/BrakeLights.gd" id="8_iwtnb"]
 [ext_resource type="ArrayMesh" uid="uid://cod7ik8uvbmo1" path="res://vehicle/CarObj.obj" id="17_oysj2"]
 
@@ -120,7 +118,20 @@ physics_material_override = SubResource("PhysicsMaterial_vheon")
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, -0.5, 0)
 script = ExtResource("1_elk10")
-ENGINE_POWER = 650.0
+
+[node name="Sounds" type="Node3D" parent="."]
+
+[node name="CarEngine" type="AudioStreamPlayer3D" parent="Sounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5)
+stream = ExtResource("3_p2q0p")
+volume_db = -30.0
+script = ExtResource("2_echwb")
+
+[node name="RadioAudio" type="AudioStreamPlayer3D" parent="Sounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.160678, 1.23165, -1.32028)
+stream = ExtResource("3_1681n")
+volume_db = -26.105
+script = ExtResource("3_i0utq")
 
 [node name="CollisionShapeBody" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.932782, 0)
@@ -218,11 +229,6 @@ collision_layer = 2
 
 [node name="NodeCollision" type="CollisionShape3D" parent="Interactables/Radio/NodeMesh/RadioInteract" groups=["CarInteractColliders"]]
 shape = SubResource("SphereShape3D_63ipq")
-
-[node name="RadioAudio" type="AudioStreamPlayer3D" parent="Interactables/Radio"]
-stream = ExtResource("3_1681n")
-volume_db = -26.105
-script = ExtResource("3_i0utq")
 
 [node name="RadioScreen" type="Sprite3D" parent="Interactables/Radio"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.820259, 0.0109594, 4.1266)
@@ -381,26 +387,23 @@ script = ExtResource("5_lm5gg")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5)
 
 [node name="Headlight" type="SpotLight3D" parent="Front"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00287801, 0.652833)
-light_volumetric_fog_energy = 0.733
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.804601, 0.944006, 0.270926)
+light_volumetric_fog_energy = 0.75
 shadow_enabled = true
-distance_fade_enabled = true
+shadow_bias = 0.12
 distance_fade_begin = 0.0
 distance_fade_length = 2467.6
-spot_range = 50.0
-spot_attenuation = 1.5
+spot_range = 70.0
 script = ExtResource("2_hg1yu")
 
-[node name="CarEngine" type="AudioStreamPlayer3D" parent="Front"]
-stream = ExtResource("3_p2q0p")
-volume_db = -30.0
-script = ExtResource("2_echwb")
-
-[node name="CarEngineSprintAudio" type="AudioStreamPlayer3D" parent="Front/CarEngine"]
-script = ExtResource("5_qnrr6")
-
-[node name="WheelSound" type="AudioStreamPlayer3D" parent="Front"]
-script = ExtResource("7_pdxqd")
+[node name="Headlight2" type="SpotLight3D" parent="Front/Headlight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, 0)
+light_volumetric_fog_energy = 0.75
+shadow_enabled = true
+shadow_bias = 0.12
+distance_fade_begin = 0.0
+distance_fade_length = 2467.6
+spot_range = 70.0
 
 [node name="FrontSeatPosition" type="Node3D" parent="Front"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, -0.1, 2.7)

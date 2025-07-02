@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://chdfsvirff20i"]
+
+[ext_resource type="PackedScene" uid="uid://dug687n3bkdyt" path="res://csg_map_blocks/car_space_obstacles/wheel_stopper.tscn" id="1_prkma"]
+
+[node name="2CarSpace" type="Node3D"]
+
+[node name="WheelStoppers" parent="." instance=ExtResource("1_prkma")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)
+
+[node name="WheelStopper2" parent="WheelStoppers" instance=ExtResource("1_prkma")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)

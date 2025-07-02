@@ -10,8 +10,9 @@ var zoom_value
 
 func _ready() -> void:
 	CameraBool = false
-	zoom_value = 1
-	
+	zoom_value = 1	
+
+
 func _process(delta: float) -> void:
 	PHONE_CAMERA.global_position = NODE2TRACK.global_position
 	PHONE_CAMERA.global_rotation = NODE2TRACK.global_rotation
@@ -23,7 +24,7 @@ func CamOn():
 			print("Phone Camera loaded!")
 			PHONE_SCREEN.texture = SUBVIEW_DISPLAY.get_texture()
 			CameraBool = true
-
+	
 func forceCamOn():
 		print("Phone Camera force-loaded!")
 		PHONE_SCREEN.texture = SUBVIEW_DISPLAY.get_texture()

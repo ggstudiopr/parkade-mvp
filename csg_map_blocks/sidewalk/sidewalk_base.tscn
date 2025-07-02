@@ -1,10 +1,16 @@
 [gd_scene load_steps=5 format=4 uid="uid://h7ofamxkvx3a"]
 
-[ext_resource type="Texture2D" uid="uid://ths56okiqs02" path="res://textures/Concrete.png" id="1_lhtnv"]
+[ext_resource type="Texture2D" uid="uid://bxghp3iqf27o8" path="res://textures/concrete_pxl/tiles_concrete.png" id="1_ihicc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2se0"]
-albedo_texture = ExtResource("1_lhtnv")
+albedo_texture = ExtResource("1_ihicc")
+normal_scale = 6.25
+anisotropy = 0.21
+subsurf_scatter_strength = 1.0
+uv1_scale = Vector3(0.25, 0.245, 0.245)
+uv1_offset = Vector3(0.25, 0, 0)
 uv1_triplanar = true
+uv2_triplanar_sharpness = 0.757858
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_t84v5"]
 data = PackedVector3Array(-1, -0.25, 0, -1, -0.25, -2, -1, 0.25, -2, 1, -0.25, -2, -1, -0.25, -2, -1, -0.25, 0, -1, 0.25, -2, -1, -0.25, -2, 1, -0.25, -2, -1, 0.25, -2, -1, 0.25, 0, -1, -0.25, 0, -1, -0.25, 0, -1, 0.25, 0, 1, 0.25, 0, 1, 0.25, 0, -1, 0.25, 0, -1, 0.25, -2, -1, -0.25, 0, 1, -0.25, 0, 1, -0.25, -2, 1, 0.25, 0, 1, -0.25, 0, -1, -0.25, 0, 1, -0.25, -2, 1, -0.25, 0, 1, 0.25, 0, 1, -0.25, -2, 1, 0.25, -2, -1, 0.25, -2, -1, 0.25, -2, 1, 0.25, -2, 1, 0.25, 0, 1, 0.25, 0, 1, 0.25, -2, 1, -0.25, -2)

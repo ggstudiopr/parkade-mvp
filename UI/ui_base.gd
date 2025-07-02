@@ -4,6 +4,7 @@ extends Control
 @onready var VEHICLE := $"../../Vehicle"
 @onready var HEALTH_BAR := $Player/HealthBar
 @onready var HEARTRATE_BAR := $Player/HeartRate
+@onready var STAMINA_BAR := $Player/StaminaBar
 
 enum CAR_TRANSMISSION_AUTO {
 	DRIVE,
@@ -35,6 +36,22 @@ var fluctuation_strength: float = 1.0
 var fluctuation_speed: float = 0.5  
 var fluctuation
 
+func _ready():
+	#$Player.visible = true
+	toggleVisibility()
+	
+func toggleVisibility():
+	if $Player.visible == true:
+		$Player.visible = false
+		$Phone/BatteryBar.visible = false
+		$Car/GasolineBar.visible = false
+		return
+	if $Player.visible == false:
+		$Player.visible = true
+		$Phone/BatteryBar.visible = true
+		$Car/GasolineBar.visible = true
+		return
+		
 func _physics_process(delta: float) -> void:
 	prompt_UI_labels()
 	HEARTRATE_BAR.value = heartRate(delta, getHealth())
@@ -130,6 +147,18 @@ func batteryDead():
 
 func drainHealth (amount:float):
 	$Player/HealthBar.value -= amount
+	if healthEmpty():
+		if getStrikes() == 3: #proof of concept trigger moment
+			$Player/HealthBar/Dead.text = str("YOU DIED")
+		addStrike()
+
+func addStrike():
+	$Player/Strikes.addStrike(1)
+	$Player/Strikes/Count.text = str(int($Player/Strikes.value))
+	$Player/HealthBar.value = $Player/HealthBar.max_value - ($Player/HealthBar.max_value * 0.2 * $Player/Strikes.value)
+	
+func getStrikes():
+	return $Player/Strikes.value
 
 func healthEmpty():
 	return true if $Player/HealthBar.isEmpty() else false
@@ -159,8 +188,24 @@ func heartRate(delta, curr_health):
 	var health_percent = curr_health / PLAYER.UI.HEALTH_BAR.max_value 
 	# Map health percentage (1->0) to heart rate (70->175)
 	var heart_rate = 70 + (1 - health_percent) * 105
+	
 	$Player/HeartRate/Display.text = str(int(HEARTRATE_BAR.value))
 	return heart_rate + fluctuation
 	
 func getHeartRate():
 		return HEARTRATE_BAR.value
+
+func setSteps(amount):
+	$Player/Steps.text = str(amount)
+
+func getSteps():
+	return int($Player/Steps.text)
+
+func drainStamina(amount):
+	STAMINA_BAR.value -= amount
+
+func restoreStamina(amount):
+	STAMINA_BAR.value += amount
+
+func getStamina():
+	return STAMINA_BAR.value

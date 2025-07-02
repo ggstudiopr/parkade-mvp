@@ -9,10 +9,13 @@ extends Node3D
 @onready var PHONE_SCREEN := $PhoneScreen
 @onready var PHONE_MODEL := $HandPhone
 @onready var PHONE_ANIMATOR := $PhoneAnimationPlayer
-@onready var PHONE_AUDIO := $PhoneAnimationPlayer/PhoneAudio
+@onready var PHONE_AUDIO := $Sounds/PhoneAudio
 @onready var PHONE_AWAY_ANCHOR := $"../PhonePositionalAnchors/Away"
 @onready var PHONE_CLOSE_ANCHOR := $"../PhonePositionalAnchors/Close"
 @onready var PHONE_FAR_ANCHOR :=$"../PhonePositionalAnchors/Far"
+
+@onready var PHONE_LOOK_RAY := $PhoneCamRay
+var pictureJustTaken : bool = false
 
 @export var loadScreenTimer = 0.75
 @export var appChangeLockTimer = 0.5
@@ -93,16 +96,18 @@ func togglePhone():
 		if PhoneInHandBool == true: #if true, phone is being pulled out
 			PHONE_MODEL.show()
 			PHONE_SCREEN.show()
+			PHONE_AUDIO._play_SHOW_sound()
 			if !isDead():
 				if flashlight_memory == true:
 					print("Phone Light was on last time it was put away so it will be automatically re-enabled.")
 					togglePhoneLight()
-				PHONE_AUDIO._play_ON_sound()
+				
 				print("Booting phone...")
 				PHONE_SCREEN.texture = load("res://protag/phone/wallpaper.png") #base boot wallpaper
 				await get_tree().create_timer(loadScreenTimer).timeout
 				check_app_memory(true) #load app memory
 		elif PhoneInHandBool == false: #if false, phone is being put away
+			PHONE_AUDIO._play_AWAY_sound()
 			if PHONE_LIGHT.isOn():
 				flashlight_memory = true
 			else:
@@ -125,7 +130,10 @@ func togglePhoneLight():
 func takePicture():
 	if PHONE_CAM.isOn() and !isDead():
 		PHONE_LIGHT.pictureFlash() #img creation logic within here to line up with spotlight values for effect
-
+		pictureJustTaken = true
+		await get_tree().create_timer(1).timeout
+		pictureJustTaken = false
+		
 func togglePhoneCam():
 	print("Toggling Phone Camera ON/OFF")
 	if !PHONE_CAM.isOn():
@@ -210,6 +218,7 @@ func _force_phone_OFF(): #handles resetting app related bools and statuses
 func _force_phone_DEAD():
 	print("Phone battery has died!")
 	reset_all_states(true)
+	PHONE_AUDIO._play_vibrate_sound()
 	PHONE_SCREEN.texture = load("res://protag/phone/batteryImage.png")
 	
 func isInHand():
@@ -251,7 +260,7 @@ func check_app_memory(functionToUse):
 			GalleryOn(true)
 		if app_memory == ACTIVE_APP.DIAG:
 			print("Autoloaded into Diagnostics...")
-			DiagnosticsOn(false)
+			DiagnosticsOn(true)
 
 func pullPhoneAway(delta):
 	PHONE.position.x = lerp(PHONE.position.x, PHONE_AWAY_ANCHOR.position.x, 1.5 * delta)
@@ -261,10 +270,13 @@ func pullPhoneAway(delta):
 func runDiagnostics():
 	diagnosticsApp.temp_text.text = str(PLAYER.UI.getTemp())
 	diagnosticsApp.heart_text.text = str(int(PLAYER.UI.getHeartRate()))
-	
+	diagnosticsApp.steps_text.text = str(PLAYER.UI.getSteps())
 	if PLAYER.phonePosToggle == true: #phone is in held up orientation
 		for icon in diagnosticsApp.ICONS.get_children():
 			icon.rotation = -PHONE.PHONE_FAR_ANCHOR.rotation.z
 	if PLAYER.phonePosToggle == false: #phone is in hand orientation
 		for icon in diagnosticsApp.ICONS.get_children():
 			icon.rotation = 0
+
+func picTaken():
+	return true if pictureJustTaken else false

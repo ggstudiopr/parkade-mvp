@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=3 uid="uid://dntudjvbxrfga"]
+
+[ext_resource type="Script" uid="uid://cjmq5x1yccdod" path="res://protag/phone/diagnostics assets/DiagnosticsApp.gd" id="1_8pxx6"]
+[ext_resource type="Texture2D" uid="uid://bwx6lbklg3swi" path="res://protag/phone/diagnostics assets/HEART_PNG.png" id="2_gg4b6"]
+[ext_resource type="Texture2D" uid="uid://b0enf1h3anukc" path="res://protag/phone/diagnostics assets/thermo.png" id="3_cd41i"]
+[ext_resource type="Texture2D" uid="uid://b5hofo5wws5ha" path="res://protag/phone/diagnostics assets/16x9 frame.png" id="4_sfc5r"]
+
+[node name="DiagnosticsApp" type="Node2D"]
+script = ExtResource("1_8pxx6")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(350, 512)
+render_target_update_mode = 4
+
+[node name="Icons" type="Node2D" parent="SubViewportContainer/SubViewport"]
+
+[node name="HeartSprite" type="Sprite2D" parent="SubViewportContainer/SubViewport/Icons"]
+position = Vector2(107, 91)
+scale = Vector2(0.340506, 0.32781)
+texture = ExtResource("2_gg4b6")
+
+[node name="HeartText" type="Label" parent="SubViewportContainer/SubViewport/Icons/HeartSprite"]
+offset_left = -23.4945
+offset_top = -33.556
+offset_right = 524.506
+offset_bottom = 103.444
+theme_override_font_sizes/font_size = 100
+text = "MIKU MIKU"
+
+[node name="TempSprite" type="Sprite2D" parent="SubViewportContainer/SubViewport/Icons"]
+position = Vector2(99, 248)
+scale = Vector2(0.160487, 0.160976)
+texture = ExtResource("3_cd41i")
+
+[node name="TempText" type="Label" parent="SubViewportContainer/SubViewport/Icons/TempSprite"]
+offset_left = 174.469
+offset_top = -173.94
+offset_right = 722.469
+offset_bottom = -36.9395
+theme_override_font_sizes/font_size = 100
+text = "MIKU MIKU"
+
+[node name="StepsSprite" type="Sprite2D" parent="SubViewportContainer/SubViewport/Icons"]
+position = Vector2(134.5, 391.5)
+scale = Vector2(0.168945, 0.141602)
+
+[node name="StepsText" type="Label" parent="SubViewportContainer/SubViewport/Icons/StepsSprite"]
+offset_left = -394.0
+offset_top = -420.0
+offset_right = 1730.0
+offset_bottom = 109.0
+theme_override_font_sizes/font_size = 300
+text = "MIKU MIKU"
+
+[node name="TestFrame" type="Sprite2D" parent="SubViewportContainer/SubViewport"]
+z_index = -5
+position = Vector2(175, 258)
+rotation = 1.5708
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("4_sfc5r")
