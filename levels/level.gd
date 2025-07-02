@@ -19,6 +19,9 @@ var spawn_points : Array[Node3D] ## Node3D's to be used as enemy spawn points
 @export var vehicle : Vehicle
 @export var players : Array[Player] = []  
 
+@export_subgroup("Events")
+@export var event_manager : EventManager
+
 #TODO: UI EXISTS ON THIS LAYER
 
 signal level_ended 
@@ -45,7 +48,6 @@ var current_state : LEVEL_STATE :
 
 func _init() -> void:
 	current_state = LEVEL_STATE.LOADING
-	pass
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -67,7 +69,7 @@ func _ready() -> void:
 		casted_nodes.append(node as Node3D)
 	
 	spawn_points = casted_nodes
-
+	
 	for enemy in enemy_manager.spawn_initial_enemies(spawn_points):	#TODO: Determine how to set preferred spawn_points. Create SpawnPoint node that contains data of who it prefers, if any?
 		$EnemyManager.add_child(enemy)
 	

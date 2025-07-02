@@ -14,6 +14,8 @@ func _ready() -> void:
 	#enemies = get_children()
 	#for e: Enemy in enemies:
 		#e.target = player 
+		
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
