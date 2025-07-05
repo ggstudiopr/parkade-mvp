@@ -8,6 +8,11 @@ signal event_fulfilled
 signal event_failed
 signal event_started
 
+var EVENT_STATE
+
 #Things you need to interact with to fulfill the event.
 #They'll be fulfilled/spawned based on the int number. Same int numbers means spawning at the same time
 @export var interactables : Dictionary[int, Interactable] = {}
+
+func run_event():
+	pass

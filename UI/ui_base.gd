@@ -1,7 +1,7 @@
 extends Control
 
-@onready var PLAYER := $".."
-@onready var VEHICLE := $"../../Vehicle"
+@onready var PLAYER : Player = $".."
+@onready var VEHICLE : Vehicle = $"../../Vehicle"
 @onready var HEALTH_BAR := $Player/HealthBar
 @onready var HEARTRATE_BAR := $Player/HeartRate
 @onready var STAMINA_BAR := $Player/StaminaBar
@@ -11,7 +11,8 @@ enum CAR_TRANSMISSION_AUTO {
 	REVERSE,
 	PARK,
 	NEUTRAL,
-	D_R_TOGGLE}
+	D_R_TOGGLE
+}
 
 enum InputType { KEYBOARD, CONTROLLER }
 var last_input_type := InputType.KEYBOARD  # Default to keyboard
@@ -147,7 +148,7 @@ func batteryDead():
 
 func drainHealth (amount:float):
 	$Player/HealthBar.value -= amount
-	if healthEmpty():
+	if PLAYER.health == 0:
 		if getStrikes() == 3: #proof of concept trigger moment
 			$Player/HealthBar/Dead.text = str("YOU DIED")
 		addStrike()
