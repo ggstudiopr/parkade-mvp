@@ -10,11 +10,12 @@ signal killed
 @onready var VEHICLE := $"../Vehicle"
 @onready var ENEMY_MANAGER := $"../EnemyManager"
 
-var health : float :
+@export var health : float :
 	get():
 		return health
 	set(value):
-		if health - value <= 0:
+		health = value
+		if value <= 0:
 			killed.emit()
 
 #MOVEMENT/SPEED VALUES
@@ -88,6 +89,7 @@ enum PLAYER_STATE {
 
 #INITIALIZE
 func _ready():
+	health = 100
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	COLD_AIR.hide()
 	
@@ -396,7 +398,7 @@ func isDriving():
 
 func enemy_proximity_damage(delta):
 	var damage_distance = 7.0  # Units of distance for damage to occur
-	var hurt_rate = 250 * delta # Damage per second, scaled by delta
+	var hurt_rate = 2.5 * delta # Damage per second, scaled by delta
 	if ENEMY_MANAGER:
 		var enemies_array = ENEMY_MANAGER.get_enemy_nodes()
 		var player_pos = self.global_position

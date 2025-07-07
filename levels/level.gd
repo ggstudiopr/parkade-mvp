@@ -42,6 +42,7 @@ var PLAYER_COUNT = Global.PLAYER_COUNT
 var current_state : LEVEL_STATE :
 	set(value):
 		current_state = on_level_state_change(value)
+		print(current_state)
 	get:
 		return current_state
 
@@ -74,8 +75,8 @@ func _ready() -> void:
 	#Priority here can be done based on node names, by getting them and then sorting by name. Or creating a custom node for it.
 	#Both require the same logic at the systems level to determine gameplay, so pick your preference.
 	# https://forum.godotengine.org/t/how-can-i-sort-the-children-of-a-node/1409/2
-	event_manager = event_manager if event_manager else event_manager.instantiate()
-	event_manager.all_events_finished.connect(on_all_events_finished)
+	#event_manager = event_manager if event_manager else event_manager.instantiate()
+	#event_manager.all_events_finished.connect(on_all_events_finished)
 	for enemy in enemy_manager.spawn_initial_enemies(spawn_points):
 		$EnemyManager.add_child(enemy)
 	
@@ -102,5 +103,5 @@ func on_level_state_change(new_state) -> LEVEL_STATE:
 func on_all_events_finished() -> void :
 	current_state = LEVEL_STATE.WIN
 
-func on_player_killed() -> void:
+func on_player_killed(method) -> void:
 	current_state = LEVEL_STATE.LOSE

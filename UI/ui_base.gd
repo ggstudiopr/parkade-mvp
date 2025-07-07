@@ -148,7 +148,10 @@ func batteryDead():
 
 func drainHealth (amount:float):
 	$Player/HealthBar.value -= amount
-	if PLAYER.health == 0:
+	
+	#print_debug("Drained health by:", amount)
+	print_debug("PLAYER.health:", PLAYER.health)
+	if healthEmpty():#PLAYER.health == 0:
 		if getStrikes() == 3: #proof of concept trigger moment
 			$Player/HealthBar/Dead.text = str("YOU DIED")
 		addStrike()
