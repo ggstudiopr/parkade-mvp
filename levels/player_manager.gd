@@ -1,7 +1,7 @@
 extends Node
 class_name PlayerManager
 
-@export var players : Array[Player]
+@export var players : Array[Protagonist]
 #@export var car : Array [Car]
 
 # Called when the node enters the scene tree for the first time.

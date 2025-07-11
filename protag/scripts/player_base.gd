@@ -1,5 +1,44 @@
 extends CharacterBody3D
-class_name Player
+class_name Protagonist
+
+@onready var myHealth := $Stats/HealthBar
+var myHeartRate : int = 0
+signal LowHealth
+func hurt(hurt_rate):
+	myHealth.value -= hurt_rate
+	if myHealth.value < myHealth.max_value/2:
+		LowHealth.emit()
+	if myHealth.value <= 0:
+		addStrike()
+@onready var myStrikes := $Stats/StrikesBar
+signal StrikeAdded
+signal MaxStrikes
+func addStrike():
+	myStrikes.value += 1
+	if myStrikes.value == 3:
+		MaxStrikes.emit()
+	StrikeAdded.emit()
+	myHealth.max_value -= 0.2 * myStrikes.value
+	myHealth.value = myHealth.max_value
+var _stamina_depleted : bool = false
+signal StaminaDepleted
+@onready var myStamina := $Stats/StaminaBar
+func modStamina(amount):
+	myStamina.value += amount
+	if myStamina.value <= 0:
+		_stamina_depleted = true
+		StaminaDepleted.emit()
+	if myStamina.value >=  30: 
+		_stamina_depleted = false
+signal LowTemperature 
+signal NormalTemperature
+var myTemp : float = 80:
+	set(value):
+		myTemp = value
+		if myTemp < 60:
+			LowTemperature.emit()
+		if myTemp > 60:
+			NormalTemperature.emit()
 
 @onready var PAUSE_MENU := $CanvasLayer2/PauseMenu
 @onready var INVENTORY_MENU := $CanvasLayer/Inventory
@@ -45,7 +84,7 @@ var self_total_rot : float = 0
 var _is_crouching : bool = false
 var _is_sprinting : bool = false
 var Q_is_being_held : bool = false
-var _stamina_depleted : bool = false
+
 #phone posiition 
 @onready var positionToUse4Phone : Vector3 = PHONE.PHONE_AWAY_ANCHOR.position
 var phonePosToggle : bool = false
@@ -71,11 +110,9 @@ var step_accumulated : float = 0
 var previous_position
 var moved_distance
 #USED BY OTHER CLASSES
-var player_state = PLAYER_STATE.WALKING
-enum PLAYER_STATE {
-	WALKING,
-	DRIVING
-}
+var player_state = PLAYER_CONSTS.PLAYER_STATE.WALKING
+
+
 
 #INITIALIZE
 func _ready():
@@ -91,6 +128,8 @@ func _physics_process(delta: float) -> void:
 	if controller_RS_Input(): #controller right stick support
 		update_camera_controller(controller_RS_Input())
 	
+	myHeartRate = heartRateCalc(delta, myHealth.value)
+	myTemp = entityProxTemp()
 	#proof of concept function to track enemy proximity to hurt player
 	enemy_proximity_damage(delta)
 	#proof of concept function to visually show enemy proximity
@@ -102,22 +141,34 @@ func _physics_process(delta: float) -> void:
 		if(PHONE_LOOK_RAY.get_collider().is_in_group("DisappearOnPictureTaken")):
 			var phone_is_looking_at = PHONE_LOOK_RAY.get_collider()
 			phone_is_looking_at.visible = false
-			
+func heartRateCalc(delta, curr_health):
+	var health_percent = curr_health / myHealth.max_value 
+	# Map health percentage (1->0) to heart rate (70->175)
+	var heart_rate = 70 + (1 - health_percent) * 105
+	return heart_rate 
+	
 func _input(event):
 	if event.is_action_pressed("pause") and !PAUSE_MENU.input_locked():
 		PAUSE_MENU.pause()
 	if event.is_action_pressed("inventory") and !INVENTORY_MENU.input_locked():
 		INVENTORY_MENU.openInv()
-	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_STATE.WALKING:
+	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_CONSTS.PLAYER_STATE.WALKING:
 		crouch_toggle()
 	if event.is_action_pressed("interact"):
 		UI.check_interact()
-		
+	if event.is_action_pressed("sprint"):
+		_is_sprinting = true
+	if event.is_action_released("sprint"):
+		_is_sprinting = false
 	if event.is_action_pressed("alt_flashlight"):
 		ALT_LIGHT.toggleLight()	
 	
 	if event.is_action_pressed("debug_ui"):
-		UI.toggleVisibility()
+		var panels = get_tree().get_nodes_in_group("UI Panel")
+		#print(panels)
+		for item in panels:
+			item.show()
+			
 	if event.is_action_pressed("debug_light_bright"):
 		CAMERA_CONTROLLER.environment.background_energy_multiplier = 1
 	if event.is_action_pressed("debug_light_dark"):
@@ -196,49 +247,39 @@ func movement_vector():
 
 func _walking_player_movement(delta):
 	#base player walking
-	if not is_on_floor() and player_state ==  PLAYER_STATE.WALKING:
+	if not is_on_floor() and player_state ==  PLAYER_CONSTS.PLAYER_STATE.WALKING:
 		velocity += get_gravity() * delta
 	previous_position = self.global_transform.origin
 	input_dir = movement_vector()
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
-	_speed = SPEED_DEFAULT + (0.125 * UI.getStrikes())
+	_speed = SPEED_DEFAULT + (0.125 * myStrikes.value)
 	if direction and !self.isDriving():
 		velocity.x = direction.x * _speed 
 		velocity.z = direction.z * _speed
-		if Input.is_action_pressed("sprint") and is_on_floor() and movement_vector().y < 0 and !_stamina_depleted:
-			if UI.getStamina() > 0:
-				if _is_crouching == true:
-					crouch_toggle()
-				UI.drainStamina(8 * delta)
-				velocity.z *= SPRINT_MULT
-				velocity.x *= SPRINT_MULT
-				_is_sprinting = true
-				if UI.getStamina()<=0:
-					_stamina_depleted = true
-		else:
-			_is_sprinting = false
+		if _is_sprinting and is_on_floor() and movement_vector().y < 0 and !_stamina_depleted:
+			if _is_crouching == true:
+				crouch_toggle()
+			modStamina(-8 * delta)
+			velocity.z *= SPRINT_MULT
+			velocity.x *= SPRINT_MULT	
 	else:
 		velocity.x = move_toward(velocity.x, 0, _speed)
 		velocity.z = move_toward(velocity.z, 0, _speed)
-		_is_sprinting = false
 	if !_is_sprinting:
-		UI.restoreStamina(6*delta)
-		if UI.getStamina() > 30:
-			_stamina_depleted = false
+		modStamina(6*delta)
 	move_and_slide()
 
 	#steps accumulated logic for diagnostics app
 	if direction and !self.isDriving():
 		moved_distance = previous_position.distance_to(self.global_transform.origin)
 		step_accumulated += moved_distance * 1
-		UI.setSteps(step_accumulated)
-	
+
 	#player movement input affects phone orientation
-	phone_n_cam_tilt(input_dir.x, input_dir.y, delta, UI.getStrikes())
+	phone_n_cam_tilt(input_dir.x, input_dir.y, delta, myStrikes.value)
 	phone_sway(delta)
 
 	head_bobbing(velocity.length(),delta)
-	phone_bobbing(velocity.length(),delta, UI.getStrikes())
+	phone_bobbing(velocity.length(),delta, myStrikes.value)
 	
 func update_camera(event):
 	CAMERA_CONTROLLER.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
@@ -369,12 +410,12 @@ func playerEnterCar():
 		await get_tree().create_timer(1.0).timeout
 	self.rotation.y = VEHICLE.rotation.y
 	VEHICLE.setSeatStatus("TAKEN")
-	player_state = PLAYER_STATE.DRIVING
+	player_state = PLAYER_CONSTS.PLAYER_STATE.DRIVING
 
 func playerExitCar():
 	self.set_collision_mask_value(6, true) #collide with car
 	self_total_rot = 0
-	player_state = PLAYER_STATE.WALKING
+	player_state = PLAYER_CONSTS.PLAYER_STATE.WALKING
 	global_position = VEHICLE.returnExitPos()
 	CAMERA_CONTROLLER.position = Vector3.ZERO
 	if !VEHICLE.isParked():
@@ -383,7 +424,7 @@ func playerExitCar():
 	VEHICLE.setSeatStatus("OPEN")
 
 func isDriving():
-	return true if player_state ==  PLAYER_STATE.DRIVING else false
+	return true if player_state ==  PLAYER_CONSTS.PLAYER_STATE.DRIVING else false
 
 func enemy_proximity_damage(delta):
 	var damage_distance = 7.0  # Units of distance for damage to occur
@@ -403,11 +444,8 @@ func enemy_proximity_damage(delta):
 			var damage_multiplier = 2.0 if nearest_distance <= (damage_distance / 2.0) else 1.0
 			hurt(hurt_rate * damage_multiplier)
 
-func hurt(hurt_rate):
-	UI.drainHealth(hurt_rate)
-
 func enemy_proximity_particles():
-	if UI.getTemp() < 60:
+	if myTemp < 60:
 		COLD_AIR.show()
 	else:
 		COLD_AIR.hide()

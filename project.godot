@@ -23,6 +23,17 @@ Global="*res://global.gd"
 
 window/size/mode=3
 
+[file_customization]
+
+folder_colors={
+"res://Global Classes/": "gray",
+"res://enemy/": "red",
+"res://levels/": "green",
+"res://protag/": "blue",
+"res://sounds/": "teal",
+"res://vehicle/": "orange"
+}
+
 [global_group]
 
 CarViewBoundaries="read the name bro"
@@ -31,6 +42,8 @@ CarInteractColliders="read name, bro"
 pause_manager=""
 DisappearOnPictureTaken=""
 AMB_FLUO_LIGHT_SOUND="for light source static sounds"
+"UI Panel"=""
+Player=""
 
 [input]
 

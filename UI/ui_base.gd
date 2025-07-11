@@ -2,16 +2,6 @@ extends Control
 
 @onready var PLAYER := $".."
 @onready var VEHICLE := $"../../Vehicle"
-@onready var HEALTH_BAR := $Player/HealthBar
-@onready var HEARTRATE_BAR := $Player/HeartRate
-@onready var STAMINA_BAR := $Player/StaminaBar
-
-enum CAR_TRANSMISSION_AUTO {
-	DRIVE,
-	REVERSE,
-	PARK,
-	NEUTRAL,
-	D_R_TOGGLE}
 
 enum InputType { KEYBOARD, CONTROLLER }
 var last_input_type := InputType.KEYBOARD  # Default to keyboard
@@ -28,13 +18,6 @@ var last_input_type := InputType.KEYBOARD  # Default to keyboard
 @onready var AUTO_GEAR_PARK_INTERACT := "AutoGearParkInteract"
 @onready var IGNITION_INTERACT := "IgnitionInteract"
 @onready var HORN_INTERACT := "HornInteract"
-var heart_rate
-var amb_temp
-
-var time: float = 0.0
-var fluctuation_strength: float = 1.0  
-var fluctuation_speed: float = 0.5  
-var fluctuation
 
 func _ready():
 	#$Player.visible = true
@@ -54,11 +37,7 @@ func toggleVisibility():
 		
 func _physics_process(delta: float) -> void:
 	prompt_UI_labels()
-	HEARTRATE_BAR.value = heartRate(delta, getHealth())
-	
-	if PLAYER:
-		setTemp(PLAYER.entityProxTemp())
-	
+
 func _input(event):
 	if event is InputEventKey or event is InputEventMouse:
 		last_input_type = InputType.KEYBOARD
@@ -77,12 +56,12 @@ func check_interact():
 						VEHICLE_LABEL_BAD_INT.text = str("Car must be ON!")
 				elif (player_is_looking_at == AUTO_GEAR_TOG_INTERACT):
 					if VEHICLE.isOn():
-						VEHICLE.shiftGears(CAR_TRANSMISSION_AUTO.D_R_TOGGLE)
+						VEHICLE.shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.D_R_TOGGLE)
 					else:
 						VEHICLE_LABEL_BAD_INT.text = str("Car must be ON!")
 				elif (player_is_looking_at == AUTO_GEAR_PARK_INTERACT):
 					if VEHICLE.isOn():
-						VEHICLE.shiftGears(CAR_TRANSMISSION_AUTO.PARK)
+						VEHICLE.shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK)
 					else:
 						VEHICLE_LABEL_BAD_INT.text = str("Car must be ON!")
 				if (player_is_looking_at == CAR_INNER_DOOR):
@@ -120,9 +99,9 @@ func prompt_UI_labels():
 				elif (player_is_looking_at == RADIO_INTERACT):
 					VEHICLE_LABEL.text = str("Press "+carInteractButton+" to toggle radio")
 				elif (player_is_looking_at == AUTO_GEAR_TOG_INTERACT):
-					if VEHICLE.gear_shift == CAR_TRANSMISSION_AUTO.DRIVE:
+					if VEHICLE.gear_shift == CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE:
 						VEHICLE_LABEL.text = str("Press "+carInteractButton+" to toggle Gear Shift into Reverse")
-					elif VEHICLE.gear_shift != CAR_TRANSMISSION_AUTO.DRIVE:
+					elif VEHICLE.gear_shift != CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE:
 						VEHICLE_LABEL.text = str("Press "+carInteractButton+" to toggle Gear Shift into Drive")
 				elif (player_is_looking_at == AUTO_GEAR_PARK_INTERACT):
 					VEHICLE_LABEL.text = str("Press "+carInteractButton+" to toggle Gear Shift into Park")
@@ -138,74 +117,3 @@ func prompt_UI_labels():
 	else:
 		VEHICLE_LABEL.text = str("")
 		VEHICLE_LABEL_BAD_INT.text = str("")
-
-func drainBattery(amount :float):
-	$Phone/BatteryBar.value -= amount
-
-func batteryDead():
-	return true if $Phone/BatteryBar.isDead()  else false
-
-func drainHealth (amount:float):
-	$Player/HealthBar.value -= amount
-	if healthEmpty():
-		if getStrikes() == 3: #proof of concept trigger moment
-			$Player/HealthBar/Dead.text = str("YOU DIED")
-		addStrike()
-
-func addStrike():
-	$Player/Strikes.addStrike(1)
-	$Player/Strikes/Count.text = str(int($Player/Strikes.value))
-	$Player/HealthBar.value = $Player/HealthBar.max_value - ($Player/HealthBar.max_value * 0.2 * $Player/Strikes.value)
-	
-func getStrikes():
-	return $Player/Strikes.value
-
-func healthEmpty():
-	return true if $Player/HealthBar.isEmpty() else false
-
-func drainGas (amount:float):
-	$Car/GasolineBar.value -= amount
-
-func gasEmpty():
-	return true if $Car/GasolineBar.isEmpty() else false
-
-func getHealth():
-	return $Player/HealthBar.value
-
-func getBattery():
-	return $Phone/BatteryBar.value
-
-func getTemp():
-	return $Player/TemperatureBar.value
-
-func setTemp(new_val):
-	$Player/TemperatureBar.value = new_val
-
-func heartRate(delta, curr_health):
-	time += delta
-	fluctuation = sin(time * fluctuation_speed) * fluctuation_strength
-	
-	var health_percent = curr_health / PLAYER.UI.HEALTH_BAR.max_value 
-	# Map health percentage (1->0) to heart rate (70->175)
-	var heart_rate = 70 + (1 - health_percent) * 105
-	
-	$Player/HeartRate/Display.text = str(int(HEARTRATE_BAR.value))
-	return heart_rate + fluctuation
-	
-func getHeartRate():
-		return HEARTRATE_BAR.value
-
-func setSteps(amount):
-	$Player/Steps.text = str(amount)
-
-func getSteps():
-	return int($Player/Steps.text)
-
-func drainStamina(amount):
-	STAMINA_BAR.value -= amount
-
-func restoreStamina(amount):
-	STAMINA_BAR.value += amount
-
-func getStamina():
-	return STAMINA_BAR.value

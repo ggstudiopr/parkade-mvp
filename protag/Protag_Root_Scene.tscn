@@ -151,12 +151,71 @@ _data = {
 &"stand": SubResource("Animation_d5j1e")
 }
 
-[node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER")]
+[node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER") groups=["Player"]]
 collision_layer = 16
 collision_mask = 33
 script = ExtResource("1_yvqfv")
 SPEED_CROUCH = 0.75
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
+
+[node name="Stats" type="Panel" parent="." groups=["UI Panel"]]
+visible = false
+offset_left = 7.0
+offset_top = 13.0
+offset_right = 388.0
+offset_bottom = 158.0
+
+[node name="HealthBar" type="ProgressBar" parent="Stats"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 30.0
+offset_right = 369.0
+offset_bottom = 57.0
+theme_override_colors/font_color = Color(0.972549, 0, 0, 1)
+max_value = 1000.0
+value = 1000.0
+
+[node name="Label" type="Label" parent="Stats/HealthBar"]
+layout_mode = 0
+offset_left = 167.0
+offset_top = -28.0
+offset_right = 207.0
+offset_bottom = -5.0
+text = "HP"
+
+[node name="StrikesBar" type="ProgressBar" parent="Stats"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 62.0
+offset_right = 120.0
+offset_bottom = 89.0
+max_value = 3.0
+step = 1.0
+
+[node name="Label" type="Label" parent="Stats/StrikesBar"]
+layout_mode = 0
+offset_left = 103.0
+offset_top = 1.0
+offset_right = 169.0
+offset_bottom = 24.0
+text = "< Strikes"
+
+[node name="StaminaBar" type="ProgressBar" parent="Stats"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 114.0
+offset_right = 363.0
+offset_bottom = 141.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+value = 100.0
+
+[node name="Label" type="Label" parent="Stats/StaminaBar"]
+layout_mode = 0
+offset_left = 137.0
+offset_top = -24.0
+offset_right = 201.0
+offset_bottom = -1.0
+text = "Stamina"
 
 [node name="Audio" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52081, 0)
@@ -226,7 +285,6 @@ script = ExtResource("2_65wl4")
 
 [node name="PhoneNode" parent="CameraController/Camera3D" instance=ExtResource("2_nqwbi")]
 physics_interpolation_mode = 1
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.440142, -0.375938, -0.56255)
 
 [node name="AltFlashlight" type="SpotLight3D" parent="CameraController/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.188396, -0.202303, -0.0363795)
@@ -270,6 +328,7 @@ offset_right = 3.0
 offset_bottom = 5.0
 
 [node name="UI" parent="." instance=ExtResource("5_7uxf5")]
+visible = false
 offset_left = 2.0
 offset_top = -2.0
 offset_right = 2.0

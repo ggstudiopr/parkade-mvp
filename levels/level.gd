@@ -16,8 +16,8 @@ var antlion_data = preload("res://enemy/enemy_types/enemy_data.tres")
 var spawn_points : Array[Node3D] ## Node3D's to be used as enemy spawn points 
 
 @export_subgroup("Players")
-@export var vehicle : Vehicle
-@export var players : Array[Player] = []  
+@export var vehicle : CAR
+@export var players : Array[Protagonist] = []  
 
 #TODO: UI EXISTS ON THIS LAYER
 
@@ -91,3 +91,7 @@ func on_level_state_change(new_state) -> LEVEL_STATE:
 		LEVEL_STATE.END:
 			level_ended.emit()
 	return new_state
+
+
+func _on_protagonist_max_strikes() -> void:
+	get_tree().quit()

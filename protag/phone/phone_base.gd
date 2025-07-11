@@ -1,6 +1,20 @@
 extends Node3D
+class_name PHONE
+signal BatteryDead
+var _deadBattery : bool = false
+@onready var myBattery := $Stats/BatteryBar
+var _batteryVal : float = 1000:
+	set(value):
+		#if _batteryVal + value<myBattery.max_value:
+		_batteryVal = value 
+		myBattery.value = _batteryVal
+		if _batteryVal <= 0:
+			_deadBattery = true
+			BatteryDead.emit()
+func modBattery (amount):
+	_batteryVal += amount
+signal PictureTaken
 
-@onready var PHONE := $"."
 @onready var PLAYER := $"../../.."
 
 @onready var PHONE_LIGHT := $SpotLight3D
@@ -37,11 +51,6 @@ var zoom_index
 @onready var diagnosticsApp := $DiagnosticsApp
 var diagnosticsActive: bool
 
-enum ACTIVE_APP {
-	CAM,
-	GALLERY,
-	DIAG}
-
 #initialize values
 func _ready():
 	PhoneInHandBool = false
@@ -54,28 +63,28 @@ func _ready():
 	zoom_index = 1
 	diagnosticsActive = false
 	flashlight_memory = false
-	app_memory = ACTIVE_APP.CAM
-	PHONE.position = PHONE_AWAY_ANCHOR.position
+	app_memory = PHONE_CONSTS.ACTIVE_APP.CAM
+	self.position = PHONE_AWAY_ANCHOR.position
 	appChangeLock = false
 	
 func _physics_process(delta:float) -> void:
 	if !isDead():
 		_drain_battery()
-	if !PHONE.isInHand(): #hardcoded animation to pull phone away from camera when it is put away
+	if !self.isInHand(): #hardcoded animation to pull phone away from camera when it is put away
 		pullPhoneAway(delta)
 	if diagnosticsActive == true:
 		runDiagnostics()
 	
 func _drain_battery():
 	if PHONE_LIGHT.isOn():
-		PLAYER.UI.drainBattery(0.03)
+		modBattery(-0.03)
 	if PHONE_CAM.isOn():
-		PLAYER.UI.drainBattery(0.03)
-	if  PHONE.isInHand():
-		PLAYER.UI.drainBattery(0.01)
+		modBattery(-0.03)
+	if  self.isInHand():
+		modBattery(-0.01)
 	if PLAYER.isDriving() and PLAYER.VEHICLE.isOn(): #passive phone charging lol
-		if !PHONE.isInHand():#boolean and conditions set to trigger sound only once
-			PLAYER.UI.drainBattery(-0.01)
+		if !self.isInHand():#boolean and conditions set to trigger sound only once
+			modBattery(0.01)
 		if isCharging == false:
 			isCharging = true
 			PHONE_AUDIO._play_charging_sound()
@@ -129,6 +138,7 @@ func togglePhoneLight():
 
 func takePicture():
 	if PHONE_CAM.isOn() and !isDead():
+		PictureTaken.emit()
 		PHONE_LIGHT.pictureFlash() #img creation logic within here to line up with spotlight values for effect
 		pictureJustTaken = true
 		await get_tree().create_timer(1).timeout
@@ -225,7 +235,7 @@ func isInHand():
 	return true if PhoneInHandBool == true else false
 
 func isDead():
-	return true if PLAYER.UI.batteryDead() else false
+	return true if _deadBattery else false
 
 func ss_index_cycler(new_index, step): #cycles screenshots index in 10
 	new_index += step #PhoneCameraUpdate.gd cycles create_img() cycle back to 1 every time its own index hits 11
@@ -246,37 +256,38 @@ func zoom_index_cycler(new_index, step):
 func check_app_memory(functionToUse):
 	if functionToUse == false: #write
 		if PHONE_CAM.isOn():
-			app_memory = ACTIVE_APP.CAM
+			app_memory = PHONE_CONSTS.ACTIVE_APP.CAM
 		if galleryActive == true:
-			app_memory = ACTIVE_APP.GALLERY
+			app_memory = PHONE_CONSTS.ACTIVE_APP.GALLERY
 		if diagnosticsActive == true:
-			app_memory = ACTIVE_APP.DIAG
+			app_memory = PHONE_CONSTS.ACTIVE_APP.DIAG
 	if functionToUse == true: #load
-		if app_memory == ACTIVE_APP.CAM:
+		if app_memory == PHONE_CONSTS.ACTIVE_APP.CAM:
 			print("Autoloaded into Camera...")
 			PhoneCamOn(true)
-		if app_memory == ACTIVE_APP.GALLERY:
+		if app_memory == PHONE_CONSTS.ACTIVE_APP.GALLERY:
 			print("Autoloaded into Gallery...")
 			GalleryOn(true)
-		if app_memory == ACTIVE_APP.DIAG:
+		if app_memory == PHONE_CONSTS.ACTIVE_APP.DIAG:
 			print("Autoloaded into Diagnostics...")
 			DiagnosticsOn(true)
 
 func pullPhoneAway(delta):
-	PHONE.position.x = lerp(PHONE.position.x, PHONE_AWAY_ANCHOR.position.x, 1.5 * delta)
-	PHONE.position.y = lerp(PHONE.position.y, PHONE_AWAY_ANCHOR.position.y, 2.5 * delta)
-	PHONE.position.z = lerp(PHONE.position.z, PHONE_AWAY_ANCHOR.position.z, 1 * delta)
+	self.position.x = lerp(self.position.x, PHONE_AWAY_ANCHOR.position.x, 1.5 * delta)
+	self.position.y = lerp(self.position.y, PHONE_AWAY_ANCHOR.position.y, 2.5 * delta)
+	self.position.z = lerp(self.position.z, PHONE_AWAY_ANCHOR.position.z, 1 * delta)
 
 func runDiagnostics():
-	diagnosticsApp.temp_text.text = str(PLAYER.UI.getTemp())
-	diagnosticsApp.heart_text.text = str(int(PLAYER.UI.getHeartRate()))
-	diagnosticsApp.steps_text.text = str(PLAYER.UI.getSteps())
-	if PLAYER.phonePosToggle == true: #phone is in held up orientation
-		for icon in diagnosticsApp.ICONS.get_children():
-			icon.rotation = -PHONE.PHONE_FAR_ANCHOR.rotation.z
-	if PLAYER.phonePosToggle == false: #phone is in hand orientation
-		for icon in diagnosticsApp.ICONS.get_children():
-			icon.rotation = 0
+	if PLAYER: 
+		diagnosticsApp.temp_text.text = str(PLAYER.myTemp)
+		diagnosticsApp.heart_text.text = str(int(PLAYER.myHeartRate))
+		diagnosticsApp.steps_text.text = str(PLAYER.step_accumulated)
+		if PLAYER.phonePosToggle == true: #phone is in held up orientation
+			for icon in diagnosticsApp.ICONS.get_children():
+				icon.rotation = -self.PHONE_FAR_ANCHOR.rotation.z
+		if PLAYER.phonePosToggle == false: #phone is in hand orientation
+			for icon in diagnosticsApp.ICONS.get_children():
+				icon.rotation = 0
 
 func picTaken():
 	return true if pictureJustTaken else false

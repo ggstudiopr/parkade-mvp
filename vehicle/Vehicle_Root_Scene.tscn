@@ -119,6 +119,31 @@ center_of_mass_mode = 1
 center_of_mass = Vector3(0, -0.5, 0)
 script = ExtResource("1_elk10")
 
+[node name="Stats" type="Panel" parent="." groups=["UI Panel"]]
+visible = false
+offset_left = 10.0
+offset_top = 169.0
+offset_right = 254.0
+offset_bottom = 233.0
+
+[node name="GasBar" type="ProgressBar" parent="Stats"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 22.0
+offset_right = 212.0
+offset_bottom = 49.0
+theme_override_colors/font_color = Color(1, 0.545098, 0, 1)
+max_value = 10000.0
+value = 10000.0
+
+[node name="Label" type="Label" parent="Stats/GasBar"]
+layout_mode = 0
+offset_left = 73.0
+offset_top = -25.0
+offset_right = 113.0
+offset_bottom = -2.0
+text = "GAS"
+
 [node name="Sounds" type="Node3D" parent="."]
 
 [node name="CarEngine" type="AudioStreamPlayer3D" parent="Sounds"]

@@ -1,7 +1,20 @@
 extends VehicleBody3D
-class_name Vehicle
-
-@onready var PLAYER := $"../Protagonist"
+class_name CAR
+signal GasEmpty
+var _emptyGas : bool = false
+@onready var gasBar := $Stats/GasBar
+func _drain_gas():
+	if !_emptyGas and self.isOn():
+		gasBar.value -= 0.05
+		if _is_car_sprinting == true:
+			gasBar.value -= 0.15
+		if gasBar.value <= 0:
+			_emptyGas = true
+			GasEmpty.emit()
+		if _emptyGas:
+			forceEngineOff()
+			
+@export var PLAYER : Protagonist
 #Front Vehicle Node
 @onready var FRONT_SEAT_POS := $Front/FrontSeatPosition
 @onready var FRONT_SEAT_CAM_ANCHOR :=  $CameraAnchor
@@ -34,36 +47,18 @@ var speed_ratio
 var _is_car_sprinting = false
 
 #Car Transmission
-var gear_shift = CAR_TRANSMISSION_AUTO.PARK
+var gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK
 var text_mesh := TextMesh.new()
-enum CAR_TRANSMISSION_AUTO {
-	DRIVE,
-	REVERSE,
-	PARK,
-	NEUTRAL,
-	D_R_TOGGLE}
-enum CAR_TRANSMISSION_MANUAL {
-	M1,
-	M2,
-	M3,
-	M4,
-	M5,
-	MNeutral,
-	MReverse}
 
-var vehicle_engine = ENGINE_STATE.OFF
-enum ENGINE_STATE {
-	ON,
-	OFF}
+var vehicle_engine = CAR_CONSTS.ENGINE_STATE.OFF
+var seat = CAR_CONSTS.SEAT_STATUS.OPEN
 
-var seat = SEAT_STATUS.OPEN
-enum SEAT_STATUS{
-	OPEN,
-	TAKEN}
 
 func _ready():
+	if get_tree().get_nodes_in_group("Player") and PLAYER == null:
+		PLAYER = get_tree().get_nodes_in_group("Player")[0]
 	RADIO_SCREEN.hide()
-	shiftGears(CAR_TRANSMISSION_AUTO.PARK)
+	shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK)
 	await get_tree().create_timer(1.0).timeout
 	MIRROR_LEFT.CamOn()
 	MIRROR_RIGHT.CamOn()
@@ -74,40 +69,42 @@ func _ready():
 func _physics_process(delta):
 	_driving_car_movement(delta)
 	_drain_gas()
-	if PLAYER.isDriving():
-		playerClampToCar()
+	if PLAYER:
+		if PLAYER.isDriving():
+			playerClampToCar()
 	speed_ratio = linear_velocity.length() / max_speed
+
 func _driving_car_movement(delta):
-	
-	if self.isOn() and PLAYER.isDriving():
-		steering = move_toward(steering, Input.get_axis("move_right", "move_left") * MAX_STEER, delta * 20)
-		var forward_input = Input.get_action_strength("move_forward")
-		var backward_input = Input.get_action_strength("move_backward")
-	
-		if Input.is_action_pressed("sprint"):
-			forward_input *= CAR_SPRINT_MULT
-			backward_input  *= CAR_SPRINT_MULT
-			_is_car_sprinting = true
-			max_speed = 17
-		else:
-			_is_car_sprinting = false
-			max_speed = 9
-			
-		if forward_input > 0 and canMoveForward():
-			engine_force = forward_input * ENGINE_POWER * (1.0 - speed_ratio)
-		elif (forward_input>0 or backward_input>0) and canMoveBackward():
-			if forward_input > 0:
-				engine_force = -forward_input * ENGINE_POWER * (1.0 - speed_ratio)
-			elif backward_input > 0:
-				engine_force = -backward_input * ENGINE_POWER * (1.0 - speed_ratio)
-		else:
-			engine_force = 0.0
-			brake = BRAKE_FORCE
+	if PLAYER:
+		if self.isOn() and PLAYER.isDriving():
+			steering = move_toward(steering, Input.get_axis("move_right", "move_left") * MAX_STEER, delta * 20)
+			var forward_input = Input.get_action_strength("move_forward")
+			var backward_input = Input.get_action_strength("move_backward")
 		
-		if canMoveBackward() and engine_force == 0:
-			VEHICLE_BRAKELIGHT.lightOnBraking
+			if Input.is_action_pressed("sprint"):
+				forward_input *= CAR_SPRINT_MULT
+				backward_input  *= CAR_SPRINT_MULT
+				_is_car_sprinting = true
+				max_speed = 17
+			else:
+				_is_car_sprinting = false
+				max_speed = 9
+				
+			if forward_input > 0 and canMoveForward():
+				engine_force = forward_input * ENGINE_POWER * (1.0 - speed_ratio)
+			elif (forward_input>0 or backward_input>0) and canMoveBackward():
+				if forward_input > 0:
+					engine_force = -forward_input * ENGINE_POWER * (1.0 - speed_ratio)
+				elif backward_input > 0:
+					engine_force = -backward_input * ENGINE_POWER * (1.0 - speed_ratio)
+			else:
+				engine_force = 0.0
+				brake = BRAKE_FORCE
 			
-	_car_drift_away()
+			if canMoveBackward() and engine_force == 0:
+				VEHICLE_BRAKELIGHT.lightOnBraking
+				
+		_car_drift_away()
 
 func _car_drift_away():
 	if self.isOn() and !self.isParked() and !PLAYER.isDriving():
@@ -126,29 +123,29 @@ func shiftGears(new_gear_state):
 		print("bad gear shift")
 		engine_force = 0.0
 		brake = BRAKE_FORCE
-	if new_gear_state == CAR_TRANSMISSION_AUTO.PARK:
-		self.gear_shift = CAR_TRANSMISSION_AUTO.PARK
+	if new_gear_state == CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK:
+		self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK
 		text_mesh.text = "PARK"
 		GEAR_SHIFT_TEXT.mesh = text_mesh
-	elif new_gear_state == CAR_TRANSMISSION_AUTO.D_R_TOGGLE:
-		var cond1 = (self.gear_shift !=  CAR_TRANSMISSION_AUTO.REVERSE) and (self.gear_shift != CAR_TRANSMISSION_AUTO.DRIVE)
-		if (self.gear_shift == CAR_TRANSMISSION_AUTO.REVERSE) or cond1:
-			self.gear_shift = CAR_TRANSMISSION_AUTO.DRIVE
+	elif new_gear_state == CAR_CONSTS.CAR_TRANSMISSION_AUTO.D_R_TOGGLE:
+		var cond1 = (self.gear_shift !=  CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE) and (self.gear_shift != CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE)
+		if (self.gear_shift == CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE) or cond1:
+			self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE
 			text_mesh.text = "DRIVE"
 			GEAR_SHIFT_TEXT.mesh = text_mesh
-		elif self.gear_shift == CAR_TRANSMISSION_AUTO.DRIVE:
-			self.gear_shift = CAR_TRANSMISSION_AUTO.REVERSE
+		elif self.gear_shift == CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE:
+			self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE
 			text_mesh.text = "REVERSE"
 			GEAR_SHIFT_TEXT.mesh = text_mesh
 			VEHICLE_REAR_CAM.CamOn()
 			RADIO_SCREEN.show()				
 			VEHICLE_BRAKELIGHT.light_ON()
-	elif new_gear_state == CAR_TRANSMISSION_AUTO.NEUTRAL:
-		self.gear_shift = CAR_TRANSMISSION_AUTO.NEUTRAL
+	elif new_gear_state == CAR_CONSTS.CAR_TRANSMISSION_AUTO.NEUTRAL:
+		self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.NEUTRAL
 		text_mesh.text = "NEUTRAL"
 		GEAR_SHIFT_TEXT.mesh = text_mesh
 
-	var isReversing = true  if gear_shift == CAR_TRANSMISSION_AUTO.REVERSE else false
+	var isReversing = true  if gear_shift == CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE else false
 	if (!isReversing and VEHICLE_REAR_CAM.isOn()):
 		VEHICLE_REAR_CAM.CamOff()
 		VEHICLE_BRAKELIGHT.light_OFF()
@@ -157,22 +154,22 @@ func getGearShift():
 	return self.gear_shift
 
 func isParked():
-	return true if gear_shift ==  CAR_TRANSMISSION_AUTO.PARK else false
+	return true if gear_shift ==  CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK else false
 
 func canMoveForward():
-	return true if gear_shift ==  CAR_TRANSMISSION_AUTO.DRIVE else false
+	return true if gear_shift ==  CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE else false
 	
 func canMoveBackward():
-	return true if gear_shift ==  CAR_TRANSMISSION_AUTO.REVERSE else false
+	return true if gear_shift ==  CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE else false
 	
 func toggleEngine():
-	if !isOn() and !PLAYER.UI.gasEmpty():
+	if !isOn() and !_emptyGas:
 		forceEngineOn()
 	elif isOn():
 		forceEngineOff()
 
 func forceEngineOff():
-		vehicle_engine = ENGINE_STATE.OFF
+		vehicle_engine = CAR_CONSTS.ENGINE_STATE.OFF
 		RADIO_AUDIO.stop()
 		RADIO_SCREEN.hide()
 		ENGINE_SOUND.engineOff()
@@ -180,34 +177,27 @@ func forceEngineOff():
 		VEHICLE_BRAKELIGHT.light_OFF()
 
 func forceEngineOn():
-	vehicle_engine = ENGINE_STATE.ON
+	vehicle_engine = CAR_CONSTS.ENGINE_STATE.ON
 	ENGINE_SOUND.engineOn()
 	VEHICLE_HEADLIGHT.light_ON()	
 
 func radioInteract():
 	if !RADIO_AUDIO.playing:
 		RADIO_AUDIO._play_audio()
-		if gear_shift != CAR_TRANSMISSION_AUTO.REVERSE and VEHICLE_REAR_CAM.isOn() != true:
+		if gear_shift != CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE and VEHICLE_REAR_CAM.isOn() != true:
 			RADIO_SCREEN.texture = load("res://vehicle/piku.jpg")
 			RADIO_SCREEN.show()
 	else:
 		RADIO_AUDIO.stop()
-		if gear_shift != CAR_TRANSMISSION_AUTO.REVERSE:
+		if gear_shift != CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE:
 			RADIO_SCREEN.hide()
 
 func carHornPlay():
 	CAR_HORN_AUDIO._play_audio()
 
 func isOn():
-	return true if vehicle_engine == ENGINE_STATE.ON else false
+	return true if vehicle_engine == CAR_CONSTS.ENGINE_STATE.ON else false
 
-func _drain_gas():
-	if !PLAYER.UI.gasEmpty() and self.isOn():
-		PLAYER.UI.drainGas(0.05)
-		if _is_car_sprinting == true:
-			PLAYER.UI.drainGas(0.15)
-		if PLAYER.UI.gasEmpty():
-			forceEngineOff()
 
 func playerClampToCar():
 	PLAYER.global_position = FRONT_SEAT_POS.global_position
@@ -218,10 +208,10 @@ func returnExitPos():
 	return $Interactables/OuterDoorHandle/ExitCarPosition.global_position
 
 func isSeatAvailable():
-	return true if seat == SEAT_STATUS.OPEN else false
+	return true if seat == CAR_CONSTS.SEAT_STATUS.OPEN else false
 
 func setSeatStatus(new_state):
 	if new_state == "OPEN":
-		seat = SEAT_STATUS.OPEN
+		seat = CAR_CONSTS.SEAT_STATUS.OPEN
 	if new_state == "TAKEN":
-		seat = SEAT_STATUS.TAKEN
+		seat = CAR_CONSTS.SEAT_STATUS.TAKEN

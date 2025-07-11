@@ -50,6 +50,6 @@ func on_player_state_change(new_state, player):
 	for e : Enemy in _enemies:
 		match e.type:
 			EnemyData.ENEMY_TYPE.CHASER:
-					e.change_state(Enemy.ENEMY_STATE.SEARCHING if new_state == Player.PLAYER_STATE.WALKING else Enemy.ENEMY_STATE.WAITING)
+					e.change_state(Enemy.ENEMY_STATE.SEARCHING if new_state == PLAYER_CONSTS.PLAYER_STATE.WALKING else Enemy.ENEMY_STATE.WAITING)
 			EnemyData.ENEMY_TYPE.VIBER:
-					e.change_state(Enemy.ENEMY_STATE.SEARCHING if new_state == Player.PLAYER_STATE.DRIVING else Enemy.ENEMY_STATE.WAITING)
+					e.change_state(Enemy.ENEMY_STATE.SEARCHING if new_state == PLAYER_CONSTS.PLAYER_STATE.DRIVING else Enemy.ENEMY_STATE.WAITING)
