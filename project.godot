@@ -26,6 +26,7 @@ window/size/mode=3
 [file_customization]
 
 folder_colors={
+"res://AssetsTeam/": "purple",
 "res://Global Classes/": "gray",
 "res://enemy/": "red",
 "res://levels/": "green",
