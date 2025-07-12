@@ -1,7 +1,23 @@
 extends Control
 
+<<<<<<< HEAD
 @onready var PLAYER := $".."
 @onready var VEHICLE := $"../../Vehicle"
+=======
+@onready var PLAYER : Player = $".."
+@onready var VEHICLE : Vehicle = $"../../Vehicle"
+@onready var HEALTH_BAR := $Player/HealthBar
+@onready var HEARTRATE_BAR := $Player/HeartRate
+@onready var STAMINA_BAR := $Player/StaminaBar
+
+enum CAR_TRANSMISSION_AUTO {
+	DRIVE,
+	REVERSE,
+	PARK,
+	NEUTRAL,
+	D_R_TOGGLE
+}
+>>>>>>> 5913108ca581efa4feee3298156a867fc7471192
 
 enum InputType { KEYBOARD, CONTROLLER }
 var last_input_type := InputType.KEYBOARD  # Default to keyboard
@@ -117,3 +133,80 @@ func prompt_UI_labels():
 	else:
 		VEHICLE_LABEL.text = str("")
 		VEHICLE_LABEL_BAD_INT.text = str("")
+<<<<<<< HEAD
+=======
+
+func drainBattery(amount :float):
+	$Phone/BatteryBar.value -= amount
+
+func batteryDead():
+	return true if $Phone/BatteryBar.isDead()  else false
+
+func drainHealth (amount:float):
+	$Player/HealthBar.value -= amount
+	
+	#print_debug("Drained health by:", amount)
+	print_debug("PLAYER.health:", PLAYER.health)
+	if healthEmpty():#PLAYER.health == 0:
+		if getStrikes() == 3: #proof of concept trigger moment
+			$Player/HealthBar/Dead.text = str("YOU DIED")
+		addStrike()
+
+func addStrike():
+	$Player/Strikes.addStrike(1)
+	$Player/Strikes/Count.text = str(int($Player/Strikes.value))
+	$Player/HealthBar.value = $Player/HealthBar.max_value - ($Player/HealthBar.max_value * 0.2 * $Player/Strikes.value)
+	
+func getStrikes():
+	return $Player/Strikes.value
+
+func healthEmpty():
+	return true if $Player/HealthBar.isEmpty() else false
+
+func drainGas (amount:float):
+	$Car/GasolineBar.value -= amount
+
+func gasEmpty():
+	return true if $Car/GasolineBar.isEmpty() else false
+
+func getHealth():
+	return $Player/HealthBar.value
+
+func getBattery():
+	return $Phone/BatteryBar.value
+
+func getTemp():
+	return $Player/TemperatureBar.value
+
+func setTemp(new_val):
+	$Player/TemperatureBar.value = new_val
+
+func heartRate(delta, curr_health):
+	time += delta
+	fluctuation = sin(time * fluctuation_speed) * fluctuation_strength
+	
+	var health_percent = curr_health / PLAYER.UI.HEALTH_BAR.max_value 
+	# Map health percentage (1->0) to heart rate (70->175)
+	var heart_rate = 70 + (1 - health_percent) * 105
+	
+	$Player/HeartRate/Display.text = str(int(HEARTRATE_BAR.value))
+	return heart_rate + fluctuation
+	
+func getHeartRate():
+		return HEARTRATE_BAR.value
+
+func setSteps(amount):
+	$Player/Steps.text = str(amount)
+
+func getSteps():
+	return int($Player/Steps.text)
+
+func drainStamina(amount):
+	STAMINA_BAR.value -= amount
+
+func restoreStamina(amount):
+	STAMINA_BAR.value += amount
+
+func getStamina():
+	return STAMINA_BAR.value
+>>>>>>> 5913108ca581efa4feee3298156a867fc7471192

@@ -482,5 +482,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.409085, 0.926519, 0)
 [node name="Passenger" type="Node3D" parent="Seats"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.46627, 0.887985, 0)
 
-[node name="Node3D3" type="Node3D" parent="Seats"]
+[node name="Back" type="Node3D" parent="Seats"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.929326, 0.953964)

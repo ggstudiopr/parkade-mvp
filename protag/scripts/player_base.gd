@@ -40,12 +40,22 @@ var myTemp : float = 80:
 		if myTemp > 60:
 			NormalTemperature.emit()
 
+signal killed
+
 @onready var PAUSE_MENU := $CanvasLayer2/PauseMenu
 @onready var INVENTORY_MENU := $CanvasLayer/Inventory
 @onready var UI := $UI
 @onready var PHONE := $CameraController/Camera3D/PhoneNode
 @onready var VEHICLE := $"../Vehicle"
 @onready var ENEMY_MANAGER := $"../EnemyManager"
+
+@export var health : float :
+	get():
+		return health
+	set(value):
+		health = value
+		if value <= 0:
+			killed.emit()
 
 #MOVEMENT/SPEED VALUES
 @export var SPEED_DEFAULT : float = 2
@@ -116,6 +126,7 @@ var player_state = PLAYER_CONSTS.PLAYER_STATE.WALKING
 
 #INITIALIZE
 func _ready():
+	health = 100
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	COLD_AIR.hide()
 	
@@ -428,7 +439,7 @@ func isDriving():
 
 func enemy_proximity_damage(delta):
 	var damage_distance = 7.0  # Units of distance for damage to occur
-	var hurt_rate = 250 * delta # Damage per second, scaled by delta
+	var hurt_rate = 2.5 * delta # Damage per second, scaled by delta
 	if ENEMY_MANAGER:
 		var enemies_array = ENEMY_MANAGER.get_enemy_nodes()
 		var player_pos = self.global_position

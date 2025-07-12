@@ -8,7 +8,6 @@ class_name Level
 var player_scene = preload("res://protag/Protag_Root_Scene.tscn")
 var vehicle_scene = preload("res://vehicle/Vehicle_Root_Scene.tscn")
 var enemy_scene = preload("res://enemy/enemy.tscn")
-var antlion_data = preload("res://enemy/enemy_types/enemy_data.tres")
 
 @export_subgroup("Enemies")
 @export var enemy_manager : EnemyManager
@@ -18,6 +17,9 @@ var spawn_points : Array[Node3D] ## Node3D's to be used as enemy spawn points
 @export_subgroup("Players")
 @export var vehicle : CAR
 @export var players : Array[Protagonist] = []  
+
+@export_subgroup("Events")
+@export var event_manager : EventManager
 
 #TODO: UI EXISTS ON THIS LAYER
 
@@ -35,47 +37,53 @@ enum LEVEL_STATE {
 	END
 }
 
-var PLAYER_COUNT = 1 #TODO: Initialize player amount based on Game node/singleton.
+var PLAYER_COUNT = Global.PLAYER_COUNT
 
 var current_state : LEVEL_STATE :
 	set(value):
 		current_state = on_level_state_change(value)
+		print(current_state)
 	get:
 		return current_state
 
 func _init() -> void:
 	current_state = LEVEL_STATE.LOADING
-	pass
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
+	#Give Player to UI
 	
 	vehicle = vehicle if vehicle else vehicle_scene.instantiate() 
 	
 	for player in range(PLAYER_COUNT):
 		if players.size() < PLAYER_COUNT:
-			var new_player = player_scene.instantiate()
+			var new_player: Player = player_scene.instantiate()
+			new_player.killed.connect(on_player_killed)
 			#TODO: Car should handle assigning and positioning players to specific seats.
 			#vehicle.add_occupant(new_player) #PSEUDOCODE
 	
 	#players.append(vehicle.occupants as Array[Player]) #PSEUDOCODE
 	
 	var spawn_nodes := enemy_spawns.get_children()
-	
 	var casted_nodes : Array[Node3D] #One day Godot will fix Array type casting. Today is not that day.
 	for node in spawn_nodes:
 		casted_nodes.append(node as Node3D)
-	
 	spawn_points = casted_nodes
-
-	for enemy in enemy_manager.spawn_initial_enemies(spawn_points):	#TODO: Determine how to set preferred spawn_points. Create SpawnPoint node that contains data of who it prefers, if any?
+	
+	#TODO: Determine how to set preferred spawn_points. Create SpawnPoint node that contains data of who it prefers, if any?
+	#Priority here can be done based on node names, by getting them and then sorting by name. Or creating a custom node for it.
+	#Both require the same logic at the systems level to determine gameplay, so pick your preference.
+	# https://forum.godotengine.org/t/how-can-i-sort-the-children-of-a-node/1409/2
+	#event_manager = event_manager if event_manager else event_manager.instantiate()
+	#event_manager.all_events_finished.connect(on_all_events_finished)
+	for enemy in enemy_manager.spawn_initial_enemies(spawn_points):
 		$EnemyManager.add_child(enemy)
 	
 	current_state = LEVEL_STATE.START
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	#TODO: Determine what WINNING, LOSING, AND ENDING MEANS
 	pass
 
 func on_level_state_change(new_state) -> LEVEL_STATE:
@@ -92,6 +100,14 @@ func on_level_state_change(new_state) -> LEVEL_STATE:
 			level_ended.emit()
 	return new_state
 
+<<<<<<< HEAD
 
 func _on_protagonist_max_strikes() -> void:
 	get_tree().quit()
+=======
+func on_all_events_finished() -> void :
+	current_state = LEVEL_STATE.WIN
+
+func on_player_killed(method) -> void:
+	current_state = LEVEL_STATE.LOSE
+>>>>>>> 5913108ca581efa4feee3298156a867fc7471192
