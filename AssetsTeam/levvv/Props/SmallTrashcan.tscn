@@ -1,0 +1,20 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6tqv1ncsblsd"]
+
+[ext_resource type="ArrayMesh" uid="uid://mqnm3tedh54" path="res://AssetsTeam/levvv/Assets/SmallTrashcan/SmallTrashcan.obj" id="1_a5q3i"]
+[ext_resource type="Texture2D" uid="uid://mt0ubcl4f5i7" path="res://AssetsTeam/levvv/Assets/SmallTrashcan/Can.png" id="2_88wo3"]
+[ext_resource type="Texture2D" uid="uid://b5suqcw75adm" path="res://AssetsTeam/levvv/Assets/SmallTrashcan/Bag.png" id="3_c20x5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u77vg"]
+albedo_texture = ExtResource("2_88wo3")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tyquy"]
+albedo_texture = ExtResource("3_c20x5")
+clearcoat_enabled = true
+clearcoat = 0.1
+
+[node name="SmallTrashcan" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_a5q3i")
+surface_material_override/0 = SubResource("StandardMaterial3D_u77vg")
+surface_material_override/1 = SubResource("StandardMaterial3D_tyquy")

@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=3 uid="uid://bxq7npomagabg"]
+
+[ext_resource type="ArrayMesh" uid="uid://c7d76vlrks5l5" path="res://AssetsTeam/levvv/Assets/LargeTrashcan/Large Trashcan.obj" id="1_u07lx"]
+[ext_resource type="Texture2D" uid="uid://b8i0j103sf43d" path="res://AssetsTeam/levvv/Assets/LargeTrashcan/TrashcanBase.png" id="2_15mmn"]
+[ext_resource type="Texture2D" uid="uid://cc71h46315paj" path="res://AssetsTeam/levvv/Assets/LargeTrashcan/TrashcanTop.png" id="3_yyky8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u33vd"]
+albedo_texture = ExtResource("2_15mmn")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_komym"]
+albedo_texture = ExtResource("3_yyky8")
+clearcoat_enabled = true
+clearcoat = 0.05
+clearcoat_roughness = 1.0
+
+[node name="LargeTrashcan" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_u07lx")
+surface_material_override/0 = SubResource("StandardMaterial3D_u33vd")
+surface_material_override/1 = SubResource("StandardMaterial3D_komym")
