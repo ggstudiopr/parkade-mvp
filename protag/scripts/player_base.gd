@@ -166,7 +166,10 @@ func _input(event):
 	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_CONSTS.PLAYER_STATE.WALKING:
 		crouch_toggle()
 	if event.is_action_pressed("interact"):
-		UI.check_interact()
+		if CAR_LOOK_DIR_RAY.is_colliding():
+			CAR_LOOK_DIR_RAY.doThing(CAR_LOOK_DIR_RAY.get_collider())
+			pass
+		
 	if event.is_action_pressed("sprint"):
 		_is_sprinting = true
 	if event.is_action_released("sprint"):
@@ -193,6 +196,11 @@ func _input(event):
 	
 	phone_input_check(event) #threw all phone related inputs into here to clean readability
 
+
+func check_interact():
+	if CAR_LOOK_DIR_RAY.is_colliding():
+		CAR_LOOK_DIR_RAY.get_collider().doThing()
+		
 func phone_input_check(event):
 	#Toggle Phone holdQ logic
 	if Input.is_action_just_pressed("Toggle Phone"):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://ykg03vys3buy"]
+[gd_scene load_steps=32 format=3 uid="uid://ykg03vys3buy"]
 
 [ext_resource type="Script" uid="uid://daukphcpp2rum" path="res://vehicle/scripts/vehicle_base.gd" id="1_elk10"]
 [ext_resource type="Script" uid="uid://c3tu4jh4obsrx" path="res://vehicle/scripts/EngineAudio.gd" id="2_echwb"]
@@ -12,6 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://bkpblki1ngjfs" path="res://sounds/vehicle-audio/CarHorn.wav" id="5_knwov"]
 [ext_resource type="Script" uid="uid://cpsflumb6m35a" path="res://vehicle/scripts/MirrorReflectionRear.gd" id="5_lm5gg"]
 [ext_resource type="Script" uid="uid://c7jlcfuxcwwnt" path="res://vehicle/scripts/HornAudio.gd" id="5_qtwpx"]
+[ext_resource type="Script" uid="uid://cxc1mnj5tvpmt" path="res://Global Classes/CAR_INTERACT_RES.gd" id="8_2kwh5"]
 [ext_resource type="Script" uid="uid://cu50voscq5c26" path="res://vehicle/scripts/BrakeLights.gd" id="8_iwtnb"]
 [ext_resource type="ArrayMesh" uid="uid://cod7ik8uvbmo1" path="res://vehicle/CarObj.obj" id="17_oysj2"]
 
@@ -24,35 +25,13 @@ size = Vector3(1.8, 1, 4.5)
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_vheon"]
 height = 1.5
 
-[sub_resource type="SphereMesh" id="SphereMesh_7arhk"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ipret"]
-albedo_color = Color(0.264504, 0.639223, 1.92523e-07, 1)
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_63ipq"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ok67h"]
-albedo_color = Color(1, 0.176471, 1, 1)
-
 [sub_resource type="ViewportTexture" id="ViewportTexture_vheon"]
 viewport_path = NodePath("Back/SubViewportBackCam")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4fosd"]
-albedo_color = Color(0, 1, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2d5d8"]
-albedo_color = Color(1, 1, 0.0235294, 1)
 
 [sub_resource type="TextMesh" id="TextMesh_5gjb7"]
 text = "BASE"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7o0w8"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oysj2"]
-albedo_color = Color(0.668055, 0.261228, 0, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qjm6t"]
-albedo_color = Color(0.982218, 0.43752, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wc4vm"]
 size = Vector3(0.1, 0.1, 1)
@@ -213,30 +192,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.335218, 0, 0.514771)
 [node name="InnerDoorHandle" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.772581, 1.93214, -2.11743)
 
-[node name="NodeMesh" type="MeshInstance3D" parent="Interactables/InnerDoorHandle"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -2.86953, 4.57686)
-mesh = SubResource("SphereMesh_7arhk")
-surface_material_override/0 = SubResource("StandardMaterial3D_ipret")
-
-[node name="InnerDoorInteract" type="Area3D" parent="Interactables/InnerDoorHandle/NodeMesh" groups=["CarInteractColliders"]]
-collision_layer = 2
-
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/InnerDoorHandle/NodeMesh/InnerDoorInteract" groups=["CarInteractColliders"]]
-shape = SubResource("SphereShape3D_63ipq")
+[node name="CarInteractable" type="Area3D" parent="Interactables/InnerDoorHandle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1236, -2.70428, 4.59198)
+script = ExtResource("8_2kwh5")
+InteractType = 2
+interaction_radius = 0.4
+metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
 
 [node name="OuterDoorHandle" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.969602, 1.93214, -1.70422)
 
-[node name="NodeMesh" type="MeshInstance3D" parent="Interactables/OuterDoorHandle"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.04722, -2.76759, 4.58309)
-mesh = SubResource("SphereMesh_7arhk")
-surface_material_override/0 = SubResource("StandardMaterial3D_ipret")
-
-[node name="OuterDoorInteract" type="Area3D" parent="Interactables/OuterDoorHandle/NodeMesh" groups=["CarInteractColliders"]]
-collision_layer = 2
-
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/OuterDoorHandle/NodeMesh/OuterDoorInteract" groups=["CarInteractColliders"]]
-shape = SubResource("SphereShape3D_63ipq")
+[node name="CarInteractable" type="Area3D" parent="Interactables/OuterDoorHandle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.901242, -2.46901, 4.58213)
+script = ExtResource("8_2kwh5")
+InteractType = 1
+interaction_radius = 0.4
+metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
 
 [node name="ExitCarPosition" type="Node3D" parent="Interactables/OuterDoorHandle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05638, -5.97712, 4.61828)
@@ -244,89 +215,66 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05638, -5.97712, 4.61828)
 [node name="Radio" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.17454, 1.23165, -1.83505)
 
-[node name="NodeMesh" type="MeshInstance3D" parent="Interactables/Radio"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.54305)
-mesh = SubResource("SphereMesh_7arhk")
-surface_material_override/0 = SubResource("StandardMaterial3D_ok67h")
-
-[node name="RadioInteract" type="Area3D" parent="Interactables/Radio/NodeMesh" groups=["CarInteractColliders"]]
-collision_layer = 2
-
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/Radio/NodeMesh/RadioInteract" groups=["CarInteractColliders"]]
-shape = SubResource("SphereShape3D_63ipq")
-
 [node name="RadioScreen" type="Sprite3D" parent="Interactables/Radio"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.820259, 0.0109594, 4.1266)
 texture = SubResource("ViewportTexture_vheon")
 region_enabled = true
 region_rect = Rect2(65, 240, 400, 250)
 
+[node name="CarInteractable" type="Area3D" parent="Interactables/Radio"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.683664, 0, 4.2029)
+script = ExtResource("8_2kwh5")
+InteractType = 7
+metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
+
 [node name="Ignition" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.0440701, 1.10661, -1.62086)
 
-[node name="NodeMesh" type="MeshInstance3D" parent="Interactables/Ignition"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.54305)
-mesh = SubResource("SphereMesh_7arhk")
-surface_material_override/0 = SubResource("StandardMaterial3D_4fosd")
-
-[node name="IgnitionInteract" type="Area3D" parent="Interactables/Ignition/NodeMesh" groups=["CarInteractColliders"]]
-collision_layer = 2
-
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/Ignition/NodeMesh/IgnitionInteract" groups=["CarInteractColliders"]]
-shape = SubResource("SphereShape3D_63ipq")
+[node name="CarInteractable" type="Area3D" parent="Interactables/Ignition"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.712167, 0, 3.49005)
+script = ExtResource("8_2kwh5")
+InteractType = 4
+interaction_radius = 0.3
+metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
 
 [node name="AutoGearShiftToggle" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.0783191, 0.931112, -1.70085)
-
-[node name="NodeMesh" type="MeshInstance3D" parent="Interactables/AutoGearShiftToggle"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.54305)
-mesh = SubResource("SphereMesh_7arhk")
-surface_material_override/0 = SubResource("StandardMaterial3D_2d5d8")
-
-[node name="AutoGearTogInteract" type="Area3D" parent="Interactables/AutoGearShiftToggle/NodeMesh" groups=["CarInteractColliders"]]
-collision_layer = 2
-
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/AutoGearShiftToggle/NodeMesh/AutoGearTogInteract" groups=["CarInteractColliders"]]
-shape = SubResource("SphereShape3D_63ipq")
 
 [node name="TransmissionTextMesh" type="MeshInstance3D" parent="Interactables/AutoGearShiftToggle"]
 transform = Transform3D(0.601759, 0, -0.798677, 0, 0.999999, 0, 0.798677, 0, 0.601759, 0.984724, 0.352545, 3.46641)
 mesh = SubResource("TextMesh_5gjb7")
 surface_material_override/0 = SubResource("StandardMaterial3D_7o0w8")
 
+[node name="CarInteractable" type="Area3D" parent="Interactables/AutoGearShiftToggle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8352, -0.163807, 3.99138)
+script = ExtResource("8_2kwh5")
+InteractType = 6
+metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
+
 [node name="AutoGearShiftPark" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.0485373, 0.951479, -1.97508)
 
-[node name="NodeMesh" type="MeshInstance3D" parent="Interactables/AutoGearShiftPark"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.85391)
-mesh = SubResource("SphereMesh_7arhk")
-surface_material_override/0 = SubResource("StandardMaterial3D_oysj2")
-
-[node name="AutoGearParkInteract" type="Area3D" parent="Interactables/AutoGearShiftPark/NodeMesh" groups=["CarInteractColliders"]]
-collision_layer = 2
-
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/AutoGearShiftPark/NodeMesh/AutoGearParkInteract" groups=["CarInteractColliders"]]
-shape = SubResource("SphereShape3D_63ipq")
+[node name="CarInteractable" type="Area3D" parent="Interactables/AutoGearShiftPark"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.981801, 0, 4.08465)
+script = ExtResource("8_2kwh5")
+InteractType = 5
+metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
 
 [node name="CarHorn" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.138041, 1.18558, -1.13647)
-
-[node name="NodeMesh" type="MeshInstance3D" parent="Interactables/CarHorn"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.941716, -0.345048, 3.69312)
-mesh = SubResource("SphereMesh_7arhk")
-surface_material_override/0 = SubResource("StandardMaterial3D_qjm6t")
-
-[node name="HornInteract" type="Area3D" parent="Interactables/CarHorn/NodeMesh" groups=["CarInteractColliders"]]
-collision_layer = 2
-
-[node name="NodeCollision" type="CollisionShape3D" parent="Interactables/CarHorn/NodeMesh/HornInteract" groups=["CarInteractColliders"]]
-shape = SubResource("SphereShape3D_63ipq")
 
 [node name="CarHornAudio" type="AudioStreamPlayer3D" parent="Interactables/CarHorn"]
 transform = Transform3D(3.33333, 0, 0, 0, 3.33333, 0, 0, 0, 3.33333, 0.0682736, -0.00609398, 2.41635)
 stream = ExtResource("5_knwov")
 volume_db = -30.0
 script = ExtResource("5_qtwpx")
+
+[node name="CarInteractable" type="Area3D" parent="Interactables/CarHorn"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.924017, -0.282523, 3.68582)
+script = ExtResource("8_2kwh5")
+InteractType = 3
+interaction_radius = 0.1
+metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
 
 [node name="Mirrors" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.347759, 0, 0.502833)
