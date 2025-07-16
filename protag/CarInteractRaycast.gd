@@ -24,7 +24,6 @@ func currentInteract():
 func _physics_process(delta):
 	raycast.global_position = camera.global_position
 	if self.is_colliding():
-		label.show()
 		onCollide(self.get_collider())
 	else:
 		if lastCollider and lastCollider.show_mesh and latestCollider:
@@ -50,9 +49,12 @@ func onCollide(collider):
 				label.text = "Car must be PARKED"
 	else:
 		if collider.show_interaction_prompt:
-			#if (!_playerDriving and collider.InteractType == CarInteractable.TYPE.HandleOuter) or (_playerDriving and collider.InteractType != CarInteractable.TYPE.HandleOuter):
-			label.text = "Press "+currentInteract()+" to " + str(CarInteractable.TEXT[lastCollider.InteractType])
-
+			if (!_playerDriving and collider.InteractType == CarInteractable.TYPE.HandleOuter):
+				label.show()
+				label.text = "Press "+currentInteract()+" to " + str(CarInteractable.TEXT[lastCollider.InteractType])
+			elif (_playerDriving and collider.InteractType != CarInteractable.TYPE.HandleOuter):
+				label.show()
+				label.text = "Press "+currentInteract()+" to " + str(CarInteractable.TEXT[lastCollider.InteractType])
 	label.position = EntityScreenPositionSolver(collider)
 	if collider.show_mesh:
 		collider.highlight()

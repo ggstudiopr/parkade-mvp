@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://ykg03vys3buy"]
+[gd_scene load_steps=29 format=3 uid="uid://ykg03vys3buy"]
 
 [ext_resource type="Script" uid="uid://daukphcpp2rum" path="res://vehicle/scripts/vehicle_base.gd" id="1_elk10"]
 [ext_resource type="Script" uid="uid://c3tu4jh4obsrx" path="res://vehicle/scripts/EngineAudio.gd" id="2_echwb"]
@@ -53,42 +53,6 @@ viewport_path = NodePath("Mirrors/RearMirror/SubViewportRear")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ppir"]
 albedo_color = Color(0.568627, 0.0352941, 0.0705882, 1)
 
-[sub_resource type="Animation" id="Animation_oysj2"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_vheon"]
-resource_name = "bad_gear_shift"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(-0.0333333, 0.1, 0.2, 0.433333),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0.0174533, 0, 0), Vector3(-0.0174533, 0, 0), Vector3(0, 0, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_psaxl"]
-_data = {
-&"RESET": SubResource("Animation_oysj2"),
-&"bad_gear_shift": SubResource("Animation_vheon")
-}
-
 [node name="Vehicle" type="VehicleBody3D"]
 collision_layer = 32
 collision_mask = 5
@@ -136,6 +100,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.160678, 1.23165, -1.32028)
 stream = ExtResource("3_1681n")
 volume_db = -26.105
 script = ExtResource("3_i0utq")
+
+[node name="CarHornAudio" type="AudioStreamPlayer3D" parent="Sounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.466432, 1.18497, -0.380064)
+stream = ExtResource("5_knwov")
+volume_db = -30.0
+script = ExtResource("5_qtwpx")
 
 [node name="CollisionShapeBody" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.932782, 0)
@@ -262,12 +232,6 @@ metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
 
 [node name="CarHorn" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.138041, 1.18558, -1.13647)
-
-[node name="CarHornAudio" type="AudioStreamPlayer3D" parent="Interactables/CarHorn"]
-transform = Transform3D(3.33333, 0, 0, 0, 3.33333, 0, 0, 0, 3.33333, 0.0682736, -0.00609398, 2.41635)
-stream = ExtResource("5_knwov")
-volume_db = -30.0
-script = ExtResource("5_qtwpx")
 
 [node name="CarInteractable" type="Area3D" parent="Interactables/CarHorn"]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.924017, -0.282523, 3.68582)
@@ -409,11 +373,6 @@ script = ExtResource("8_iwtnb")
 [node name="Mercedes-benzGlcCoupé(c253Lp)" type="MeshInstance3D" parent="."]
 transform = Transform3D(-1.1, 0, 9.61651e-08, 0, 1.1, 0, -9.61651e-08, 0, -1.1, 0, 0, 0)
 mesh = ExtResource("17_oysj2")
-
-[node name="CarAnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_psaxl")
-}
 
 [node name="cabinlight" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.575933, 0.817497, 0, -0.817497, 0.575933, 0.0143636, 1.7441, 0.24993)
