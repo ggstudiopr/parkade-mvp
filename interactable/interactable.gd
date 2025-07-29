@@ -1,31 +1,29 @@
-extends Node3D
+extends Area3D
 class_name Interactable
 #INFO: Base Interactable class to iterate on. Common interactables should eventually have their own scenes made
 #One-offs should add children manually for the visual and range aspect. Functionality is yet to be determined.
 
-'''
-#TODO: 
+signal interacted(data)
 
-Area3D -> What the RayCast3D interacts with
-Mesh -> Visual representation of the interactable
-
-var data -> resource file that holds relevant data for interaction?
-- text, images, values 
-'''
-
-@export var area : Area3D
+#Warn Designer that this node wont work without a Mesh and CollisionShape
+#Requires converting this into a @tool, not sure if worth overhead
+@export var area : CollisionShape3D
 @export var mesh : MeshInstance3D
-@export_subgroup("Data")
-@export var text := ""
+
+#Probably default to array, or a Res?
+@export var data = {
+	'text': "Default",
+	'value': -1
+}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 	
 #Overrideable 
-func interact() -> void:
-	pass
+func interact(interactor: Node) -> void:
+	interacted.emit(data)

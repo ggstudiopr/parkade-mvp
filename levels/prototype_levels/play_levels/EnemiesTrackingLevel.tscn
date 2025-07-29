@@ -1,9 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://heeroj1isx3v"]
+[gd_scene load_steps=22 format=3 uid="uid://heeroj1isx3v"]
 
 [ext_resource type="Script" uid="uid://dlaqd2dovajl5" path="res://levels/level.gd" id="1_vfu3g"]
 [ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_manager.gd" id="2_b2ruq"]
+[ext_resource type="Script" uid="uid://b3847ss7drxqr" path="res://events/event_manager.gd" id="2_nxsom"]
 [ext_resource type="Script" uid="uid://12vilyhpeeo7" path="res://enemy/enemy_types/enemy_data.gd" id="3_7dwmy"]
+[ext_resource type="Script" uid="uid://bljy3dd1c2lg8" path="res://events/milk_collecting.gd" id="3_gxqag"]
 [ext_resource type="Resource" uid="uid://chjlv46hxiqi1" path="res://enemy/enemy_types/Freddy.tres" id="4_4x0c0"]
+[ext_resource type="Script" uid="uid://t1y565kg8oxy" path="res://interactable/interactable.gd" id="4_piywk"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="5_0b86u"]
 [ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="6_0elsm"]
 
@@ -21,6 +24,18 @@ friction = 0.1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jtvp2"]
 size = Vector3(50, 1, 50)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xgrnf"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ttfx8"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xm276"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nngke"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_enp5q"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_eyeoc"]
 
 [sub_resource type="Resource" id="Resource_u3fgk"]
 script = ExtResource("3_7dwmy")
@@ -69,6 +84,67 @@ skeleton = NodePath("../../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Collisions/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 shape = SubResource("BoxShape3D_jtvp2")
+
+[node name="EventManager" type="Node" parent="." node_paths=PackedStringArray("events")]
+script = ExtResource("2_nxsom")
+events = [NodePath("MilkCollecting")]
+
+[node name="MilkCollecting" type="Node" parent="EventManager" node_paths=PackedStringArray("interactables")]
+script = ExtResource("3_gxqag")
+interactables = [NodePath("MilkJug_1"), NodePath("MilkJug_2"), NodePath("MilkJug_3"), NodePath("Interactable")]
+
+[node name="MilkJug_1" type="Area3D" parent="EventManager/MilkCollecting" node_paths=PackedStringArray("area", "mesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.6049, 0.972616, -10.8226)
+script = ExtResource("4_piywk")
+area = NodePath("CollisionShape3D")
+mesh = NodePath("MeshInstance3D")
+metadata/_custom_type_script = "uid://t1y565kg8oxy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EventManager/MilkCollecting/MilkJug_1"]
+shape = SubResource("CapsuleShape3D_xgrnf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EventManager/MilkCollecting/MilkJug_1"]
+mesh = SubResource("CapsuleMesh_ttfx8")
+
+[node name="MilkJug_2" type="Area3D" parent="EventManager/MilkCollecting" node_paths=PackedStringArray("area", "mesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.16821, 0.735461, 7.49717)
+script = ExtResource("4_piywk")
+area = NodePath("CollisionShape3D")
+mesh = NodePath("MeshInstance3D")
+metadata/_custom_type_script = "uid://t1y565kg8oxy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EventManager/MilkCollecting/MilkJug_2"]
+shape = SubResource("CapsuleShape3D_xm276")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EventManager/MilkCollecting/MilkJug_2"]
+mesh = SubResource("CapsuleMesh_nngke")
+
+[node name="MilkJug_3" type="Area3D" parent="EventManager/MilkCollecting" node_paths=PackedStringArray("area", "mesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.3768, 0.895779, 7.00563)
+script = ExtResource("4_piywk")
+area = NodePath("CollisionShape3D")
+mesh = NodePath("MeshInstance3D")
+metadata/_custom_type_script = "uid://t1y565kg8oxy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EventManager/MilkCollecting/MilkJug_3"]
+shape = SubResource("CapsuleShape3D_enp5q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EventManager/MilkCollecting/MilkJug_3"]
+mesh = SubResource("CapsuleMesh_eyeoc")
+
+[node name="Interactable" type="Area3D" parent="EventManager/MilkCollecting" node_paths=PackedStringArray("area", "mesh")]
+script = ExtResource("4_piywk")
+area = NodePath("CollisionShape3D")
+mesh = NodePath("MeshInstance3D")
+data = {
+"text": "jug_4",
+"value": 4
+}
+metadata/_custom_type_script = "uid://t1y565kg8oxy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EventManager/MilkCollecting/Interactable"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EventManager/MilkCollecting/Interactable"]
 
 [node name="EnemyManager" type="Node" parent="."]
 script = ExtResource("2_b2ruq")
