@@ -1,7 +1,7 @@
-[gd_scene load_steps=26 format=3 uid="uid://dl60tvwy1elkf"]
+[gd_scene load_steps=23 format=3 uid="uid://dl60tvwy1elkf"]
 
 [ext_resource type="Script" uid="uid://cwfgwnkth6x74" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
-[ext_resource type="Script" uid="uid://ci0muygltpwcc" path="res://protag/InteractRaycast.gd" id="2_65wl4"]
+[ext_resource type="Script" uid="uid://ci0muygltpwcc" path="res://protag/CarInteractRaycast.gd" id="2_65wl4"]
 [ext_resource type="AudioStream" uid="uid://bq11tey4ecy0m" path="res://sounds/protagonist-tied-ambient/Static background Noise.mp3" id="2_jnuwb"]
 [ext_resource type="PackedScene" uid="uid://csjcseh76ann" path="res://protag/phone/Phone_Root_Scene.tscn" id="2_nqwbi"]
 [ext_resource type="Script" uid="uid://bl4epvu7js8dq" path="res://protag/MainCam.gd" id="2_uq3ot"]
@@ -150,42 +150,6 @@ _data = {
 &"stand": SubResource("Animation_d5j1e")
 }
 
-[sub_resource type="Animation" id="Animation_jnuwb"]
-resource_name = "Fade"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.533333, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_xe5yb"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0, 0, 0, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_dk6wf"]
-_data = {
-&"Fade": SubResource("Animation_jnuwb"),
-&"RESET": SubResource("Animation_xe5yb")
-}
-
 [node name="Protagonist" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER") groups=["Player"]]
 collision_layer = 16
 collision_mask = 33
@@ -308,9 +272,8 @@ transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.1, -
 [node name="Away" type="Node3D" parent="CameraController/Camera3D/PhonePositionalAnchors"]
 transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.115, -0.3, -0.2)
 
-[node name="InteractRaycast" type="RayCast3D" parent="CameraController/Camera3D"]
+[node name="CarInteractRaycast" type="RayCast3D" parent="CameraController/Camera3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
-visible = false
 target_position = Vector3(1, 0, 0)
 collision_mask = 2
 collide_with_areas = true
@@ -318,7 +281,7 @@ collide_with_bodies = false
 debug_shape_custom_color = Color(0, 1, 0, 1)
 script = ExtResource("2_65wl4")
 
-[node name="CarInteractLabel" type="Label" parent="CameraController/Camera3D/InteractRaycast"]
+[node name="CarInteractLabel" type="Label" parent="CameraController/Camera3D/CarInteractRaycast"]
 offset_right = 40.0
 offset_bottom = 23.0
 
@@ -356,23 +319,7 @@ offset_left = 72.0
 offset_top = 37.0
 offset_right = 72.0
 offset_bottom = 37.0
-scale = Vector2(0.912423, 0.888125)
-
-[node name="BlinkLayer" type="CanvasLayer" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="BlinkLayer"]
-layout_direction = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0)
-
-[node name="BlinkAnimator" type="AnimationPlayer" parent="BlinkLayer/ColorRect"]
-libraries = {
-&"": SubResource("AnimationLibrary_dk6wf")
-}
+scale = Vector2(0.272423, 0.888125)
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
 layer = 2
@@ -385,4 +332,3 @@ offset_bottom = 5.0
 
 [node name="ColdAirPuffs" parent="." instance=ExtResource("11_glbnd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52006, -0.971249)
-visible = false

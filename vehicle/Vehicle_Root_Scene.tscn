@@ -12,8 +12,8 @@
 [ext_resource type="AudioStream" uid="uid://bkpblki1ngjfs" path="res://sounds/vehicle-audio/CarHorn.wav" id="5_knwov"]
 [ext_resource type="Script" uid="uid://cpsflumb6m35a" path="res://vehicle/scripts/MirrorReflectionRear.gd" id="5_lm5gg"]
 [ext_resource type="Script" uid="uid://c7jlcfuxcwwnt" path="res://vehicle/scripts/HornAudio.gd" id="5_qtwpx"]
-[ext_resource type="Script" uid="uid://cxc1mnj5tvpmt" path="res://Global Classes/CAR_INTERACT_RES.gd" id="8_2kwh5"]
 [ext_resource type="Script" uid="uid://cu50voscq5c26" path="res://vehicle/scripts/BrakeLights.gd" id="8_iwtnb"]
+[ext_resource type="Script" uid="uid://db34122kkhgvf" path="res://levels/Items/ItemBase.gd" id="8_vheon"]
 [ext_resource type="ArrayMesh" uid="uid://cod7ik8uvbmo1" path="res://vehicle/CarObj.obj" id="17_oysj2"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vheon"]
@@ -156,7 +156,7 @@ damping_relaxation = 8.0
 [node name="CameraAnchor" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.394054, 1.43916, 0.161763)
 
-[node name="Interactables" type="Node3D" parent="." groups=["CarInteractColliders"]]
+[node name="Interactables" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.335218, 0, 0.514771)
 
 [node name="InnerDoorHandle" type="Node3D" parent="Interactables"]
@@ -164,20 +164,24 @@ transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.772581, 1.93214, -2.
 
 [node name="CarInteractable" type="Area3D" parent="Interactables/InnerDoorHandle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1236, -2.70428, 4.59198)
-script = ExtResource("8_2kwh5")
-InteractType = 2
+script = ExtResource("8_vheon")
+InteractType = 6
+ID = 11
+show_mesh = true
 interaction_radius = 0.4
-metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
+metadata/_custom_type_script = "uid://db34122kkhgvf"
 
 [node name="OuterDoorHandle" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.969602, 1.93214, -1.70422)
 
 [node name="CarInteractable" type="Area3D" parent="Interactables/OuterDoorHandle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.901242, -2.46901, 4.58213)
-script = ExtResource("8_2kwh5")
-InteractType = 1
+script = ExtResource("8_vheon")
+InteractType = 6
+ID = 10
+show_mesh = true
 interaction_radius = 0.4
-metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
+metadata/_custom_type_script = "uid://db34122kkhgvf"
 
 [node name="ExitCarPosition" type="Node3D" parent="Interactables/OuterDoorHandle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05638, -5.97712, 4.61828)
@@ -193,19 +197,23 @@ region_rect = Rect2(65, 240, 400, 250)
 
 [node name="CarInteractable" type="Area3D" parent="Interactables/Radio"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.683664, 0, 4.2029)
-script = ExtResource("8_2kwh5")
-InteractType = 7
-metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
+script = ExtResource("8_vheon")
+InteractType = 6
+ID = 12
+show_mesh = true
+metadata/_custom_type_script = "uid://db34122kkhgvf"
 
 [node name="Ignition" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.0440701, 1.10661, -1.62086)
 
 [node name="CarInteractable" type="Area3D" parent="Interactables/Ignition"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.712167, 0, 3.49005)
-script = ExtResource("8_2kwh5")
-InteractType = 4
+script = ExtResource("8_vheon")
+InteractType = 6
+ID = 13
+show_mesh = true
 interaction_radius = 0.3
-metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
+metadata/_custom_type_script = "uid://db34122kkhgvf"
 
 [node name="AutoGearShiftToggle" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.0783191, 0.931112, -1.70085)
@@ -217,28 +225,34 @@ surface_material_override/0 = SubResource("StandardMaterial3D_7o0w8")
 
 [node name="CarInteractable" type="Area3D" parent="Interactables/AutoGearShiftToggle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8352, -0.163807, 3.99138)
-script = ExtResource("8_2kwh5")
+script = ExtResource("8_vheon")
 InteractType = 6
-metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
+ID = 15
+show_mesh = true
+metadata/_custom_type_script = "uid://db34122kkhgvf"
 
 [node name="AutoGearShiftPark" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.0485373, 0.951479, -1.97508)
 
 [node name="CarInteractable" type="Area3D" parent="Interactables/AutoGearShiftPark"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.981801, 0, 4.08465)
-script = ExtResource("8_2kwh5")
-InteractType = 5
-metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
+script = ExtResource("8_vheon")
+InteractType = 6
+ID = 14
+show_mesh = true
+metadata/_custom_type_script = "uid://db34122kkhgvf"
 
 [node name="CarHorn" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.138041, 1.18558, -1.13647)
 
 [node name="CarInteractable" type="Area3D" parent="Interactables/CarHorn"]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.924017, -0.282523, 3.68582)
-script = ExtResource("8_2kwh5")
-InteractType = 3
+script = ExtResource("8_vheon")
+InteractType = 6
+ID = 16
+show_mesh = true
 interaction_radius = 0.1
-metadata/_custom_type_script = "uid://cxc1mnj5tvpmt"
+metadata/_custom_type_script = "uid://db34122kkhgvf"
 
 [node name="Mirrors" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.347759, 0, 0.502833)

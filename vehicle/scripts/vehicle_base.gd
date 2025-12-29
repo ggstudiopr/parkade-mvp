@@ -75,7 +75,7 @@ func _physics_process(delta):
 
 func _driving_car_movement(delta):
 	if PLAYER:
-		if self.isOn() and PLAYER.isDriving():
+		if self.isOn() and PLAYER.isDriving() and !PLAYER._movement_lock:
 			steering = move_toward(steering, Input.get_axis("move_right", "move_left") * MAX_STEER, delta * 20)
 			var forward_input = Input.get_action_strength("move_forward")
 			var backward_input = Input.get_action_strength("move_backward")

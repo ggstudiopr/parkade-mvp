@@ -281,7 +281,7 @@ func runDiagnostics():
 	if PLAYER: 
 		diagnosticsApp.temp_text.text = str(PLAYER.myTemp)
 		diagnosticsApp.heart_text.text = str(int(PLAYER.myHeartRate))
-		diagnosticsApp.steps_text.text = str(PLAYER.step_accumulated)
+		diagnosticsApp.steps_text.text = str(int(PLAYER.healthApp_stepAccumulated))
 		if PLAYER.phonePosToggle == true: #phone is in held up orientation
 			for icon in diagnosticsApp.ICONS.get_children():
 				icon.rotation = -self.PHONE_FAR_ANCHOR.rotation.z

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cbn8a4pe4nskn"]
 
-[ext_resource type="Script" uid="uid://bi5vn1v8k0e7q" path="res://protag/inventory_menu.gd" id="1_5egfc"]
+[ext_resource type="Script" uid="uid://bi5vn1v8k0e7q" path="res://protag/InventoryMenu.gd" id="1_5egfc"]
 
 [sub_resource type="Animation" id="Animation_qfdt3"]
 length = 0.001
@@ -138,3 +138,6 @@ libraries = {
 process_mode = 3
 layout_mode = 2
 text = "INVENTORY PENDING"
+
+[node name="ItemList" type="ItemList" parent="Panel"]
+layout_mode = 2

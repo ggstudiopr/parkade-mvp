@@ -2,6 +2,11 @@ extends Control
 
 var inputlockout : bool = false
 var inventoryActive : bool = false
+@onready var myItemList := $Panel/ItemList
+var myItems : Array[ItemDrop] 
+
+var default_color = Color(1, 1, 0, 1)
+var active_color = Color(1, 0, 0, 0)
 
 func _ready():
 	self.hide()
@@ -22,7 +27,29 @@ func openInv():
 		setState(true)
 		self.show()
 		$Panel/AnimationPlayer.play("menu_blur")
-		
+
+func getItem(Item):
+	myItems.append(Item.duplicate(true))
+	updateDisplay()
+
+func updateDisplay():
+	myItemList.clear()
+	for item in myItems:
+		if item.stackable:
+			myItemList.add_item(str(item.NAME[item.InteractType])+ " x"+str(item.count))
+			pass
+		else:
+			myItemList.add_item(str(item.NAME[item.InteractType]))
+
+func listItems():
+	var myList = []
+	for item in myItems:
+		if item.stackable:
+			myList.append(str(item.NAME[item.InteractType])+ " x"+str(item.count))
+		else:
+			myList.append(str(item.TEXT[item.ID]))
+	print(myList)
+
 func _input(event):
 	if event.is_action_released("inventory"):
 		setLock(false)

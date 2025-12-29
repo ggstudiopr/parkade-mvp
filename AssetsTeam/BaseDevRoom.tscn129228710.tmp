@@ -1,15 +1,14 @@
-[gd_scene load_steps=12 format=4 uid="uid://0h75dvhksqhu"]
+[gd_scene load_steps=10 format=4 uid="uid://dkmry5mmbqv04"]
 
-[ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_3q8v2"]
-[ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="2_rk1w1"]
-[ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="3_bgx41"]
-[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://levels/Items/ItemDrop.tscn" id="4_rk1w1"]
+[ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="1_6apdb"]
+[ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="2_sdi3v"]
+[ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="3_sdi3v"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_uqre4"]
 data = PackedVector3Array(-25, -0.5, 25, -25, -0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, -0.5, -25, -25, -0.5, 25, -25, 0.5, -25, -25, -0.5, -25, 25, -0.5, -25, -25, 0.5, -25, -25, 0.5, 25, -25, -0.5, 25, -25, -0.5, 25, -25, 0.5, 25, 25, 0.5, 25, 25, 0.5, 25, -25, 0.5, 25, -25, 0.5, -25, -25, -0.5, 25, 25, -0.5, 25, 25, -0.5, -25, 25, 0.5, 25, 25, -0.5, 25, -25, -0.5, 25, 25, -0.5, -25, 25, -0.5, 25, 25, 0.5, 25, 25, -0.5, -25, 25, 0.5, -25, -25, 0.5, -25, -25, 0.5, -25, 25, 0.5, -25, 25, 0.5, 25, 25, 0.5, 25, 25, 0.5, -25, 25, -0.5, -25)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2vbnh"]
-albedo_texture = ExtResource("3_bgx41")
+albedo_texture = ExtResource("1_6apdb")
 uv1_triplanar = true
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_6apdb"]
@@ -33,81 +32,12 @@ material = SubResource("StandardMaterial3D_sdi3v")
 [sub_resource type="TextMesh" id="TextMesh_sdi3v"]
 text = "SPOTLIGHT"
 
-[sub_resource type="GDScript" id="GDScript_rk1w1"]
-script/source = "class_name CarInteractable
-extends Area3D
-#@onready var VEHICLE := $\"../../..\"
-var default_color = Color(1, 1, 0, 1)
-var active_color = Color(1, 0, 0, 0)
-const TEXT : Dictionary[int, String] = { # to get string > CarInteractable.CATEGORY[CarInteractable.TYPE.enumval]
-	0 : \"\",
-	TYPE.HandleOuter : \"Enter Car\",
-	TYPE.HandleInner : \"Exit Car\",
-	TYPE.Horn : \"Car Horn\",
-	TYPE.Power : \"Toggle Engine\",
-	TYPE.AutoPark : \"Park Car\",
-	TYPE.AutoToggle : \"Drive/Reverse Toggle\",
-	TYPE.Radio : \"Toggle Radio\"
-}
-enum TYPE{
-	Null,
-	HandleOuter,
-	HandleInner,
-	Horn,
-	Power,
-	AutoPark,
-	AutoToggle,
-	Radio
-}
-@export var InteractType : TYPE
-@export var show_interaction_prompt: bool = true
-@export var show_mesh: bool = true
-var collision_shape: CollisionShape3D
-var mesh_instance: MeshInstance3D 
-@export var interaction_radius: float = 0.5
-
-func _physics_process(delta):
-
-		pass
-func _ready():
-	if not CarInteractable:
-		return
-	if not collision_shape:
-		collision_shape = CollisionShape3D.new()
-		self.add_child(collision_shape)
-	if not mesh_instance:
-		mesh_instance = MeshInstance3D.new()
-		self.add_child(mesh_instance)
-	add_to_group(\"CarInteractColliders\")
-	setup_interaction_area()
-	if show_mesh:
-		setup_mesh()
-		unlight()
-	
-func setup_interaction_area():
-	var sphere_shape = SphereShape3D.new()
-	sphere_shape.radius = interaction_radius/2
-	collision_shape.shape = sphere_shape
-	self.collision_layer = 2
-func setup_mesh():
-	mesh_instance.mesh = SphereMesh.new()
-	mesh_instance.mesh.radius = interaction_radius/2
-	mesh_instance.mesh.height = interaction_radius
-	mesh_instance.material_override = StandardMaterial3D.new()
-
-func highlight():
-	mesh_instance.material_override.albedo_color  = active_color
-
-func unlight():
-	mesh_instance.material_override.albedo_color  = default_color
-"
-
 [node name="DevRoom" type="Node3D"]
 
-[node name="Protagonist" parent="." instance=ExtResource("1_3q8v2")]
+[node name="Protagonist" parent="." instance=ExtResource("2_sdi3v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00534999, 0)
 
-[node name="Vehicle" parent="." instance=ExtResource("2_rk1w1")]
+[node name="Vehicle" parent="." instance=ExtResource("3_sdi3v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
 
 [node name="Floor" type="StaticBody3D" parent="."]
@@ -130,16 +60,3 @@ mesh = SubResource("SphereMesh_2vbnh")
 [node name="Text" type="MeshInstance3D" parent="Spotlight/Sphere"]
 transform = Transform3D(1, 0, 0, 0, -0.234124, -0.972207, 0, 0.972207, -0.234124, 0, -0.392776, -0.495697)
 mesh = SubResource("TextMesh_sdi3v")
-
-[node name="ItemDrop" parent="." instance=ExtResource("4_rk1w1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.00622, 1.334, -4.28481)
-collision_mask = 2
-InteractType = 1
-ID = 1
-stackable = true
-show_mesh = true
-
-[node name="CarInteractable" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24714, -3.02923)
-script = SubResource("GDScript_rk1w1")
-InteractType = 1

@@ -4,7 +4,7 @@ extends RayCast3D
 @onready var PLAYER : Protagonist = $"../../.."
 @onready var label := $CarInteractLabel
 var last_input_type
-var lastCollider : CarInteractable
+var lastCollider : Area3D
 var latestCollider : bool = false
 var badInput 
 enum inputError{
@@ -38,9 +38,9 @@ func EntityScreenPositionSolver(TargetInFocus):
 	return screen_pos
 
 func onCollide(collider):
+	
 	lastCollider = collider
 	latestCollider = true
-	var _playerDriving = PLAYER.isDriving()
 	if badInput:
 		match badInput:
 			inputError.carOn:
@@ -49,12 +49,15 @@ func onCollide(collider):
 				label.text = "Car must be PARKED"
 	else:
 		if collider.show_interaction_prompt:
-			if (!_playerDriving and collider.InteractType == CarInteractable.TYPE.HandleOuter):
+			if (!PLAYER.isDriving() and collider.InteractType == ItemDrop.TYPE.CAR_INTERACT):
 				label.show()
-				label.text = "Press "+currentInteract()+" to " + str(CarInteractable.TEXT[lastCollider.InteractType])
-			elif (_playerDriving and collider.InteractType != CarInteractable.TYPE.HandleOuter):
+				label.text = "Press "+currentInteract()+" to " + str(collider.TEXT[collider.ID])
+			elif (PLAYER.isDriving() and collider.InteractType == ItemDrop.TYPE.CAR_INTERACT):
 				label.show()
-				label.text = "Press "+currentInteract()+" to " + str(CarInteractable.TEXT[lastCollider.InteractType])
+				label.text = "Press "+currentInteract()+" to " + str(collider.TEXT[collider.ID])
+			elif (!PLAYER.isDriving() and collider.InteractType != ItemDrop.TYPE.CAR_INTERACT):
+				label.show()
+				label.text = "Press "+currentInteract()+" to take " + str(ItemDrop.TEXT[lastCollider.InteractType])
 	label.position = EntityScreenPositionSolver(collider)
 	if collider.show_mesh:
 		collider.highlight()
@@ -65,31 +68,37 @@ func doThing(myInteractNode):
 	var _CarParked = PLAYER.VEHICLE.isParked()
 
 	if !_playerDriving:
-		if myInteractNode.InteractType == CarInteractable.TYPE.HandleOuter:	
+		if myInteractNode.ID == ItemDrop.Items.HandleOuter:
 			PLAYER.playerEnterCar()
+		if myInteractNode.InteractType != ItemDrop.TYPE.CAR_INTERACT:
+			print("taking "+ myInteractNode.CATEGORY[myInteractNode.InteractType] +" item : " + myInteractNode.TEXT[myInteractNode.ID])
+			#TODO add item to player inventory, despawn item. current iteration not working
+			print("I AM IN INTERACT RAYCAST ISSUE W ITEMS")
+			PLAYER.INVENTORY_MENU.getItem(myInteractNode)
+			#PLAYER.INVENTORY_MENU.listItems()
 	if _playerDriving:
-		if myInteractNode.InteractType == CarInteractable.TYPE.HandleInner:
+		if myInteractNode.ID == ItemDrop.Items.HandleInner:
 			PLAYER.playerExitCar()
-		if myInteractNode.InteractType == CarInteractable.TYPE.Horn:
+		if myInteractNode.ID == ItemDrop.Items.Horn:
 			PLAYER.VEHICLE.carHornPlay()
 	
-		if myInteractNode.InteractType == CarInteractable.TYPE.Power:
+		if myInteractNode.ID == ItemDrop.Items.Power:
 			if _CarParked:
 				PLAYER.VEHICLE.toggleEngine()
 			else:
 				badInput = inputError.carParked
 
-		if myInteractNode.InteractType == CarInteractable.TYPE.AutoPark:
+		if myInteractNode.ID == ItemDrop.Items.AutoPark:
 			if _CarOn:
 				PLAYER.VEHICLE.shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK)
 			else:
 				badInput = inputError.carOn
-		if myInteractNode.InteractType == CarInteractable.TYPE.Radio:
+		if myInteractNode.ID == ItemDrop.Items.Radio:
 			if _CarOn:
 				PLAYER.VEHICLE.radioInteract()
 			else:
 				badInput = inputError.carOn
-		if myInteractNode.InteractType == CarInteractable.TYPE.AutoToggle:
+		if myInteractNode.ID == ItemDrop.Items.AutoToggle:
 			if _CarOn:
 				PLAYER.VEHICLE.shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.D_R_TOGGLE)
 			else:
