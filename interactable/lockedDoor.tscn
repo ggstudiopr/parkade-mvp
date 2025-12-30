@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3 uid="uid://b5soknaor76y"]
+
+[ext_resource type="ArrayMesh" uid="uid://bo72pwfwpl18p" path="res://AssetsTeam/fayren/pushdoor.obj" id="1_i7rg4"]
+[ext_resource type="Script" uid="uid://c8q88bnw4s6tv" path="res://interactable/locked_door.gd" id="1_kg8w2"]
+[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://levels/Items/ItemDrop.tscn" id="2_ihc62"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i7rg4"]
+size = Vector3(0.335938, 3.08984, 1.51074)
+
+[sub_resource type="Animation" id="Animation_dafdf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_kg8w2"]
+resource_name = "open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1.47236, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gcxka"]
+_data = {
+&"RESET": SubResource("Animation_dafdf"),
+&"open": SubResource("Animation_kg8w2")
+}
+
+[node name="Pushdoor" type="RigidBody3D"]
+script = ExtResource("1_kg8w2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 1.07832, -0.597619)
+shape = SubResource("BoxShape3D_i7rg4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.7, 0, -6.11959e-08, 0, 0.7, 0, 6.11959e-08, 0, -0.7, 0, 1.11498, -0.583567)
+mesh = ExtResource("1_i7rg4")
+
+[node name="Item" parent="." instance=ExtResource("2_ihc62")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07908, -1.13598)
+InteractType = 7
+show_mesh = true
+obtainable = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_gcxka")
+}

@@ -12,9 +12,10 @@ func _ready():
 	self.hide()
 
 func _physics_process(delta: float) -> void:
-	if Active():
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) 
-
+	#if Active():
+		#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) 
+	pass
+	
 func closeInv():
 	setLock(true)
 	setState(false)
@@ -23,32 +24,41 @@ func closeInv():
 
 func openInv():
 	if !input_locked():
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) 
 		setLock(true)
 		setState(true)
 		self.show()
 		$Panel/AnimationPlayer.play("menu_blur")
 
 func getItem(Item):
-	myItems.append(Item.duplicate(true))
+	myItems.append(Item)
 	updateDisplay()
+
+func removeItem(Item):
+	myItems.erase(Item)
+	updateDisplay()
+	print("Item "+ str(Item.TEXT[Item.ID])+" used, removed from inventory.")
+	
+func getMyItems():
+	return myItems
 
 func updateDisplay():
 	myItemList.clear()
 	for item in myItems:
-		if item.stackable:
-			myItemList.add_item(str(item.NAME[item.InteractType])+ " x"+str(item.count))
-			pass
-		else:
-			myItemList.add_item(str(item.NAME[item.InteractType]))
+		#if item.stackable:
+			#myItemList.add_item(str(item.ID[item.InteractType])+ " x"+str(item.count))
+			#pass
+		#else:
+		myItemList.add_item(str(item.TEXT[item.ID]))
 
 func listItems():
 	var myList = []
 	for item in myItems:
-		if item.stackable:
-			myList.append(str(item.NAME[item.InteractType])+ " x"+str(item.count))
-		else:
-			myList.append(str(item.TEXT[item.ID]))
-	print(myList)
+		#if item.stackable:
+		#	myList.append(str(item.CATEGORY[item.InteractType])+ " x"+str(item.count))
+		#else:
+		myList.append(str(item.TEXT[item.ID]))
+	return myList
 
 func _input(event):
 	if event.is_action_released("inventory"):

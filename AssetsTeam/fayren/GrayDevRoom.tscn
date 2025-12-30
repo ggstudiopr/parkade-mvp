@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="2_rk1w1"]
 [ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="3_bgx41"]
 [ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://levels/Items/ItemDrop.tscn" id="4_rk1w1"]
+[ext_resource type="PackedScene" uid="uid://b5soknaor76y" path="res://interactable/lockedDoor.tscn" id="5_bgx41"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_uqre4"]
 data = PackedVector3Array(-25, -0.5, 25, -25, -0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, -0.5, -25, -25, -0.5, 25, -25, 0.5, -25, -25, -0.5, -25, 25, -0.5, -25, -25, 0.5, -25, -25, 0.5, 25, -25, -0.5, 25, -25, -0.5, 25, -25, 0.5, 25, 25, 0.5, 25, 25, 0.5, 25, -25, 0.5, 25, -25, 0.5, -25, -25, -0.5, 25, 25, -0.5, 25, 25, -0.5, -25, 25, 0.5, 25, 25, -0.5, 25, -25, -0.5, 25, 25, -0.5, -25, 25, -0.5, 25, 25, 0.5, 25, 25, -0.5, -25, 25, 0.5, -25, -25, 0.5, -25, -25, 0.5, -25, 25, 0.5, -25, 25, 0.5, 25, 25, 0.5, 25, 25, 0.5, -25, 25, -0.5, -25)
@@ -32,75 +33,6 @@ material = SubResource("StandardMaterial3D_sdi3v")
 
 [sub_resource type="TextMesh" id="TextMesh_sdi3v"]
 text = "SPOTLIGHT"
-
-[sub_resource type="GDScript" id="GDScript_rk1w1"]
-script/source = "class_name CarInteractable
-extends Area3D
-#@onready var VEHICLE := $\"../../..\"
-var default_color = Color(1, 1, 0, 1)
-var active_color = Color(1, 0, 0, 0)
-const TEXT : Dictionary[int, String] = { # to get string > CarInteractable.CATEGORY[CarInteractable.TYPE.enumval]
-	0 : \"\",
-	TYPE.HandleOuter : \"Enter Car\",
-	TYPE.HandleInner : \"Exit Car\",
-	TYPE.Horn : \"Car Horn\",
-	TYPE.Power : \"Toggle Engine\",
-	TYPE.AutoPark : \"Park Car\",
-	TYPE.AutoToggle : \"Drive/Reverse Toggle\",
-	TYPE.Radio : \"Toggle Radio\"
-}
-enum TYPE{
-	Null,
-	HandleOuter,
-	HandleInner,
-	Horn,
-	Power,
-	AutoPark,
-	AutoToggle,
-	Radio
-}
-@export var InteractType : TYPE
-@export var show_interaction_prompt: bool = true
-@export var show_mesh: bool = true
-var collision_shape: CollisionShape3D
-var mesh_instance: MeshInstance3D 
-@export var interaction_radius: float = 0.5
-
-func _physics_process(delta):
-
-		pass
-func _ready():
-	if not CarInteractable:
-		return
-	if not collision_shape:
-		collision_shape = CollisionShape3D.new()
-		self.add_child(collision_shape)
-	if not mesh_instance:
-		mesh_instance = MeshInstance3D.new()
-		self.add_child(mesh_instance)
-	add_to_group(\"CarInteractColliders\")
-	setup_interaction_area()
-	if show_mesh:
-		setup_mesh()
-		unlight()
-	
-func setup_interaction_area():
-	var sphere_shape = SphereShape3D.new()
-	sphere_shape.radius = interaction_radius/2
-	collision_shape.shape = sphere_shape
-	self.collision_layer = 2
-func setup_mesh():
-	mesh_instance.mesh = SphereMesh.new()
-	mesh_instance.mesh.radius = interaction_radius/2
-	mesh_instance.mesh.height = interaction_radius
-	mesh_instance.material_override = StandardMaterial3D.new()
-
-func highlight():
-	mesh_instance.material_override.albedo_color  = active_color
-
-func unlight():
-	mesh_instance.material_override.albedo_color  = default_color
-"
 
 [node name="DevRoom" type="Node3D"]
 
@@ -131,15 +63,31 @@ mesh = SubResource("SphereMesh_2vbnh")
 transform = Transform3D(1, 0, 0, 0, -0.234124, -0.972207, 0, 0.972207, -0.234124, 0, -0.392776, -0.495697)
 mesh = SubResource("TextMesh_sdi3v")
 
-[node name="ItemDrop" parent="." instance=ExtResource("4_rk1w1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.00622, 1.334, -4.28481)
-collision_mask = 2
+[node name="Item" parent="." instance=ExtResource("4_rk1w1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15404, -4.58885)
 InteractType = 1
 ID = 1
-stackable = true
 show_mesh = true
+randomizeLocation = true
 
-[node name="CarInteractable" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24714, -3.02923)
-script = SubResource("GDScript_rk1w1")
-InteractType = 1
+[node name="RandomLocation1" parent="Item" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05798, 0, 0)
+
+[node name="RandomLocation3" parent="Item" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35318, 0, 0)
+
+[node name="Pushdoor" parent="." instance=ExtResource("5_bgx41")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.891729, 0, -1.97652)
+
+[node name="CollisionShape3D" parent="Pushdoor" index="0"]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 1.07832, 0.524334)
+
+[node name="MeshInstance3D" parent="Pushdoor" index="1"]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 1.11498, 0.53471)
+
+[node name="Item" parent="Pushdoor" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07908, 0.972602)
+ID = 1
+
+[editable path="Item"]
+[editable path="Pushdoor"]

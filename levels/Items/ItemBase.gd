@@ -1,26 +1,29 @@
 class_name ItemDrop
-
 extends Area3D
 @export var InteractType : TYPE
+##Specific Item for interaction
 @export var ID : Items 
-@export var stackable : bool
-@export var count : int
-@export var stack_limit : int
+#@export var stackable : bool
+#@export var count : int
+#@export var stack_limit : int
+##Enable to make meshes visible.
 @export var show_mesh : bool = false
 @export var show_interaction_prompt: bool = true
-@export var data : Resource
+@export var obtainable : bool = true
+#@export var data : Resource
 @export var randomizeLocation : bool = false #create children nodes to look at and randomly choose to take coordinates
 
-const CATEGORY : Dictionary[int, String] = { # to get string > WEAPONS.LIBRARY[WEAPONS.LIST.TestSaber]
+const CATEGORY : Dictionary[int, String] = { # to get string > item.CATEGORY[item.InteractType]
 	0 : "",
 	TYPE.MEMORY : "Memory",
 	TYPE.CAR_TREE : "Car Tree",
 	TYPE.KEY : "Key",
 	TYPE.TOOL : "Tool",
 	TYPE.OBJECT : "Object",
-	TYPE.CAR_INTERACT : "Car Interactable"
+	TYPE.CAR_INTERACT : "Car Interactable",
+	TYPE.LOCK : "Lock"
 }
-const TEXT : Dictionary[int, String] = { # to get string > ItemDrop.CATEGORY[CarInteractable.TYPE.enumval]
+const TEXT : Dictionary[int, String] = { # to get string > item.TEXT[item.ID]
 	0 : "",
 	Items.Key_1A : "Entrance Key",
 	Items.Key_1B : "Gate Key",
@@ -34,6 +37,7 @@ const TEXT : Dictionary[int, String] = { # to get string > ItemDrop.CATEGORY[Car
 	Items.AutoPark : "Park Car",
 	Items.AutoToggle : "Drive/Reverse Toggle",
 	Items.Radio : "Toggle Radio"
+	
 }
 enum TYPE{
 	NULL,
@@ -43,11 +47,12 @@ enum TYPE{
 	TOOL,
 	OBJECT,
 	CAR_INTERACT,
+	LOCK
 }
 
 enum Items{
 	Null,
-	Key_1A,
+	Key_1A, #Entrance Key
 	Key_1B,
 	Key_2A,
 	Key_2B, 
@@ -62,7 +67,8 @@ enum Items{
 	Power,
 	AutoPark,
 	AutoToggle,
-	Horn
+	Horn,
+	
 }
 
 var collision_shape: CollisionShape3D
@@ -78,6 +84,8 @@ func _ready():
 		self.add_child(mesh_instance)
 	add_to_group("ItemInteract")
 	setup_interaction_area()
+	if randomizeLocation:
+		randomLocation()
 	if show_mesh:
 		setup_mesh()
 		unlight()
@@ -101,3 +109,8 @@ func highlight():
 	mesh_instance.material_override.albedo_color  = active_color
 func unlight():
 	mesh_instance.material_override.albedo_color  = default_color
+
+func randomLocation():
+	var myNewLocation = get_children().filter(func(c): return c.is_in_group("RandomLocation")).pick_random()
+	self.global_position =  myNewLocation.global_position
+	

@@ -134,10 +134,5 @@ libraries = {
 &"": SubResource("AnimationLibrary_5v5jn")
 }
 
-[node name="Label" type="Label" parent="Panel"]
-process_mode = 3
-layout_mode = 2
-text = "INVENTORY PENDING"
-
 [node name="ItemList" type="ItemList" parent="Panel"]
 layout_mode = 2

@@ -46,6 +46,7 @@ AMB_FLUO_LIGHT_SOUND="for light source static sounds"
 Player=""
 ItemInteract=""
 CarInteractColliders="read name, bro"
+RandomLocation=""
 
 [input]
 
