@@ -4,3 +4,7 @@ extends RigidBody3D
 func unlock():
 	$AnimationPlayer.play("open")
 	locked = false
+
+func doThing(node): #do nothing w node, only there to support DoThing logic across Objects
+	if $Item.ID == ItemDrop.Items.RemoteButton:
+		unlock()

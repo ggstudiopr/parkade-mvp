@@ -168,6 +168,7 @@ script = ExtResource("8_vheon")
 InteractType = 6
 ID = 11
 show_mesh = true
+obtainable = false
 interaction_radius = 0.4
 metadata/_custom_type_script = "uid://db34122kkhgvf"
 
@@ -180,6 +181,7 @@ script = ExtResource("8_vheon")
 InteractType = 6
 ID = 10
 show_mesh = true
+obtainable = false
 interaction_radius = 0.4
 metadata/_custom_type_script = "uid://db34122kkhgvf"
 
@@ -201,6 +203,7 @@ script = ExtResource("8_vheon")
 InteractType = 6
 ID = 12
 show_mesh = true
+obtainable = false
 metadata/_custom_type_script = "uid://db34122kkhgvf"
 
 [node name="Ignition" type="Node3D" parent="Interactables"]
@@ -212,6 +215,7 @@ script = ExtResource("8_vheon")
 InteractType = 6
 ID = 13
 show_mesh = true
+obtainable = false
 interaction_radius = 0.3
 metadata/_custom_type_script = "uid://db34122kkhgvf"
 
@@ -229,6 +233,7 @@ script = ExtResource("8_vheon")
 InteractType = 6
 ID = 15
 show_mesh = true
+obtainable = false
 metadata/_custom_type_script = "uid://db34122kkhgvf"
 
 [node name="AutoGearShiftPark" type="Node3D" parent="Interactables"]
@@ -240,6 +245,7 @@ script = ExtResource("8_vheon")
 InteractType = 6
 ID = 14
 show_mesh = true
+obtainable = false
 metadata/_custom_type_script = "uid://db34122kkhgvf"
 
 [node name="CarHorn" type="Node3D" parent="Interactables"]
@@ -251,6 +257,7 @@ script = ExtResource("8_vheon")
 InteractType = 6
 ID = 16
 show_mesh = true
+obtainable = false
 interaction_radius = 0.1
 metadata/_custom_type_script = "uid://db34122kkhgvf"
 

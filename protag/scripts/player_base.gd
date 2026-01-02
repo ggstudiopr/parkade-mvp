@@ -95,7 +95,7 @@ var self_total_rot : float = 0
 @onready var ALT_LIGHT := $CameraController/Camera3D/AltFlashlight
 @onready var COLD_AIR := $ColdAirPuffs
 
-#TODO fix raycast logics to be consistent and not break in car. rename raycasts to account for all relevant events
+#TODO fix raycast logics to be consistent and not break in car.
 #Player relevant raycasts
 @onready var LOOK_DIR_RAY := $CameraController/Camera3D/InteractRaycast 
 @onready var PHONE_LOOK_RAY = PHONE.PHONE_LOOK_RAY
@@ -160,7 +160,7 @@ func _input(event):
 		crouch_toggle()
 	if event.is_action_pressed("interact"):
 		if LOOK_DIR_RAY.is_colliding():
-			LOOK_DIR_RAY.doThing(LOOK_DIR_RAY.get_collider())
+			LOOK_DIR_RAY.activate(LOOK_DIR_RAY.get_collider())
 			pass
 		
 	if event.is_action_pressed("sprint"):
@@ -293,9 +293,9 @@ func _walking_player_movement(delta):
 
 	#player movement input affects phone orientation
 	#TODO CLEANUP, all hardcoded lerps, impossible to implement states for events
-	phone_n_cam_tilt(movement.x, movement.y, delta, myStrikes.value)
-	phone_sway(delta)
-	phone_bobbing(velocity.length(),delta, myStrikes.value)
+	phone_n_cam_tilt(movement.x, movement.y, delta, myStrikes.value) #handles phone rotation
+	phone_sway(delta) #rotations based on camera input
+	phone_bobbing(velocity.length(),delta, myStrikes.value) # handles phone position
 	
 	head_bobbing(velocity.length(),delta)
 	
@@ -329,21 +329,22 @@ func update_camera_controller(right_stick_parameter):
 func phone_n_cam_tilt(input_x, input_y, delta, strikes):
 	if PHONE:
 		if phonePosToggle == false: #if phone is not up close, add FarPosAnchor z rotation for flavor
-			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75 + PHONE.PHONE_FAR_ANCHOR.rotation.z, 10 * delta)
+			PHONE.rotation.z = lerp(PHONE.rotation.z, PHONE.PHONE_FAR_ANCHOR.rotation.z, 0.1)
 		else:
-			if _is_sprinting == true:
-				PHONE.rotation.z = lerp(PHONE.rotation.z, -input_y * tilt_amount * 1.55, 10 * delta)
-			elif _is_sprinting == false:
-				PHONE.rotation.z = lerp(PHONE.rotation.z, -input_y * tilt_amount * 0.75, 10 * delta)
-		PHONE.rotation.x = lerp(PHONE.rotation.x, input_y * tilt_amount * 0.75, 7 * delta)
-	if CAMERA_CONTROLLER:#this CAN be nauseating, conmsider removing altogether but its nice immersion flavor
-		if _is_crouching == true:
-			CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.15, 3 * delta)
-		elif _is_crouching == false:
-			if _is_sprinting == true:
-				CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.35, 3 * delta)
-			elif _is_sprinting == false:
-				CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.05, 3 * delta)
+			PHONE.rotation.z = lerp(PHONE.rotation.z, PHONE.PHONE_CLOSE_ANCHOR.rotation.z, 0.1)
+			#if _is_sprinting == true:
+			#	PHONE.rotation.z = lerp(PHONE.rotation.z, -input_y * tilt_amount * 1.55, 10 * delta)
+			#elif _is_sprinting == false:
+			#	PHONE.rotation.z = lerp(PHONE.rotation.z, -input_y * tilt_amount * 0.75, 10 * delta)
+	#	PHONE.rotation.x = lerp(PHONE.rotation.x, input_y * tilt_amount * 0.75, 7 * delta)
+	#if CAMERA_CONTROLLER:#this CAN be nauseating, conmsider removing altogether but its nice immersion flavor
+		#if _is_crouching == true:
+		#	CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.15, 3 * delta)
+		#elif _is_crouching == false:
+		#	if _is_sprinting == true:
+			#	CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.35, 3 * delta)
+		#	elif _is_sprinting == false:
+			#	CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.05, 3 * delta)
 		
 func phone_sway(delta):
 	var sprint_mult 

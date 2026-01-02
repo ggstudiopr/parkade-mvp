@@ -49,18 +49,15 @@ func onCollide(collider):
 				label.text = "Car must be PARKED"
 	else:
 		if collider.show_interaction_prompt:
-			if (!PLAYER.isDriving() and collider.InteractType == ItemDrop.TYPE.CAR_INTERACT):
-				label.show()
-				label.text = "Press "+currentInteract()+" to " + str(collider.TEXT[collider.ID])
-			elif (PLAYER.isDriving() and collider.InteractType == ItemDrop.TYPE.CAR_INTERACT):
+			if (collider.InteractType == ItemDrop.TYPE.CAR_INTERACT):
 				label.show()
 				label.text = "Press "+currentInteract()+" to " + str(collider.TEXT[collider.ID])
 			elif (!PLAYER.isDriving() and (collider.obtainable)):
 				#print("oops")
 				label.show()
 				label.text = "Press "+currentInteract()+" to take " + str(ItemDrop.TEXT[lastCollider.ID])
+			
 			elif (collider.InteractType == ItemDrop.TYPE.LOCK):
-				
 				var myItems = PLAYER.INVENTORY_MENU.getMyItems()
 				if !myItems:
 					label.show()
@@ -72,22 +69,25 @@ func onCollide(collider):
 					else:
 						label.show()
 						label.text = "Need to find " + str(ItemDrop.TEXT[lastCollider.ID])
-				
+			
+			elif (collider.InteractType == ItemDrop.TYPE.OBJECT):
+				label.show()
+				label.text = str(ItemDrop.TEXT[lastCollider.ID])
 	label.position = EntityScreenPositionSolver(collider)
 	
 	if collider.show_mesh:
 		collider.highlight()
 	
-func doThing(myInteractNode):
+func activate(myInteractNode):
 	var _CarOn = PLAYER.VEHICLE.isOn()
 	var _playerDriving = PLAYER.isDriving()
 	var _CarParked = PLAYER.VEHICLE.isParked()
-
 	if !_playerDriving:
-		if myInteractNode.ID == ItemDrop.Items.HandleOuter:
-			PLAYER.playerEnterCar()
-			return
-		if myInteractNode.InteractType != ItemDrop.TYPE.CAR_INTERACT and myInteractNode.obtainable:
+		if myInteractNode.InteractType == ItemDrop.TYPE.CAR_INTERACT:
+			if myInteractNode.ID == ItemDrop.Items.HandleOuter:
+				PLAYER.playerEnterCar()
+				return
+		if myInteractNode.obtainable:
 			print("Taking "+ myInteractNode.CATEGORY[myInteractNode.InteractType] +" item : " + myInteractNode.TEXT[myInteractNode.ID])
 			PLAYER.INVENTORY_MENU.getItem(myInteractNode)
 			myInteractNode.process_mode = Node.PROCESS_MODE_DISABLED
@@ -106,18 +106,21 @@ func doThing(myInteractNode):
 							print ("You can't unlock this door yet.")
 			else:
 				print ("You can't unlock this door yet.")
+		if myInteractNode.InteractType == ItemDrop.TYPE.OBJECT:		
+			myInteractNode.get_parent().doThing(myInteractNode)
+			if myInteractNode.despawnOnInteract:
+				myInteractNode.process_mode = Node.PROCESS_MODE_DISABLED
+				myInteractNode.hide()
 	if _playerDriving:
 		if myInteractNode.ID == ItemDrop.Items.HandleInner:
 			PLAYER.playerExitCar()
 		if myInteractNode.ID == ItemDrop.Items.Horn:
 			PLAYER.VEHICLE.carHornPlay()
-			
 		if myInteractNode.ID == ItemDrop.Items.Power:
 			if _CarParked:
 				PLAYER.VEHICLE.toggleEngine()
 			else:
 				badInput = inputError.carParked
-
 		if myInteractNode.ID == ItemDrop.Items.AutoPark:
 			if _CarOn:
 				PLAYER.VEHICLE.shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK)

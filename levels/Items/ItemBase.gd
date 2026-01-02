@@ -8,10 +8,12 @@ extends Area3D
 #@export var stack_limit : int
 ##Enable to make meshes visible.
 @export var show_mesh : bool = false
+@export var default_sphere : bool = true
 @export var show_interaction_prompt: bool = true
 @export var obtainable : bool = true
 #@export var data : Resource
 @export var randomizeLocation : bool = false #create children nodes to look at and randomly choose to take coordinates
+@export var despawnOnInteract : bool = true #logic only present for Objects rn
 
 const CATEGORY : Dictionary[int, String] = { # to get string > item.CATEGORY[item.InteractType]
 	0 : "",
@@ -25,19 +27,20 @@ const CATEGORY : Dictionary[int, String] = { # to get string > item.CATEGORY[ite
 }
 const TEXT : Dictionary[int, String] = { # to get string > item.TEXT[item.ID]
 	0 : "",
-	Items.Key_1A : "Entrance Key",
-	Items.Key_1B : "Gate Key",
-	Items.Alt_Light : "Pocket Lantern",
-	Items.Memory_1 : "Worn Keychain",
-	Items.CarTree_1 : "Pine Scented Car Freshener",
-	Items.HandleOuter : "Enter Car",
-	Items.HandleInner : "Exit Car",
-	Items.Horn : "Car Horn",
-	Items.Power : "Toggle Engine",
-	Items.AutoPark : "Park Car",
-	Items.AutoToggle : "Drive/Reverse Toggle",
-	Items.Radio : "Toggle Radio"
-	
+	Items.Key_1A : "Entrance Key", #Key
+	Items.Key_1B : "Gate Key", #key
+	Items.Alt_Light : "Pocket Lantern", #Tool
+	Items.Memory_1 : "Worn Keychain", #Memory
+	Items.CarTree_1 : "Pine Scented Car Freshener", #Car_Tree
+	Items.HandleOuter : "Enter Car", #Car
+	Items.HandleInner : "Exit Car", #Car
+	Items.Horn : "Car Horn", #Car
+	Items.Power : "Toggle Engine", #Car
+	Items.AutoPark : "Park Car", #Car
+	Items.AutoToggle : "Drive/Reverse Toggle", #Car
+	Items.Radio : "Toggle Radio", #Car
+	Items.RemoteButton : "press button", #Object 
+	Items.KeypadButton : ""
 }
 enum TYPE{
 	NULL,
@@ -52,7 +55,7 @@ enum TYPE{
 
 enum Items{
 	Null,
-	Key_1A, #Entrance Key
+	Key_1A, #Entrance Key Test
 	Key_1B,
 	Key_2A,
 	Key_2B, 
@@ -68,7 +71,8 @@ enum Items{
 	AutoPark,
 	AutoToggle,
 	Horn,
-	
+	RemoteButton,
+	KeypadButton,
 }
 
 var collision_shape: CollisionShape3D
@@ -79,7 +83,7 @@ func _ready():
 	if not collision_shape:
 		collision_shape = CollisionShape3D.new()
 		self.add_child(collision_shape)
-	if not mesh_instance:
+	if !mesh_instance:
 		mesh_instance = MeshInstance3D.new()
 		self.add_child(mesh_instance)
 	add_to_group("ItemInteract")
@@ -87,15 +91,19 @@ func _ready():
 	if randomizeLocation:
 		randomLocation()
 	if show_mesh:
-		setup_mesh()
+		if default_sphere:
+			setup_mesh()
 		unlight()
+	else:
+		self.hide()
 
 func setup_mesh():
 	mesh_instance.mesh = SphereMesh.new()
 	mesh_instance.mesh.radius = interaction_radius/2
 	mesh_instance.mesh.height = interaction_radius
 	mesh_instance.material_override = StandardMaterial3D.new()
-
+	
+	
 @export var interaction_radius: float = 0.5
 func setup_interaction_area():
 	var sphere_shape = SphereShape3D.new()
@@ -106,9 +114,11 @@ func setup_interaction_area():
 var default_color = Color(1, 1, 0, 1)
 var active_color = Color(1, 0, 0, 0)
 func highlight():
-	mesh_instance.material_override.albedo_color  = active_color
+	if default_sphere:
+		mesh_instance.material_override.albedo_color  = active_color
 func unlight():
-	mesh_instance.material_override.albedo_color  = default_color
+	if default_sphere:
+		mesh_instance.material_override.albedo_color  = default_color
 
 func randomLocation():
 	var myNewLocation = get_children().filter(func(c): return c.is_in_group("RandomLocation")).pick_random()
