@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://blea4jxccilpx"]
+
+[ext_resource type="Texture2D" uid="uid://dd0eyn8pknvr5" path="res://enemy/enemy_gar/meshes/slenderman_color.png" id="1_v41r1"]
+
+[resource]
+albedo_texture = ExtResource("1_v41r1")

@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://bfk7ettywb7mx"]
+
+[ext_resource type="Script" uid="uid://db34122kkhgvf" path="res://interactable/Items/ItemBase.gd" id="1_ru2mk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ru2mk"]
+albedo_color = Color(2.79158e-06, 0.587348, 0.76241, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ttwyl"]
+material = SubResource("StandardMaterial3D_ru2mk")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ttwyl"]
+blend_mode = 4
+cull_mode = 1
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_curgc"]
+material = SubResource("StandardMaterial3D_ttwyl")
+
+[node name="Item" type="Area3D" groups=["ItemInteract"]]
+script = ExtResource("1_ru2mk")
+metadata/_custom_type_script = "uid://db34122kkhgvf"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+
+[node name="BaseMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("SphereMesh_ttwyl")
+
+[node name="HighlightMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.53, 0, 0, 0, 0.53, 0, 0, 0, 0.53, 0, 0, 0)
+mesh = SubResource("SphereMesh_curgc")
+
+[node name="RandomLocation1" type="Node3D" parent="." groups=["RandomLocation"]]
+
+[node name="RandomLocation2" type="Node3D" parent="." groups=["RandomLocation"]]
+
+[node name="RandomLocation3" type="Node3D" parent="." groups=["RandomLocation"]]

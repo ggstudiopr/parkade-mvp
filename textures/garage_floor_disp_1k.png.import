@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cqqjswi8lt3om"
-path="res://.godot/imported/garage_floor_disp_1k.png-470e1a12079a18cbf5cb973170b00ddd.ctex"
+path="res://.godot/imported/garage_floor_disp_1k.png-76a34e9de24eeade20a00b0b105533ff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://protag/garage_floor_disp_1k.png"
-dest_files=["res://.godot/imported/garage_floor_disp_1k.png-470e1a12079a18cbf5cb973170b00ddd.ctex"]
+source_file="res://textures/garage_floor_disp_1k.png"
+dest_files=["res://.godot/imported/garage_floor_disp_1k.png-76a34e9de24eeade20a00b0b105533ff.ctex"]
 
 [params]
 

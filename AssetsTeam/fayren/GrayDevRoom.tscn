@@ -1,12 +1,22 @@
-[gd_scene load_steps=14 format=4 uid="uid://0h75dvhksqhu"]
+[gd_scene load_steps=19 format=4 uid="uid://0h75dvhksqhu"]
 
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_3q8v2"]
+[ext_resource type="Script" uid="uid://cmdefqw8wrta5" path="res://AssetsTeam/fayren/gray_dev_room.gd" id="1_vipnq"]
 [ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="2_rk1w1"]
 [ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="3_bgx41"]
-[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://levels/Items/ItemDrop.tscn" id="4_rk1w1"]
+[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://interactable/Items/ItemDrop.tscn" id="4_rk1w1"]
 [ext_resource type="PackedScene" uid="uid://b5soknaor76y" path="res://interactable/lockedDoor.tscn" id="5_bgx41"]
 [ext_resource type="PackedScene" uid="uid://bbedgwwip5uwn" path="res://interactable/remoteDoor.tscn" id="6_rr2b4"]
 [ext_resource type="PackedScene" uid="uid://d4mof2mbyweaa" path="res://keypad.tscn" id="7_mh08m"]
+[ext_resource type="Script" uid="uid://dlno7h23ck81x" path="res://enemy/EnemyController.gd" id="8_gplw3"]
+[ext_resource type="PackedScene" uid="uid://bkx7tbnt7eqpx" path="res://enemy/enemy_gar/EnemyNode.tscn" id="10_bisag"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_bisag"]
+vertices = PackedVector3Array(-24.5, 0.500289, -24.5, -24.5, 0.500289, 24.5, 24.5, 0.500289, 24.5, 24.5, 0.500289, -24.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+filter_ledge_spans = true
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bisag"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_uqre4"]
 data = PackedVector3Array(-25, -0.5, 25, -25, -0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, -0.5, -25, -25, -0.5, 25, -25, 0.5, -25, -25, -0.5, -25, 25, -0.5, -25, -25, 0.5, -25, -25, 0.5, 25, -25, -0.5, 25, -25, -0.5, 25, -25, 0.5, 25, 25, 0.5, 25, 25, 0.5, 25, -25, 0.5, 25, -25, 0.5, -25, -25, -0.5, 25, 25, -0.5, 25, 25, -0.5, -25, 25, 0.5, 25, 25, -0.5, 25, -25, -0.5, 25, 25, -0.5, -25, 25, -0.5, 25, 25, 0.5, 25, 25, -0.5, -25, 25, 0.5, -25, -25, 0.5, -25, -25, 0.5, -25, 25, 0.5, -25, 25, 0.5, 25, 25, 0.5, 25, 25, 0.5, -25, 25, -0.5, -25)
@@ -37,22 +47,27 @@ material = SubResource("StandardMaterial3D_sdi3v")
 text = "SPOTLIGHT"
 
 [node name="DevRoom" type="Node3D"]
+script = ExtResource("1_vipnq")
 
-[node name="Protagonist" parent="." instance=ExtResource("1_3q8v2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00534999, 0)
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_bisag")
 
-[node name="Vehicle" parent="." instance=ExtResource("2_rk1w1")]
-transform = Transform3D(0.840415, 0, 0.541943, 0, 1, 0, -0.541943, 0, 0.840415, 0, 0, -8)
+[node name="Floor" type="StaticBody3D" parent="NavigationRegion3D"]
+physics_material_override = SubResource("PhysicsMaterial_bisag")
 
-[node name="Floor" type="StaticBody3D" parent="."]
-
-[node name="CollisionShape" type="CollisionShape3D" parent="Floor"]
+[node name="CollisionShape" type="CollisionShape3D" parent="NavigationRegion3D/Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.499711, 0)
 shape = SubResource("ConcavePolygonShape3D_uqre4")
 
-[node name="FloorMesh" type="MeshInstance3D" parent="Floor"]
+[node name="FloorMesh" type="MeshInstance3D" parent="NavigationRegion3D/Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.499711, 0)
 mesh = SubResource("ArrayMesh_6apdb")
+
+[node name="Protagonist" parent="." instance=ExtResource("1_3q8v2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.26341, 0.00534999, 0)
+
+[node name="Vehicle" parent="." instance=ExtResource("2_rk1w1")]
+transform = Transform3D(0.840415, 0, 0.541943, 0, 1, 0, -0.541943, 0, 0.840415, 0, 0, -8)
 
 [node name="Spotlight" type="SpotLight3D" parent="." groups=["AMB_FLUO_LIGHT_SOUND"]]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.44071, -18)
@@ -69,13 +84,12 @@ mesh = SubResource("TextMesh_sdi3v")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15404, -4.58885)
 InteractType = 1
 ID = 1
-show_mesh = true
 randomizeLocation = true
 
-[node name="RandomLocation1" parent="Item" index="2"]
+[node name="RandomLocation1" parent="Item" index="3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05798, 0, 0)
 
-[node name="RandomLocation3" parent="Item" index="4"]
+[node name="RandomLocation3" parent="Item" index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35318, 0, 0)
 
 [node name="Pushdoor" parent="." instance=ExtResource("5_bgx41")]
@@ -83,12 +97,27 @@ transform = Transform3D(-0.954157, 0, 0.299307, 0, 1, 0, -0.299307, 0, -0.954157
 
 [node name="Item" parent="Pushdoor/Pushdoor" index="2"]
 ID = 1
+show_mesh = false
 
 [node name="RemoteDoor" parent="." instance=ExtResource("6_rr2b4")]
 transform = Transform3D(0.940768, 0, 0.33905, 0, 1, 0, -0.33905, 0, 0.940768, -2.61046, 0, 3.1334)
 
 [node name="Keypad" parent="." instance=ExtResource("7_mh08m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.36272, 1.23866, 0)
+
+[node name="EnemyController" type="Node" parent="."]
+script = ExtResource("8_gplw3")
+EnemyScene = ExtResource("10_bisag")
+ReaperDespawnTime = 3
+ReaperSpawnMaxTime = 5
+metadata/_custom_type_script = "uid://dlno7h23ck81x"
+
+[node name="ReaperDespawn" type="Timer" parent="EnemyController"]
+wait_time = 15.0
+one_shot = true
+
+[node name="ReaperSpawn" type="Timer" parent="EnemyController"]
+one_shot = true
 
 [editable path="Item"]
 [editable path="Pushdoor"]

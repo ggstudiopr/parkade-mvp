@@ -7,8 +7,10 @@ extends Area3D
 #@export var count : int
 #@export var stack_limit : int
 ##Enable to make meshes visible.
-@export var show_mesh : bool = false
-@export var default_sphere : bool = true
+@export var show_mesh : bool = true
+@export var show_highlight : bool = true
+#@export var mesh_scale : float = 1
+#@export var default_sphere : bool = true
 @export var show_interaction_prompt: bool = true
 @export var obtainable : bool = true
 #@export var data : Resource
@@ -76,50 +78,42 @@ enum Items{
 }
 
 var collision_shape: CollisionShape3D
-var mesh_instance: MeshInstance3D 
+@onready var base_mesh := $BaseMesh
+@onready var highlight_mesh := $HighlightMesh
+
 func _ready():
 	if not ItemDrop:
 		return
 	if not collision_shape:
 		collision_shape = CollisionShape3D.new()
 		self.add_child(collision_shape)
-	if !mesh_instance:
-		mesh_instance = MeshInstance3D.new()
-		self.add_child(mesh_instance)
 	add_to_group("ItemInteract")
 	setup_interaction_area()
 	if randomizeLocation:
 		randomLocation()
-	if show_mesh:
-		if default_sphere:
-			setup_mesh()
-		unlight()
-	else:
-		self.hide()
+	if !show_mesh:
+		base_mesh.hide()
+	if show_highlight:
+		highlight_mesh.hide()
 
-func setup_mesh():
-	mesh_instance.mesh = SphereMesh.new()
-	mesh_instance.mesh.radius = interaction_radius/2
-	mesh_instance.mesh.height = interaction_radius
-	mesh_instance.material_override = StandardMaterial3D.new()
-	
 	
 @export var interaction_radius: float = 0.5
 func setup_interaction_area():
 	var sphere_shape = SphereShape3D.new()
-	sphere_shape.radius = interaction_radius/2
+	sphere_shape.radius = interaction_radius/2 
 	collision_shape.shape = sphere_shape
 	self.collision_layer = 2
 	
 var default_color = Color(1, 1, 0, 1)
 var active_color = Color(1, 0, 0, 0)
 func highlight():
-	if default_sphere:
-		mesh_instance.material_override.albedo_color  = active_color
+	if show_highlight:
+		highlight_mesh.show()
+	
 func unlight():
-	if default_sphere:
-		mesh_instance.material_override.albedo_color  = default_color
-
+	if highlight_mesh:
+		highlight_mesh.hide()
+	
 func randomLocation():
 	var myNewLocation = get_children().filter(func(c): return c.is_in_group("RandomLocation")).pick_random()
 	self.global_position =  myNewLocation.global_position

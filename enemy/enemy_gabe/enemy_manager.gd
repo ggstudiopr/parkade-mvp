@@ -1,7 +1,7 @@
 extends Node
 class_name EnemyManager
 
-var enemy_scene = preload("res://enemy/enemy.tscn")
+var enemy_scene = preload("res://enemy/enemy_gabe/enemy.tscn")
 
 @export_subgroup("Types")
 @export var enemies : Array[EnemyData]

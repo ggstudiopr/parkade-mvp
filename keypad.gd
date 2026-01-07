@@ -14,7 +14,7 @@ func _ready():
 #	Display.text = "READY"
 	if myPasscode == 0 and Randomize:
 		myPasscode = randi_range(1000, 9999)
-		print("My new Code : " + str(myPasscode))
+		print(self.name + " Code : " + str(myPasscode))
 		hint_mesh_1.text = str(myPasscode)[0]
 		$Hint1.mesh = hint_mesh_1
 		hint_mesh_2.text = str(myPasscode)[1]

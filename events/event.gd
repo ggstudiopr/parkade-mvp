@@ -28,12 +28,12 @@ var current_state = EVENT_STATE.IDLE
 
 #Things you need to interact with to fulfill the event.
 #They'll be fulfilled/spawned based on the int number. Same int numbers means spawning at the same time
-@export var interactables : Array[Interactable]
+#@export var interactables : Array[Interactable]
 
 func _ready():
-	for interact in interactables:
-		interact.connect("interacted",_on_interact)
-
+	#for interact in interactables:
+		#interact.connect("interacted",_on_interact)
+	pass
 func end_event(status : bool):
 	if status == true:
 		event_fulfilled.emit()
@@ -44,5 +44,5 @@ func run_event():
 	event_started.emit()
 	pass
 	
-func _on_interact(interactable: Interactable):
-	pass
+#func _on_interact(interactable: Interactable):
+	#pass

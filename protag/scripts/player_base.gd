@@ -1,8 +1,8 @@
 extends CharacterBody3D
 class_name Protagonist
 
-@onready var PAUSE_MENU := $CanvasLayer2/PauseMenu
-@onready var INVENTORY_MENU := $CanvasLayer/Inventory
+@onready var PAUSE_MENU := $PAUSE/PauseMenu
+@onready var INVENTORY_MENU :=$HUD/Inventory
 @onready var PHONE := $CameraController/Camera3D/PhoneNode
 @onready var VEHICLE := $"../Vehicle"
 @onready var ENEMY_MANAGER := $"../EnemyManager"
@@ -90,7 +90,7 @@ var self_total_rot : float = 0
 #ANIMATION RELATED NODE DECLARATIONS
 @onready var BODY_ANIMATOR := $CameraController/BodyAnimationPlayer #transforms parent body on crouch/stand
 @onready var Footstep_Audio_Player :=$Audio/Footstep
-@onready var Blink :=$BlinkLayer/ColorRect/BlinkAnimator
+@onready var Blink :=$"HUD/BlinkRect/BlinkAnimator"
 #test features
 @onready var ALT_LIGHT := $CameraController/Camera3D/AltFlashlight
 @onready var COLD_AIR := $ColdAirPuffs
@@ -419,8 +419,9 @@ func _player_animation():
 func blink():
 	Blink.play("Fade")
 
-
+signal car_entered
 func playerEnterCar():
+	
 	self.set_collision_mask_value(6, false) #stop colliding with car
 	self_total_rot = 0
 	if _is_crouching == true:
@@ -429,19 +430,21 @@ func playerEnterCar():
 	_movement_lock = true
 	blink()
 	await get_tree().create_timer(0.5).timeout
+	car_entered.emit()
 	_movement_lock = false
 	self.rotation.y = VEHICLE.rotation.y
 	VEHICLE.setSeatStatus("TAKEN")
 	
 	player_state = PLAYER_CONSTS.PLAYER_STATE.DRIVING
 
+signal car_exited
 func playerExitCar():
 	self.set_collision_mask_value(6, true) #collide with car
 	_movement_lock = true
 	blink()
 	await get_tree().create_timer(0.5).timeout
 	_movement_lock = false 
-	
+	car_exited.emit()
 	self_total_rot = 0
 	
 	player_state = PLAYER_CONSTS.PLAYER_STATE.WALKING

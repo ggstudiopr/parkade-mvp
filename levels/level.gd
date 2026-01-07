@@ -7,7 +7,7 @@ class_name Level
 
 var player_scene = preload("res://protag/Protag_Root_Scene.tscn")
 var vehicle_scene = preload("res://vehicle/Vehicle_Root_Scene.tscn")
-var enemy_scene = preload("res://enemy/enemy.tscn")
+var enemy_scene = preload("res://enemy/enemy_gabe/enemy.tscn")
 
 @export_subgroup("Enemies")
 @export var enemy_manager : EnemyManager

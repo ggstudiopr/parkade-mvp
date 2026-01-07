@@ -1,43 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://d4mof2mbyweaa"]
+[gd_scene load_steps=4 format=3 uid="uid://d4mof2mbyweaa"]
 
 [ext_resource type="Script" uid="uid://brvwm4jb5s24e" path="res://keypad.gd" id="1_4swqm"]
-[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://levels/Items/ItemDrop.tscn" id="2_w41gr"]
-
-[sub_resource type="TextMesh" id="TextMesh_3c3sr"]
-text = "0"
-
-[sub_resource type="TextMesh" id="TextMesh_4swqm"]
-text = "1"
-
-[sub_resource type="TextMesh" id="TextMesh_w41gr"]
-text = "2"
-
-[sub_resource type="TextMesh" id="TextMesh_8rcbr"]
-text = "3"
-
-[sub_resource type="TextMesh" id="TextMesh_updv8"]
-text = "4"
-
-[sub_resource type="TextMesh" id="TextMesh_wey0v"]
-text = "5"
-
-[sub_resource type="TextMesh" id="TextMesh_mqjo7"]
-text = "6"
-
-[sub_resource type="TextMesh" id="TextMesh_ucpnh"]
-text = "7"
-
-[sub_resource type="TextMesh" id="TextMesh_bx1ow"]
-text = "8"
-
-[sub_resource type="TextMesh" id="TextMesh_lj8oe"]
-text = "9"
-
-[sub_resource type="TextMesh" id="TextMesh_ssiye"]
-text = "E"
-
-[sub_resource type="TextMesh" id="TextMesh_6dq37"]
-text = "C"
+[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://interactable/Items/ItemDrop.tscn" id="2_w41gr"]
 
 [sub_resource type="TextMesh" id="TextMesh_gcv1m"]
 
@@ -47,173 +11,90 @@ script = ExtResource("1_4swqm")
 [node name="Display" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0884359, 0.540035, 0)
 
-[node name="0" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.135892, -0.176103, 0)
-InteractType = 5
-ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
-obtainable = false
-despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="0" index="1"]
-mesh = SubResource("TextMesh_3c3sr")
-
 [node name="1" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0462421, 0.361834, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.0462421, 0.361834, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
 obtainable = false
 despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="1" index="1"]
-mesh = SubResource("TextMesh_4swqm")
 
 [node name="2" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.115658, 0.355575, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.115658, 0.355575, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
 obtainable = false
 despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="2" index="1"]
-mesh = SubResource("TextMesh_w41gr")
 
 [node name="3" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.290011, 0.35804, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.290011, 0.35804, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
 obtainable = false
 despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="3" index="1"]
-mesh = SubResource("TextMesh_8rcbr")
 
 [node name="4" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.050512, 0.182791, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.050512, 0.182791, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
 obtainable = false
 despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="4" index="1"]
-mesh = SubResource("TextMesh_updv8")
 
 [node name="5" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.116607, 0.166015, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.116607, 0.166015, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
 obtainable = false
 despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="5" index="1"]
-mesh = SubResource("TextMesh_wey0v")
 
 [node name="6" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.29789, 0.179016, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.29789, 0.179016, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
 obtainable = false
 despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="6" index="1"]
-mesh = SubResource("TextMesh_mqjo7")
 
 [node name="7" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0399187, 0, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.0399187, 0, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
 obtainable = false
 despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="7" index="1"]
-mesh = SubResource("TextMesh_ucpnh")
 
 [node name="8" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125819, 0, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.125819, 0, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
 obtainable = false
 despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="8" index="1"]
-mesh = SubResource("TextMesh_bx1ow")
 
 [node name="9" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.312632, 0, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.312632, 0, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
+obtainable = false
+despawnOnInteract = false
+
+[node name="0" parent="." instance=ExtResource("2_w41gr")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.141587, -0.176103, 0)
+InteractType = 5
+ID = 18
 obtainable = false
 despawnOnInteract = false
 interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="9" index="1"]
-mesh = SubResource("TextMesh_lj8oe")
 
 [node name="E" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.304684, -0.176966, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.304684, -0.176966, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
 obtainable = false
 despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="E" index="1"]
-mesh = SubResource("TextMesh_ssiye")
 
 [node name="C" parent="." instance=ExtResource("2_w41gr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0545589, -0.180062, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.0545589, -0.180062, 0)
 InteractType = 5
 ID = 18
-show_mesh = true
-default_sphere = false
-show_interaction_prompt = false
 obtainable = false
 despawnOnInteract = false
-interaction_radius = 0.2
-
-[node name="MeshInstance3D" parent="C" index="1"]
-mesh = SubResource("TextMesh_6dq37")
 
 [node name="Hint1" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.924692, -0.380715, 0, 0.380715, 0.924692, 0, 0, 0, 1, -0.349782, 0.383777, 0)
@@ -228,7 +109,6 @@ transform = Transform3D(0.924306, -0.381651, 0, 0.381651, 0.924306, 0, 0, 0, 1, 
 [node name="Hint4" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00905859, 0.726882, 0)
 
-[editable path="0"]
 [editable path="1"]
 [editable path="2"]
 [editable path="3"]
@@ -238,5 +118,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00905859, 0.726882, 0)
 [editable path="7"]
 [editable path="8"]
 [editable path="9"]
+[editable path="0"]
 [editable path="E"]
 [editable path="C"]

@@ -10,11 +10,11 @@ var fulfilled_events : int
 var failed_events: int
 
 func _ready():
-	for event in events:
-		event.connect("event_fulfilled", _on_event_fulfilled)
-		event.connect("event_failed", _on_event_failed)
-		event.connect("event_started",_on_event_started)
-
+#	for event in events:
+#		event.connect("event_fulfilled", _on_event_fulfilled)
+		#event.connect("event_failed", _on_event_failed)
+		#event.connect("event_started",_on_event_started)
+	pass
 func _process(delta):
 	#I shouldnt need to check this every tick but im too tired to do it right
 	if fulfilled_events + failed_events == events.size():

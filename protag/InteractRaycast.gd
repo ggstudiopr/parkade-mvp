@@ -26,7 +26,7 @@ func _physics_process(delta):
 	if self.is_colliding():
 		onCollide(self.get_collider())
 	else:
-		if lastCollider and lastCollider.show_mesh and latestCollider:
+		if lastCollider and lastCollider.show_highlight and latestCollider:
 			lastCollider.unlight()
 			latestCollider = false
 			badInput = false
@@ -75,7 +75,7 @@ func onCollide(collider):
 				label.text = str(ItemDrop.TEXT[lastCollider.ID])
 	label.position = EntityScreenPositionSolver(collider)
 	
-	if collider.show_mesh:
+	if collider.show_highlight:
 		collider.highlight()
 	
 func activate(myInteractNode):
@@ -105,7 +105,7 @@ func activate(myInteractNode):
 						else:
 							print ("You can't unlock this door yet.")
 			else:
-				print ("You can't unlock this door yet.")
+				print ("You can't unlock this door yet, need: " + str(myInteractNode.TEXT[myInteractNode.ID]))
 		if myInteractNode.InteractType == ItemDrop.TYPE.OBJECT:		
 			myInteractNode.get_parent().doThing(myInteractNode)
 			if myInteractNode.despawnOnInteract:
