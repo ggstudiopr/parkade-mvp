@@ -16,6 +16,7 @@ extends Area3D
 #@export var data : Resource
 @export var randomizeLocation : bool = false #create children nodes to look at and randomly choose to take coordinates
 @export var despawnOnInteract : bool = true #logic only present for Objects rn
+@export var animationPlayer : AnimationPlayer
 
 const CATEGORY : Dictionary[int, String] = { # to get string > item.CATEGORY[item.InteractType]
 	0 : "",

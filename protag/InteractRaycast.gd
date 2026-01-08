@@ -38,7 +38,6 @@ func EntityScreenPositionSolver(TargetInFocus):
 	return screen_pos
 
 func onCollide(collider):
-	
 	lastCollider = collider
 	latestCollider = true
 	if badInput:
@@ -107,7 +106,10 @@ func activate(myInteractNode):
 			else:
 				print ("You can't unlock this door yet, need: " + str(myInteractNode.TEXT[myInteractNode.ID]))
 		if myInteractNode.InteractType == ItemDrop.TYPE.OBJECT:		
-			myInteractNode.get_parent().doThing(myInteractNode)
+			if myInteractNode.animationPlayer:
+				myInteractNode.animationPlayer.play("state2") #TODO kys gabe
+			if myInteractNode.get_parent().has_method("doThing"):
+				myInteractNode.get_parent().doThing(myInteractNode)
 			if myInteractNode.despawnOnInteract:
 				myInteractNode.process_mode = Node.PROCESS_MODE_DISABLED
 				myInteractNode.hide()

@@ -52,9 +52,7 @@ func move2player(delta):
 	agent.set_target_position(Global.player_position)
 	var next_nav_point = agent.get_next_path_position()
 	var dist_to_player := global_position.distance_to(Global.player_position)
-
 	var t : float = 1.0 - clamp(dist_to_player / max_chase_distance, 0.0, 1.0)
-
 	var speed :float = lerp(min_speed, max_speed, t)
 	velocity = (next_nav_point- global_position).normalized() * speed
 	if agent.is_navigation_finished():

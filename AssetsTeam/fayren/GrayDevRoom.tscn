@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://0h75dvhksqhu"]
+[gd_scene load_steps=18 format=4 uid="uid://0h75dvhksqhu"]
 
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_3q8v2"]
 [ext_resource type="Script" uid="uid://cmdefqw8wrta5" path="res://AssetsTeam/fayren/gray_dev_room.gd" id="1_vipnq"]
@@ -8,8 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b5soknaor76y" path="res://interactable/lockedDoor.tscn" id="5_bgx41"]
 [ext_resource type="PackedScene" uid="uid://bbedgwwip5uwn" path="res://interactable/remoteDoor.tscn" id="6_rr2b4"]
 [ext_resource type="PackedScene" uid="uid://d4mof2mbyweaa" path="res://keypad.tscn" id="7_mh08m"]
-[ext_resource type="Script" uid="uid://dlno7h23ck81x" path="res://enemy/EnemyController.gd" id="8_gplw3"]
-[ext_resource type="PackedScene" uid="uid://bkx7tbnt7eqpx" path="res://enemy/enemy_gar/EnemyNode.tscn" id="10_bisag"]
+[ext_resource type="PackedScene" uid="uid://d5jn1ujaextl" path="res://enemy/enemy_gar/EnemyController.tscn" id="9_vipnq"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_bisag"]
 vertices = PackedVector3Array(-24.5, 0.500289, -24.5, -24.5, 0.500289, 24.5, 24.5, 0.500289, 24.5, 24.5, 0.500289, -24.5)
@@ -105,19 +104,7 @@ transform = Transform3D(0.940768, 0, 0.33905, 0, 1, 0, -0.33905, 0, 0.940768, -2
 [node name="Keypad" parent="." instance=ExtResource("7_mh08m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.36272, 1.23866, 0)
 
-[node name="EnemyController" type="Node" parent="."]
-script = ExtResource("8_gplw3")
-EnemyScene = ExtResource("10_bisag")
-ReaperDespawnTime = 3
-ReaperSpawnMaxTime = 5
-metadata/_custom_type_script = "uid://dlno7h23ck81x"
-
-[node name="ReaperDespawn" type="Timer" parent="EnemyController"]
-wait_time = 15.0
-one_shot = true
-
-[node name="ReaperSpawn" type="Timer" parent="EnemyController"]
-one_shot = true
+[node name="EnemyController" parent="." instance=ExtResource("9_vipnq")]
 
 [editable path="Item"]
 [editable path="Pushdoor"]

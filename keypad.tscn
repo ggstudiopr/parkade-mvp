@@ -98,16 +98,20 @@ despawnOnInteract = false
 
 [node name="Hint1" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.924692, -0.380715, 0, 0.380715, 0.924692, 0, 0, 0, 1, -0.349782, 0.383777, 0)
+layers = 2
 mesh = SubResource("TextMesh_gcv1m")
 
 [node name="Hint2" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.987195, 0.159519, 0, -0.159519, 0.987195, 0, 0, 0, 1, 0.945155, 0, 0)
+layers = 2
 
 [node name="Hint3" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.924306, -0.381651, 0, 0.381651, 0.924306, 0, 0, 0, 1, -0.36673, -0.826549, 0)
+layers = 2
 
 [node name="Hint4" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00905859, 0.726882, 0)
+layers = 2
 
 [editable path="1"]
 [editable path="2"]
