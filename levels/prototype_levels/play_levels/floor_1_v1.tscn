@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://bhprx4d2og2lv"]
+[gd_scene load_steps=47 format=3 uid="uid://bhprx4d2og2lv"]
 
 [ext_resource type="Texture2D" uid="uid://l332ldiqi0q7" path="res://textures/concrete/concrete_floor_worn_001_disp_4k.png" id="1_1o1sh"]
 [ext_resource type="Texture2D" uid="uid://bf3xmnir3pryj" path="res://textures/orange/texture_10.png" id="2_185g5"]
@@ -27,6 +27,8 @@
 [ext_resource type="PackedScene" uid="uid://b22axq6wumtjv" path="res://csg_map_blocks/lights/fluo_light_bar.tscn" id="25_1qfqh"]
 [ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="26_cgyfu"]
 [ext_resource type="PackedScene" uid="uid://dknxn15l7xas2" path="res://csg_map_blocks/sidewalk/handrail.tscn" id="27_185g5"]
+[ext_resource type="PackedScene" uid="uid://bxq7npomagabg" path="res://AssetsTeam/levvv/Props/LargeTrashcan.tscn" id="28_ahbui"]
+[ext_resource type="PackedScene" uid="uid://c6tqv1ncsblsd" path="res://AssetsTeam/levvv/Props/SmallTrashcan.tscn" id="29_wisk5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0dmw0"]
 albedo_texture = ExtResource("1_1o1sh")
@@ -1011,3 +1013,9 @@ mass = 700.0
 
 [node name="Handrail" parent="." instance=ExtResource("27_185g5")]
 transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 95, 0.396163, -71.5588)
+
+[node name="LargeTrashcan" parent="." instance=ExtResource("28_ahbui")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 76.2137, 0.166425, -84.4267)
+
+[node name="SmallTrashcan" parent="." instance=ExtResource("29_wisk5")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 79.7836, 1.68011e-06, -83.02)

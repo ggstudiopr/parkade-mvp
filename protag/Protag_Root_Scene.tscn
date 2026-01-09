@@ -1,20 +1,55 @@
-[gd_scene load_steps=24 format=3 uid="uid://dl60tvwy1elkf"]
+[gd_scene load_steps=26 format=3 uid="uid://dl60tvwy1elkf"]
 
 [ext_resource type="Script" uid="uid://cwfgwnkth6x74" path="res://protag/scripts/player_base.gd" id="1_yvqfv"]
-[ext_resource type="Script" uid="uid://ci0muygltpwcc" path="res://protag/RaycastAlign.gd" id="2_65wl4"]
+[ext_resource type="Script" uid="uid://ci0muygltpwcc" path="res://protag/InteractRaycast.gd" id="2_65wl4"]
 [ext_resource type="AudioStream" uid="uid://bq11tey4ecy0m" path="res://sounds/protagonist-tied-ambient/Static background Noise.mp3" id="2_jnuwb"]
 [ext_resource type="PackedScene" uid="uid://csjcseh76ann" path="res://protag/phone/Phone_Root_Scene.tscn" id="2_nqwbi"]
 [ext_resource type="Script" uid="uid://bl4epvu7js8dq" path="res://protag/MainCam.gd" id="2_uq3ot"]
 [ext_resource type="Environment" uid="uid://blmt4nohw4gso" path="res://base_enviro.tres" id="2_xrwh2"]
 [ext_resource type="AudioStream" uid="uid://drqttfhtpkpeo" path="res://sounds/protagonist-tied-ambient/Ambient Fluorescent sounds_Insert 1.wav" id="3_jnuwb"]
-[ext_resource type="Script" uid="uid://rrr2laeg8ndw" path="res://protag/fluorescent_prox_audio.gd" id="4_dk6wf"]
+[ext_resource type="Script" uid="uid://rrr2laeg8ndw" path="res://protag/scripts/fluorescent_prox_audio.gd" id="4_dk6wf"]
 [ext_resource type="AudioStream" uid="uid://bbjn3y1e0snb2" path="res://sounds/protagonist-tied-ambient/Foot steps_Walk 1.wav" id="4_xe5yb"]
-[ext_resource type="PackedScene" uid="uid://d1w1jahqvppkf" path="res://UI/UI_Root_Scene.tscn" id="5_7uxf5"]
-[ext_resource type="Script" uid="uid://c77o88po4dpmm" path="res://protag/alt_flashlight.gd" id="6_grnn1"]
+[ext_resource type="Script" uid="uid://c77o88po4dpmm" path="res://protag/scripts/alt_flashlight.gd" id="6_grnn1"]
 [ext_resource type="Script" uid="uid://qkgymnnknv6n" path="res://protag/scripts/FootstepAudioPlayer.gd" id="9_f878c"]
-[ext_resource type="PackedScene" uid="uid://cbn8a4pe4nskn" path="res://protag/inventory_menu_root.tscn" id="10_cvd2c"]
-[ext_resource type="PackedScene" uid="uid://d4m2wc7e2f46u" path="res://protag/pause_menu_root.tscn" id="10_jlnjc"]
+[ext_resource type="PackedScene" uid="uid://cbn8a4pe4nskn" path="res://protag/UI/inventory_menu_root.tscn" id="10_cvd2c"]
+[ext_resource type="PackedScene" uid="uid://d4m2wc7e2f46u" path="res://protag/UI/pause_menu_root.tscn" id="10_jlnjc"]
 [ext_resource type="PackedScene" uid="uid://rotxwcdcvhym" path="res://protag/cold_air_puffs.tscn" id="11_glbnd"]
+
+[sub_resource type="Animation" id="Animation_jnuwb"]
+resource_name = "Fade"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.533333, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xe5yb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dk6wf"]
+_data = {
+&"Fade": SubResource("Animation_jnuwb"),
+&"RESET": SubResource("Animation_xe5yb")
+}
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ni7be"]
 
@@ -158,8 +193,43 @@ script = ExtResource("1_yvqfv")
 SPEED_CROUCH = 0.75
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
 
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Inventory" parent="HUD" instance=ExtResource("10_cvd2c")]
+offset_left = 270.0
+offset_top = 131.0
+offset_right = 53.0
+offset_bottom = 25.0
+scale = Vector2(0.912423, 0.888125)
+
+[node name="BlinkRect" type="ColorRect" parent="HUD"]
+layout_direction = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
+
+[node name="BlinkAnimator" type="AnimationPlayer" parent="HUD/BlinkRect"]
+libraries = {
+&"": SubResource("AnimationLibrary_dk6wf")
+}
+
+[node name="PAUSE" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="PauseMenu" parent="PAUSE" instance=ExtResource("10_jlnjc")]
+z_index = 5
+z_as_relative = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Stats" type="Panel" parent="." groups=["UI Panel"]]
-visible = false
 offset_left = 7.0
 offset_top = 13.0
 offset_right = 388.0
@@ -227,6 +297,7 @@ autoplay = true
 [node name="FluorescentProxAudio" type="AudioStreamPlayer3D" parent="Audio"]
 stream = ExtResource("3_jnuwb")
 autoplay = true
+max_distance = 45.01
 script = ExtResource("4_dk6wf")
 
 [node name="Footstep" type="AudioStreamPlayer3D" parent="Audio"]
@@ -273,18 +344,23 @@ transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.1, -
 [node name="Away" type="Node3D" parent="CameraController/Camera3D/PhonePositionalAnchors"]
 transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.115, -0.3, -0.2)
 
-[node name="CarInteractRaycast" type="RayCast3D" parent="CameraController/Camera3D"]
+[node name="InteractRaycast" type="RayCast3D" parent="CameraController/Camera3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
-target_position = Vector3(3, 0, 0)
+visible = false
+target_position = Vector3(1, 0, 0)
 collision_mask = 2
 collide_with_areas = true
 collide_with_bodies = false
 debug_shape_custom_color = Color(0, 1, 0, 1)
-debug_shape_thickness = 1
 script = ExtResource("2_65wl4")
+
+[node name="CarInteractLabel" type="Label" parent="CameraController/Camera3D/InteractRaycast"]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="PhoneNode" parent="CameraController/Camera3D" instance=ExtResource("2_nqwbi")]
 physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.440142, -0.375938, -0.56255)
 
 [node name="AltFlashlight" type="SpotLight3D" parent="CameraController/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.188396, -0.202303, -0.0363795)
@@ -309,30 +385,6 @@ light_volumetric_fog_energy = 0.0
 spot_range = 2.0
 spot_angle = 89.4612
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Inventory" parent="CanvasLayer" instance=ExtResource("10_cvd2c")]
-offset_left = 72.0
-offset_top = 37.0
-offset_right = 72.0
-offset_bottom = 37.0
-scale = Vector2(0.912423, 0.888125)
-
-[node name="CanvasLayer2" type="CanvasLayer" parent="."]
-layer = 2
-
-[node name="PauseMenu" parent="CanvasLayer2" instance=ExtResource("10_jlnjc")]
-offset_left = 3.0
-offset_top = 5.0
-offset_right = 3.0
-offset_bottom = 5.0
-
-[node name="UI" parent="." instance=ExtResource("5_7uxf5")]
-visible = false
-offset_left = 2.0
-offset_top = -2.0
-offset_right = 2.0
-offset_bottom = -2.0
-
 [node name="ColdAirPuffs" parent="." instance=ExtResource("11_glbnd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52006, -0.971249)
+visible = false

@@ -30,11 +30,10 @@ func _drain_gas():
 @onready var RADIO_SCREEN := $"Interactables/Radio/RadioScreen"
 @onready var GEAR_SHIFT_TEXT := $Interactables/AutoGearShiftToggle/TransmissionTextMesh
 #audio playbacks
-@onready var CAR_HORN_AUDIO := $Interactables/CarHorn/CarHornAudio
+@onready var CAR_HORN_AUDIO := $Sounds/CarHornAudio
 @onready var ENGINE_SOUND := $Sounds/CarEngine
 @onready var RADIO_AUDIO := $Sounds/RadioAudio
 #animation player
-@onready var CAR_ANIMATOR := $CarAnimationPlayer
 
 # VehicleBody3D movement parameters
 @export var ENGINE_POWER = 650.0
@@ -59,7 +58,7 @@ func _ready():
 		PLAYER = get_tree().get_nodes_in_group("Player")[0]
 	RADIO_SCREEN.hide()
 	shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK)
-	await get_tree().create_timer(1.0).timeout
+	#await get_tree().create_timer(1.0).timeout
 	MIRROR_LEFT.CamOn()
 	MIRROR_RIGHT.CamOn()
 	MIRROR_REAR.CamOn()
@@ -76,7 +75,7 @@ func _physics_process(delta):
 
 func _driving_car_movement(delta):
 	if PLAYER:
-		if self.isOn() and PLAYER.isDriving():
+		if self.isOn() and PLAYER.isDriving() and !PLAYER._movement_lock:
 			steering = move_toward(steering, Input.get_axis("move_right", "move_left") * MAX_STEER, delta * 20)
 			var forward_input = Input.get_action_strength("move_forward")
 			var backward_input = Input.get_action_strength("move_backward")
@@ -197,7 +196,6 @@ func carHornPlay():
 
 func isOn():
 	return true if vehicle_engine == CAR_CONSTS.ENGINE_STATE.ON else false
-
 
 func playerClampToCar():
 	PLAYER.global_position = FRONT_SEAT_POS.global_position

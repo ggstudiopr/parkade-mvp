@@ -7,7 +7,7 @@ class_name Level
 
 var player_scene = preload("res://protag/Protag_Root_Scene.tscn")
 var vehicle_scene = preload("res://vehicle/Vehicle_Root_Scene.tscn")
-var enemy_scene = preload("res://enemy/enemy.tscn")
+var enemy_scene = preload("res://enemy/enemy_gabe/enemy.tscn")
 
 @export_subgroup("Enemies")
 @export var enemy_manager : EnemyManager
@@ -58,7 +58,7 @@ func _ready() -> void:
 	
 	for player in range(PLAYER_COUNT):
 		if players.size() < PLAYER_COUNT:
-			var new_player: Player = player_scene.instantiate()
+			var new_player: Protagonist = player_scene.instantiate()
 			new_player.killed.connect(on_player_killed)
 			#TODO: Car should handle assigning and positioning players to specific seats.
 			#vehicle.add_occupant(new_player) #PSEUDOCODE
@@ -100,14 +100,11 @@ func on_level_state_change(new_state) -> LEVEL_STATE:
 			level_ended.emit()
 	return new_state
 
-<<<<<<< HEAD
-
 func _on_protagonist_max_strikes() -> void:
 	get_tree().quit()
-=======
+
 func on_all_events_finished() -> void :
 	current_state = LEVEL_STATE.WIN
 
 func on_player_killed(method) -> void:
 	current_state = LEVEL_STATE.LOSE
->>>>>>> 5913108ca581efa4feee3298156a867fc7471192

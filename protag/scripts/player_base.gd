@@ -1,15 +1,29 @@
 extends CharacterBody3D
 class_name Protagonist
 
-@onready var myHealth := $Stats/HealthBar
-var myHeartRate : int = 0
+@onready var PAUSE_MENU := $PAUSE/PauseMenu
+@onready var INVENTORY_MENU :=$HUD/Inventory
+@onready var PHONE := $CameraController/Camera3D/PhoneNode
+@onready var VEHICLE := $"../Vehicle"
+@onready var ENEMY_MANAGER := $"../EnemyManager"
+
+signal killed
 signal LowHealth
+@onready var myHealth := $Stats/HealthBar
+var myHeartRate : int = 70
 func hurt(hurt_rate):
 	myHealth.value -= hurt_rate
+	myHeartRate = heartRateCalc(myHealth.value)
 	if myHealth.value < myHealth.max_value/2:
 		LowHealth.emit()
 	if myHealth.value <= 0:
 		addStrike()
+		if myStrikes.value == 3:
+			killed.emit()
+func heartRateCalc(curr_health):
+	var health_percent = curr_health / myHealth.max_value 
+	var heart_rate = 70 + (1 - health_percent) * 105 #Map health percentage (1->0) to heart rate (70->175)
+	return heart_rate 
 @onready var myStrikes := $Stats/StrikesBar
 signal StrikeAdded
 signal MaxStrikes
@@ -20,6 +34,7 @@ func addStrike():
 	StrikeAdded.emit()
 	myHealth.max_value -= 0.2 * myStrikes.value
 	myHealth.value = myHealth.max_value
+
 var _stamina_depleted : bool = false
 signal StaminaDepleted
 @onready var myStamina := $Stats/StaminaBar
@@ -30,6 +45,19 @@ func modStamina(amount):
 		StaminaDepleted.emit()
 	if myStamina.value >=  30: 
 		_stamina_depleted = false
+
+#MOVEMENT/SPEED VALUES
+@export var SPEED_DEFAULT : float = 2
+var _speed : float = SPEED_DEFAULT
+@export var SPEED_CROUCH : float = 1
+@export var SPRINT_MULT : float = 2.25
+var movement
+#BOOLS FOR MOVEMENT LOGIC
+var _is_crouching : bool = false
+var _is_sprinting : bool = false
+var _movement_lock : bool = false
+var _camera_lock : bool = false
+#TODO sunset temperature, useless/redundant feature
 signal LowTemperature 
 signal NormalTemperature
 var myTemp : float = 80:
@@ -39,32 +67,13 @@ var myTemp : float = 80:
 			LowTemperature.emit()
 		if myTemp > 60:
 			NormalTemperature.emit()
+#enemy proximity temperature values
+@export var ambient_temperature = 80.0  # Normal room temperature
+@export var entity_temperature = 40.0   # Cold temperature near the entity
+@export var effect_radius = 10.0        # Distance at which temperature begins to drop
+@export var falloff_exponent = 2.0   
 
-signal killed
-
-@onready var PAUSE_MENU := $CanvasLayer2/PauseMenu
-@onready var INVENTORY_MENU := $CanvasLayer/Inventory
-@onready var UI := $UI
-@onready var PHONE := $CameraController/Camera3D/PhoneNode
-@onready var VEHICLE := $"../Vehicle"
-@onready var ENEMY_MANAGER := $"../EnemyManager"
-
-@export var health : float :
-	get():
-		return health
-	set(value):
-		health = value
-		if value <= 0:
-			killed.emit()
-
-#MOVEMENT/SPEED VALUES
-@export var SPEED_DEFAULT : float = 2
-var _speed : float = SPEED_DEFAULT
-@export var SPEED_CROUCH : float = 1
-@export var SPRINT_MULT : float = 2.25
-var input_dir
-var direction
-
+#TODO these anchors are fuckass. clean it up
 #CAMERA RELATED VARIABLES
 @onready var HEAD_ANCHOR := $CameraAnchor
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90)
@@ -81,18 +90,16 @@ var self_total_rot : float = 0
 #ANIMATION RELATED NODE DECLARATIONS
 @onready var BODY_ANIMATOR := $CameraController/BodyAnimationPlayer #transforms parent body on crouch/stand
 @onready var Footstep_Audio_Player :=$Audio/Footstep
-
+@onready var Blink :=$"HUD/BlinkRect/BlinkAnimator"
 #test features
 @onready var ALT_LIGHT := $CameraController/Camera3D/AltFlashlight
 @onready var COLD_AIR := $ColdAirPuffs
 
+#TODO fix raycast logics to be consistent and not break in car.
 #Player relevant raycasts
-@onready var CAR_LOOK_DIR_RAY := $CameraController/Camera3D/CarInteractRaycast 
+@onready var LOOK_DIR_RAY := $CameraController/Camera3D/InteractRaycast 
 @onready var PHONE_LOOK_RAY = PHONE.PHONE_LOOK_RAY
 
-#BOOLS FOR MOVEMENT LOGIC
-var _is_crouching : bool = false
-var _is_sprinting : bool = false
 var Q_is_being_held : bool = false
 
 #phone posiition 
@@ -109,24 +116,15 @@ var q_is_processed = false
 var bob_am_base
 var bob_fq_base
 
-#enemy proximity temperature values
-@export var ambient_temperature = 80.0  # Normal room temperature
-@export var entity_temperature = 40.0   # Cold temperature near the entity
-@export var effect_radius = 10.0        # Distance at which temperature begins to drop
-@export var falloff_exponent = 2.0   
-
 #diagnostics app value tracking distance traveled on player walk
-var step_accumulated : float = 0
-var previous_position
-var moved_distance
+var healthApp_stepAccumulated : float = 0
+var healthApp_previousPosition
+var healthApp_movedDistance
 #USED BY OTHER CLASSES
 var player_state = PLAYER_CONSTS.PLAYER_STATE.WALKING
 
-
-
 #INITIALIZE
 func _ready():
-	health = 100
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	COLD_AIR.hide()
 	
@@ -138,25 +136,20 @@ func _physics_process(delta: float) -> void:
 	_player_animation() #going to try and handle walking animations here later. for now only contains simple footstep loop. removed headbob
 	if controller_RS_Input(): #controller right stick support
 		update_camera_controller(controller_RS_Input())
-	
-	myHeartRate = heartRateCalc(delta, myHealth.value)
-	myTemp = entityProxTemp()
+
+	#myTemp = entityProxTemp()
 	#proof of concept function to track enemy proximity to hurt player
 	enemy_proximity_damage(delta)
 	#proof of concept function to visually show enemy proximity
-	enemy_proximity_particles()
-	
+	#enemy_proximity_particles()
 	#proof of concept of making things disappear when phone cam snaps it
 	#Collision layer 4
-	if(PHONE_LOOK_RAY.is_colliding() and PHONE.picTaken()):
-		if(PHONE_LOOK_RAY.get_collider().is_in_group("DisappearOnPictureTaken")):
-			var phone_is_looking_at = PHONE_LOOK_RAY.get_collider()
-			phone_is_looking_at.visible = false
-func heartRateCalc(delta, curr_health):
-	var health_percent = curr_health / myHealth.max_value 
-	# Map health percentage (1->0) to heart rate (70->175)
-	var heart_rate = 70 + (1 - health_percent) * 105
-	return heart_rate 
+	#if(PHONE_LOOK_RAY.is_colliding() and PHONE.picTaken()):
+		#if(PHONE_LOOK_RAY.get_collider().is_in_group("DisappearOnPictureTaken")):
+			#var phone_is_looking_at = PHONE_LOOK_RAY.get_collider()
+			#phone_is_looking_at.visible = false
+
+
 	
 func _input(event):
 	if event.is_action_pressed("pause") and !PAUSE_MENU.input_locked():
@@ -166,7 +159,10 @@ func _input(event):
 	if event.is_action_pressed("crouch_toggle") and player_state == PLAYER_CONSTS.PLAYER_STATE.WALKING:
 		crouch_toggle()
 	if event.is_action_pressed("interact"):
-		UI.check_interact()
+		if LOOK_DIR_RAY.is_colliding():
+			LOOK_DIR_RAY.activate(LOOK_DIR_RAY.get_collider())
+			pass
+		
 	if event.is_action_pressed("sprint"):
 		_is_sprinting = true
 	if event.is_action_released("sprint"):
@@ -176,7 +172,6 @@ func _input(event):
 	
 	if event.is_action_pressed("debug_ui"):
 		var panels = get_tree().get_nodes_in_group("UI Panel")
-		#print(panels)
 		for item in panels:
 			item.show()
 			
@@ -193,6 +188,10 @@ func _input(event):
 	
 	phone_input_check(event) #threw all phone related inputs into here to clean readability
 
+func check_interact():
+	if LOOK_DIR_RAY.is_colliding():
+		LOOK_DIR_RAY.get_collider().doThing()
+		
 func phone_input_check(event):
 	#Toggle Phone holdQ logic
 	if Input.is_action_just_pressed("Toggle Phone"):
@@ -228,7 +227,7 @@ func phone_input_check(event):
 			
 	#take picture
 	if event.is_action_pressed("left_click"):
-		if PHONE.isInHand():
+		if PHONE.isInHand() and PHONE.PHONE_CAM.isOn():
 			PHONE.takePicture()
 			
 	#gallery scrolling
@@ -260,81 +259,92 @@ func _walking_player_movement(delta):
 	#base player walking
 	if not is_on_floor() and player_state ==  PLAYER_CONSTS.PLAYER_STATE.WALKING:
 		velocity += get_gravity() * delta
-	previous_position = self.global_transform.origin
-	input_dir = movement_vector()
-	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y))
-	_speed = SPEED_DEFAULT + (0.125 * myStrikes.value)
-	if direction and !self.isDriving():
-		velocity.x = direction.x * _speed 
-		velocity.z = direction.z * _speed
-		if _is_sprinting and is_on_floor() and movement_vector().y < 0 and !_stamina_depleted:
-			if _is_crouching == true:
+		
+	healthApp_previousPosition = self.global_transform.origin
+	if !_movement_lock:
+		movement = (transform.basis * Vector3(movement_vector().x, 0, movement_vector().y))
+		_speed = SPEED_DEFAULT + (0.125 * myStrikes.value)
+	
+	if movement and !isDriving():
+		velocity.x = movement.x * _speed 
+		velocity.z = movement.z * _speed
+		#TODO: Sprint Disable Modifier
+		if isSprinting() and is_on_floor() and movement_vector().y < 0 and !_stamina_depleted:
+			if isCrouching():
 				crouch_toggle()
 			modStamina(-8 * delta)
 			velocity.z *= SPRINT_MULT
-			velocity.x *= SPRINT_MULT	
+			velocity.x *= SPRINT_MULT
+	
 	else:
 		velocity.x = move_toward(velocity.x, 0, _speed)
 		velocity.z = move_toward(velocity.z, 0, _speed)
-	if !_is_sprinting:
+	if !isSprinting():
 		modStamina(6*delta)
+	if _movement_lock:
+		velocity.x = move_toward(velocity.x, 0, _speed)
+		velocity.z = move_toward(velocity.z, 0, _speed)
 	move_and_slide()
 
 	#steps accumulated logic for diagnostics app
-	if direction and !self.isDriving():
-		moved_distance = previous_position.distance_to(self.global_transform.origin)
-		step_accumulated += moved_distance * 1
+	if movement and !isDriving():
+		healthApp_movedDistance = healthApp_previousPosition.distance_to(self.global_transform.origin)
+		healthApp_stepAccumulated += healthApp_movedDistance * 1
 
 	#player movement input affects phone orientation
-	phone_n_cam_tilt(input_dir.x, input_dir.y, delta, myStrikes.value)
-	phone_sway(delta)
-
+	#TODO CLEANUP, all hardcoded lerps, impossible to implement states for events
+	phone_n_cam_tilt(movement.x, movement.y, delta, myStrikes.value) #handles phone rotation
+	phone_sway(delta) #rotations based on camera input
+	phone_bobbing(velocity.length(),delta, myStrikes.value) # handles phone position
+	
 	head_bobbing(velocity.length(),delta)
-	phone_bobbing(velocity.length(),delta, myStrikes.value)
+	
 	
 func update_camera(event):
-	CAMERA_CONTROLLER.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
-	if isDriving():
-		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,CAR_CAM_TILT_LOWER_LIMIT,CAR_CAM_TILT_UPPER_LIMIT)
-		self_total_rot -= rad_to_deg(event.relative.x * MOUSE_SENSITIVITY)
-		self_total_rot = clamp(self_total_rot, -80, 80) 
-		#self.rotation.y = VEHICLE.rotation.y + deg_to_rad(self_total_rot)
-	elif !isDriving():
-		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,-1.25,0.55)
-		self.rotate_y(-event.relative.x * MOUSE_SENSITIVITY) 
-	mouse_input = event.relative
+	if !_camera_lock:
+		CAMERA_CONTROLLER.rotation.x -= event.relative.y * MOUSE_SENSITIVITY
+		if isDriving():
+			CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,CAR_CAM_TILT_LOWER_LIMIT,CAR_CAM_TILT_UPPER_LIMIT)
+			self_total_rot -= rad_to_deg(event.relative.x * MOUSE_SENSITIVITY)
+			self_total_rot = clamp(self_total_rot, -80, 80)
+		elif !isDriving():
+			CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,-1.25,0.55)
+			self.rotate_y(-event.relative.x * MOUSE_SENSITIVITY) 
+		mouse_input = event.relative
 
 func update_camera_controller(right_stick_parameter): 
 	#duplicate function of update_camera(event) but uses right_stick input from a controller
-	right_stick_input = right_stick_parameter
-	CAMERA_CONTROLLER.rotation.x += right_stick_input.y * CONTROLLER_SENSITIVITY
-	if isDriving():
-		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,CAR_CAM_TILT_LOWER_LIMIT,CAR_CAM_TILT_UPPER_LIMIT)
-		self_total_rot -= rad_to_deg(right_stick_input.x * CONTROLLER_SENSITIVITY)
-		self_total_rot = clamp(self_total_rot, -80, 80) 
-		#self.rotation.y = VEHICLE.rotation.y + deg_to_rad(-self_total_rot)
-	elif !isDriving():
-		CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,-1.25,1.5)
-		self.rotate_y(-right_stick_input.x * CONTROLLER_SENSITIVITY) 
+	if !_camera_lock:
+		right_stick_input = right_stick_parameter
+		CAMERA_CONTROLLER.rotation.x += right_stick_input.y * CONTROLLER_SENSITIVITY
+		if isDriving():
+			CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,CAR_CAM_TILT_LOWER_LIMIT,CAR_CAM_TILT_UPPER_LIMIT)
+			self_total_rot -= rad_to_deg(right_stick_input.x * CONTROLLER_SENSITIVITY)
+			self_total_rot = clamp(self_total_rot, -80, 80) 
+			#self.rotation.y = VEHICLE.rotation.y + deg_to_rad(-self_total_rot)
+		elif !isDriving():
+			CAMERA_CONTROLLER.rotation.x = clamp(CAMERA_CONTROLLER.rotation.x,-1.25,1.5)
+			self.rotate_y(-right_stick_input.x * CONTROLLER_SENSITIVITY) 
 	
 func phone_n_cam_tilt(input_x, input_y, delta, strikes):
 	if PHONE:
 		if phonePosToggle == false: #if phone is not up close, add FarPosAnchor z rotation for flavor
-			PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75 + PHONE.PHONE_FAR_ANCHOR.rotation.z, 10 * delta)
+			PHONE.rotation.z = lerp(PHONE.rotation.z, PHONE.PHONE_FAR_ANCHOR.rotation.z, 0.1)
 		else:
-			if _is_sprinting == true:
-				PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 1.55, 10 * delta)
-			elif _is_sprinting == false:
-				PHONE.rotation.z = lerp(PHONE.rotation.z, -input_x * tilt_amount * 0.75, 10 * delta)
-		PHONE.rotation.x = lerp(PHONE.rotation.x, input_y * tilt_amount * 0.75, 7 * delta)
-	if CAMERA_CONTROLLER:#this CAN be nauseating, conmsider removing altogether but its nice immersion flavor
-		if _is_crouching == true:
-			CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.15, 3 * delta)
-		elif _is_crouching == false:
-			if _is_sprinting == true:
-				CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.35, 3 * delta)
-			elif _is_sprinting == false:
-				CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.05, 3 * delta)
+			PHONE.rotation.z = lerp(PHONE.rotation.z, PHONE.PHONE_CLOSE_ANCHOR.rotation.z, 0.1)
+			#if _is_sprinting == true:
+			#	PHONE.rotation.z = lerp(PHONE.rotation.z, -input_y * tilt_amount * 1.55, 10 * delta)
+			#elif _is_sprinting == false:
+			#	PHONE.rotation.z = lerp(PHONE.rotation.z, -input_y * tilt_amount * 0.75, 10 * delta)
+	#	PHONE.rotation.x = lerp(PHONE.rotation.x, input_y * tilt_amount * 0.75, 7 * delta)
+	#if CAMERA_CONTROLLER:#this CAN be nauseating, conmsider removing altogether but its nice immersion flavor
+		#if _is_crouching == true:
+		#	CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.15, 3 * delta)
+		#elif _is_crouching == false:
+		#	if _is_sprinting == true:
+			#	CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.35, 3 * delta)
+		#	elif _is_sprinting == false:
+			#	CAMERA_CONTROLLER.rotation.z = lerp(CAMERA_CONTROLLER.rotation.z, -input_x * tilt_amount * 0.05, 3 * delta)
 		
 func phone_sway(delta):
 	var sprint_mult 
@@ -355,7 +365,7 @@ func phone_bobbing(vel : float, delta, strikes):
 		bob_am_base = bob_amount 
 		bob_fq_base = bob_freq 
 		if vel > 0 and is_on_floor():#jiggle phone on movement
-			if isDriving() == false:#only when walking
+			if !isDriving():#only when walking
 				if _is_sprinting == true:#add bobbing if sprinting
 					bob_am_base += 0.005
 					bob_fq_base += 0.005
@@ -396,36 +406,47 @@ func head_bobbing(vel, delta):
 		CAMERA_CONTROLLER.position.z = lerp(CAMERA_CONTROLLER.position.z, HEAD_ANCHOR.position.z + sin(Time.get_ticks_msec() * bob_fq_base * 0.2) * bob_am_base* 0.5,  2*delta)
 
 func _player_animation():
-	if (movement_vector()) and _is_crouching == false and !self.isDriving() and _is_sprinting == false:
+	#TODO move player mesh animation logic into basic movement states
+	#crouch walking, slow walk, walk, sprinting
+	if movement_vector() and !isCrouching() and !isDriving() and !isSprinting():
 		if (movement_vector().x > .65 or movement_vector().x < -.65) or (movement_vector().y > .65 or movement_vector().y < -.65):
 			if !Footstep_Audio_Player.is_playing():
 				Footstep_Audio_Player._play_footstep()
-	elif (movement_vector()) and _is_crouching == true:
-			
+	elif movement_vector() and isCrouching():
 		pass
 
-func crouch_toggle():
-	if is_on_floor() and _is_crouching == false:
-		BODY_ANIMATOR.play("crouch")
-		_speed = SPEED_CROUCH
-	elif is_on_floor() and _is_crouching == true:
-		BODY_ANIMATOR.play("stand")
-		_speed = SPEED_DEFAULT
-	_is_crouching = !_is_crouching
 
+func blink():
+	Blink.play("Fade")
+
+signal car_entered
 func playerEnterCar():
+	
 	self.set_collision_mask_value(6, false) #stop colliding with car
 	self_total_rot = 0
 	if _is_crouching == true:
 		crouch_toggle()
 		await get_tree().create_timer(1.0).timeout
+	_movement_lock = true
+	blink()
+	await get_tree().create_timer(0.5).timeout
+	car_entered.emit()
+	_movement_lock = false
 	self.rotation.y = VEHICLE.rotation.y
 	VEHICLE.setSeatStatus("TAKEN")
+	
 	player_state = PLAYER_CONSTS.PLAYER_STATE.DRIVING
 
+signal car_exited
 func playerExitCar():
 	self.set_collision_mask_value(6, true) #collide with car
+	_movement_lock = true
+	blink()
+	await get_tree().create_timer(0.5).timeout
+	_movement_lock = false 
+	car_exited.emit()
 	self_total_rot = 0
+	
 	player_state = PLAYER_CONSTS.PLAYER_STATE.WALKING
 	global_position = VEHICLE.returnExitPos()
 	CAMERA_CONTROLLER.position = Vector3.ZERO
@@ -436,7 +457,19 @@ func playerExitCar():
 
 func isDriving():
 	return true if player_state ==  PLAYER_CONSTS.PLAYER_STATE.DRIVING else false
-
+func isSprinting():
+	return true if _is_sprinting ==  true else false
+func crouch_toggle():
+	if is_on_floor() and !isCrouching():
+		BODY_ANIMATOR.play("crouch")
+		_speed = SPEED_CROUCH
+	elif is_on_floor() and isCrouching():
+		BODY_ANIMATOR.play("stand")
+		_speed = SPEED_DEFAULT
+	_is_crouching = !_is_crouching
+func isCrouching():
+	return true if _is_crouching ==  true else false
+	
 func enemy_proximity_damage(delta):
 	var damage_distance = 7.0  # Units of distance for damage to occur
 	var hurt_rate = 2.5 * delta # Damage per second, scaled by delta
@@ -493,6 +526,7 @@ func entityProxTemp():
 func controller_RS_Input():
 	return Input.get_vector("aim_left","aim_right","aim_down","aim_up")
 
+#TODO functional but should be rewritten to be easier to manipulate
 func _handle_phone_position_toggle():
 	if PHONE.isInHand():
 		phonePosToggle = not phonePosToggle

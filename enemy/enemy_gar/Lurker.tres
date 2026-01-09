@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemyBase" load_steps=2 format=3 uid="uid://ds23y56p0hdf2"]
+
+[ext_resource type="Script" uid="uid://buw5mpm20is3d" path="res://enemy/enemy_gar/enemyBase.gd" id="1_t7ukj"]
+
+[resource]
+script = ExtResource("1_t7ukj")
+CATEGORY = 5
+show_mesh = true
+mirror_visible = true
+camera_visible = true
+picture_visible = false
+metadata/_custom_type_script = "uid://buw5mpm20is3d"

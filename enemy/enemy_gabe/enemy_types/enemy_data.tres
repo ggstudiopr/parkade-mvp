@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://71eyhnkf3gi5"]
+
+[ext_resource type="Script" uid="uid://12vilyhpeeo7" path="res://enemy/enemy_gabe/enemy_types/enemy_data.gd" id="1_h7k5o"]
+
+[resource]
+script = ExtResource("1_h7k5o")
+name = "Default Enemy"
+type = 0
+hurt_rate = -1.0
+accel = 0.0
+metadata/_custom_type_script = "uid://12vilyhpeeo7"
