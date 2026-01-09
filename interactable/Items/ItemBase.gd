@@ -1,5 +1,8 @@
-class_name ItemDrop
-extends Area3D
+class_name ItemDrop #TODO: [Gabe] I really want to rename this
+extends Area3D #TODO: Explain to Gabe why this is an Area3D pls
+
+signal interacted()
+
 @export var InteractType : TYPE
 ##Specific Item for interaction
 @export var ID : Items 
@@ -7,17 +10,28 @@ extends Area3D
 #@export var count : int
 #@export var stack_limit : int
 ##Enable to make meshes visible.
+@export_group("Visiblity")
 @export var show_mesh : bool = true
-@export var show_highlight : bool = true
 #@export var mesh_scale : float = 1
 #@export var default_sphere : bool = true
+@export_subgroup("Highlight")
+@export var show_highlight : bool = true
+@export var default_color = Color(1, 1, 0, 1)
+@export var active_color = Color(1, 0, 0, 0)
+@export_subgroup("")
+@export_subgroup("Interaction")
 @export var show_interaction_prompt: bool = true
+@export var interaction_radius: float = 0.5
+@export var despawnOnInteract : bool = true #logic only present for Objects rn
+@export_group("")
+
 @export var obtainable : bool = true
 #@export var data : Resource
 @export var randomizeLocation : bool = false #create children nodes to look at and randomly choose to take coordinates
-@export var despawnOnInteract : bool = true #logic only present for Objects rn
 @export var animationPlayer : AnimationPlayer
 
+#TODO: All of these should be converted to Resources and ripped out of here
+@export var data : ItemRes
 const CATEGORY : Dictionary[int, String] = { # to get string > item.CATEGORY[item.InteractType]
 	0 : "",
 	TYPE.MEMORY : "Memory",
@@ -97,16 +111,12 @@ func _ready():
 	if show_highlight:
 		highlight_mesh.hide()
 
-	
-@export var interaction_radius: float = 0.5
 func setup_interaction_area():
 	var sphere_shape = SphereShape3D.new()
 	sphere_shape.radius = interaction_radius/2 
 	collision_shape.shape = sphere_shape
 	self.collision_layer = 2
 	
-var default_color = Color(1, 1, 0, 1)
-var active_color = Color(1, 0, 0, 0)
 func highlight():
 	if show_highlight:
 		highlight_mesh.show()
@@ -119,3 +129,7 @@ func randomLocation():
 	var myNewLocation = get_children().filter(func(c): return c.is_in_group("RandomLocation")).pick_random()
 	self.global_position =  myNewLocation.global_position
 	
+func interact(player):
+	emit_signal("interacted",player)
+	data.interact()
+	pass #Let child decided what to do
