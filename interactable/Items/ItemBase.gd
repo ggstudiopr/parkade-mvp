@@ -30,8 +30,9 @@ signal interacted()
 @export var randomizeLocation : bool = false #create children nodes to look at and randomly choose to take coordinates
 @export var animationPlayer : AnimationPlayer
 
-#TODO: All of these should be converted to Resources and ripped out of here
+
 @export var data : ItemRes
+#TODO: All of these should be converted to ItemRes and ripped out of here
 const CATEGORY : Dictionary[int, String] = { # to get string > item.CATEGORY[item.InteractType]
 	0 : "",
 	TYPE.MEMORY : "Memory",
@@ -95,6 +96,9 @@ enum Items{
 var collision_shape: CollisionShape3D
 @onready var base_mesh := $BaseMesh
 @onready var highlight_mesh := $HighlightMesh
+
+func _init() -> void:
+	pass
 
 func _ready():
 	if not ItemDrop:

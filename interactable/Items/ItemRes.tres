@@ -1,3 +1,8 @@
-[gd_resource type="Resource" format=3 uid="uid://ct84mdf1mo0pj"]
+[gd_resource type="Resource" script_class="ItemRes" load_steps=2 format=3 uid="uid://ct84mdf1mo0pj"]
+
+[ext_resource type="Script" uid="uid://lad12c5wu3ok" path="res://interactable/Items/ItemRes.gd" id="1_1n7jq"]
 
 [resource]
+script = ExtResource("1_1n7jq")
+type = 1
+items = 1
