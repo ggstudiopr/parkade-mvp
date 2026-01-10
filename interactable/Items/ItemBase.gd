@@ -1,5 +1,5 @@
-class_name ItemDrop #TODO: [Gabe] I really want to rename this
-extends Area3D #TODO: Explain to Gabe why this is an Area3D pls
+class_name ItemDrop #TODO: [Gabe] I really want to rename this [GR] Go ahead
+extends Area3D #TODO: Explain to Gabe why this is an Area3D pls [GR] Could be reparented to Collision Shap
 
 signal interacted()
 
@@ -32,7 +32,7 @@ signal interacted()
 
 
 @export var data : ItemRes
-#TODO: All of these should be converted to ItemRes and ripped out of here
+#TODO: All of these should be converted to ItemRes and ripped out of here [GR] Will do with you present
 const CATEGORY : Dictionary[int, String] = { # to get string > item.CATEGORY[item.InteractType]
 	0 : "",
 	TYPE.MEMORY : "Memory",
@@ -92,6 +92,8 @@ enum Items{
 	RemoteButton,
 	KeypadButton,
 }
+
+
 
 var collision_shape: CollisionShape3D
 @onready var base_mesh := $BaseMesh

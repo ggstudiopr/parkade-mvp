@@ -1,4 +1,5 @@
 extends RayCast3D
+class_name InteractRaycast
 @onready var camera = $"../.."
 @onready var raycast = $"."
 @onready var PLAYER : Protagonist = $"../../.."
@@ -23,9 +24,9 @@ func currentInteract():
 
 func _physics_process(delta):
 	raycast.global_position = camera.global_position
-	if self.is_colliding():
+	if self.is_colliding(): 
 		onCollide(self.get_collider())
-	else:
+	else: #TODO [GR] Rewrite this to simply unhighlight when looking at new collider
 		if lastCollider and lastCollider.show_highlight and latestCollider:
 			lastCollider.unlight()
 			latestCollider = false
@@ -77,6 +78,28 @@ func onCollide(collider):
 	if collider.show_highlight:
 		collider.highlight()
 	
+'''
+TODO [GR] Change InteractNode to:
+	
+@export InteractID : InteractNode.InteractionTypes
+@export EventID : EVENT_MANAGER.Events
+#@export MethodID : FUNCTIONS.METHODS
+@export Obtainable : bool = false
+signal Event
+signal Method
+~~~~
+activate(myInteractNode)
+	if EventID:
+		Event.emit(EventID) #connect this signal to event handler,make simple car interacts emit signals to call VEHICLE.radioInteract(), refer to logic below
+	if myInteractNode.Obtainable and myInteractNode.InteractID:
+		PLAYER.INVENTORY_MENU.getItem(myInteractNode)
+		myInteractNode.process_mode = Node.PROCESS_MODE_DISABLED
+		myInteractNode.hide()
+		return
+	if  !myInteractNode.Obtainable:
+		badInput = inputError.myInteractNode.InteractID
+'''
+
 func activate(myInteractNode):
 	var _CarOn = PLAYER.VEHICLE.isOn()
 	var _playerDriving = PLAYER.isDriving()
