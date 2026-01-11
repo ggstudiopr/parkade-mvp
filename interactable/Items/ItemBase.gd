@@ -1,7 +1,7 @@
 class_name ItemDrop #TODO: [Gabe] I really want to rename this [GR] Go ahead
 extends Area3D #TODO: Explain to Gabe why this is an Area3D pls [GR] Could be reparented to Collision Shap
 
-signal interacted()
+signal interacted
 
 @export var InteractType : TYPE
 ##Specific Item for interaction
@@ -31,7 +31,7 @@ signal interacted()
 @export var animationPlayer : AnimationPlayer
 
 
-@export var data : ItemRes
+#@export var data : ItemRes
 #TODO: All of these should be converted to ItemRes and ripped out of here [GR] Will do with you present
 const CATEGORY : Dictionary[int, String] = { # to get string > item.CATEGORY[item.InteractType]
 	0 : "",
@@ -93,8 +93,6 @@ enum Items{
 	KeypadButton,
 }
 
-
-
 var collision_shape: CollisionShape3D
 @onready var base_mesh := $BaseMesh
 @onready var highlight_mesh := $HighlightMesh
@@ -135,7 +133,7 @@ func randomLocation():
 	var myNewLocation = get_children().filter(func(c): return c.is_in_group("RandomLocation")).pick_random()
 	self.global_position =  myNewLocation.global_position
 	
-func interact(player):
-	emit_signal("interacted",player)
-	data.interact()
+func interact():
+	interacted.emit()
+	#data.interact()
 	pass #Let child decided what to do

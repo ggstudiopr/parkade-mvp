@@ -1,5 +1,5 @@
 extends Resource
-class_name ItemRes
+#class_name ItemRes
 
 var category
 var text : String

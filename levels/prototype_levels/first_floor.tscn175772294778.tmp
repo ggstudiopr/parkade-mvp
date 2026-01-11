@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://c1occyrl1ub5j" path="res://levels/prototype_levels/firstfloor areatrial.gd" id="9_a64jb"]
 [ext_resource type="PackedScene" uid="uid://b22axq6wumtjv" path="res://csg_map_blocks/lights/fluo_light_bar.tscn" id="10_33y2j"]
 [ext_resource type="Script" uid="uid://b3847ss7drxqr" path="res://events/event_manager.gd" id="11_48tto"]
-[ext_resource type="Script" uid="uid://bfi2ucmi3i3tx" path="res://events/landmark_event.gd" id="13_wgw5r"]
+[ext_resource type="Script" uid="uid://cdcxf274pvtql" path="res://events/event.gd" id="12_wgw5r"]
 [ext_resource type="Script" uid="uid://bm82iuswuo78r" path="res://events/collectable_event.gd" id="14_vvk4n"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_a64jb"]
@@ -328,18 +328,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.78584, 4.43437, -26.9839)
 
 [node name="EventManager" type="Node" parent="." node_paths=PackedStringArray("events")]
 script = ExtResource("11_48tto")
-events = [NodePath("OpenGate")]
+events = [NodePath("GateCheckpoint"), NodePath("OpenGate")]
 metadata/_custom_type_script = "uid://b3847ss7drxqr"
+
+[node name="GateCheckpoint" type="Node" parent="EventManager"]
+script = ExtResource("12_wgw5r")
+metadata/_custom_type_script = "uid://cdcxf274pvtql"
 
 [node name="OpenGate" type="Node" parent="EventManager" node_paths=PackedStringArray("collectables", "interactables")]
 script = ExtResource("14_vvk4n")
-collectables = [NodePath("../../NavigationRegion3D/Floor/Item")]
+collectables = {
+NodePath("../../NavigationRegion3D/Floor/Item"): false
+}
 interactables = [null]
 metadata/_custom_type_script = "uid://bm82iuswuo78r"
-
-[node name="LandmarkEvent" type="Node" parent="EventManager" node_paths=PackedStringArray("animation_player")]
-script = ExtResource("13_wgw5r")
-animation_player = NodePath("../../Area3D/AnimationPlayer")
-metadata/_custom_type_script = "uid://bfi2ucmi3i3tx"
 
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
