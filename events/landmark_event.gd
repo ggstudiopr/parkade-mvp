@@ -1,7 +1,14 @@
 extends Event
 class_name LandmarkEvent
 
-@export var landmarks : Array[Area3D]
+@export var landmarks : Dictionary[Area3D, Animation]
 @export var animation_player : AnimationPlayer
 
-#When landmarks are reached, play animation with the same name
+func _ready():
+	for landmark in landmarks:
+		landmark.body_entered.connect(_on_landmark_entered.bind(landmark))
+		
+func _on_landmark_entered(body: Node3D, landmark:Area3D):
+	if body is Protagonist:
+		if landmark in landmarks:
+			animation_player.play(landmarks[landmark].resource_name)

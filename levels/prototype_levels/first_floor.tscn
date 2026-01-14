@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cr2h8nfa22yn0"]
+[gd_scene load_steps=31 format=3 uid="uid://cr2h8nfa22yn0"]
 
 [ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="1_svkv0"]
 [ext_resource type="Texture2D" uid="uid://b1fw5rjq7hk4j" path="res://textures/red/texture_09.png" id="2_6nvsp"]
@@ -10,7 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://de1tftivlbm2u" path="res://textures/purple/texture_12.png" id="6_a64jb"]
 [ext_resource type="Script" uid="uid://c1occyrl1ub5j" path="res://levels/prototype_levels/firstfloor areatrial.gd" id="9_a64jb"]
 [ext_resource type="PackedScene" uid="uid://b22axq6wumtjv" path="res://csg_map_blocks/lights/fluo_light_bar.tscn" id="10_33y2j"]
+[ext_resource type="Animation" uid="uid://cni5eea3aaag" path="res://Animations/state1.res" id="10_jwmh8"]
+[ext_resource type="Animation" uid="uid://c88xs54nj7431" path="res://Animations/ClosingGate.res" id="10_vvk4n"]
 [ext_resource type="Script" uid="uid://b3847ss7drxqr" path="res://events/event_manager.gd" id="11_48tto"]
+[ext_resource type="Animation" uid="uid://bn4ium06k82sa" path="res://Animations/state2.res" id="11_80j4d"]
 [ext_resource type="Script" uid="uid://bfi2ucmi3i3tx" path="res://events/landmark_event.gd" id="13_wgw5r"]
 [ext_resource type="Script" uid="uid://bm82iuswuo78r" path="res://events/collectable_event.gd" id="14_vvk4n"]
 
@@ -51,6 +54,7 @@ data = PackedVector3Array(-0.5, -1.2, 0.9, -0.5, -1.2, -0.9, -0.5, 1.2, -0.9, 0.
 size = Vector3(5.6, 6.5, 15.4)
 
 [sub_resource type="Animation" id="Animation_48tto"]
+resource_name = "RESET"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -101,77 +105,19 @@ tracks/3/keys = {
 "values": [Vector3(19.7878, 0.897163, -22.6169)]
 }
 
-[sub_resource type="Animation" id="Animation_4rgcm"]
-resource_name = "state1"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../NavigationRegion3D/Floor/gate:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-8.28914, 5.48245, -39.2744), Vector3(-8.28914, 0.720766, -39.2744)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../NavigationRegion3D/Floor/door:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 2.06825, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:process_mode")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [0, 4]
-}
-
-[sub_resource type="Animation" id="Animation_wgw5r"]
-resource_name = "state2"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../NavigationRegion3D/Floor/gate:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-8.28914, 0.720766, -39.2744), Vector3(-8.28914, 5.48245, -39.2744)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../NavigationRegion3D/Floor/gate2:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(19.7878, 0.897163, -22.6169), Vector3(19.7878, 5.43623, -22.6169)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vvk4n"]
 _data = {
 &"RESET": SubResource("Animation_48tto"),
-&"state1": SubResource("Animation_4rgcm"),
-&"state2": SubResource("Animation_wgw5r")
+&"state1": ExtResource("10_jwmh8"),
+&"state2": ExtResource("11_80j4d")
+}
+
+[sub_resource type="Animation" id="Animation_opr5c"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jwmh8"]
+_data = {
+&"ClosingGate": ExtResource("10_vvk4n"),
+&"OpenGate": SubResource("Animation_opr5c")
 }
 
 [node name="FirstFloor" type="Node3D"]
@@ -262,7 +208,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28119, 1.57324, -26.4996)
 InteractType = 5
 ID = 17
 obtainable = false
-animationPlayer = NodePath("../../../Area3D/AnimationPlayer")
+animationPlayer = NodePath("../../../GateClosing/AnimationPlayer")
 
 [node name="gate" type="StaticBody3D" parent="NavigationRegion3D/Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.28914, 5.48245, -39.2744)
@@ -307,20 +253,40 @@ SPEED_DEFAULT = 10.0
 [node name="Vehicle" parent="." instance=ExtResource("3_6nvsp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.0316, 1.2966, 42.7598)
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="GateClosing" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.99343, 0, -40.7205)
+collision_layer = 17
+collision_mask = 16
+monitoring = false
+monitorable = false
+script = ExtResource("9_a64jb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GateClosing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0858042, 2.75, -0.299999)
+shape = SubResource("BoxShape3D_33y2j")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GateClosing"]
+process_mode = 3
+libraries = {
+&"": SubResource("AnimationLibrary_vvk4n"),
+&"level_1": SubResource("AnimationLibrary_jwmh8")
+}
+
+[node name="GateClosing2" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.6647, 0, -40.7205)
 collision_layer = 17
 collision_mask = 16
 script = ExtResource("9_a64jb")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GateClosing2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0858042, 2.75, -0.299999)
 shape = SubResource("BoxShape3D_33y2j")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Area3D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GateClosing2"]
 process_mode = 3
 libraries = {
-&"": SubResource("AnimationLibrary_vvk4n")
+&"": SubResource("AnimationLibrary_vvk4n"),
+&"level_1": SubResource("AnimationLibrary_jwmh8")
 }
 
 [node name="Fluo_Light_Bar" parent="." instance=ExtResource("10_33y2j")]
@@ -331,15 +297,17 @@ script = ExtResource("11_48tto")
 events = [NodePath("OpenGate")]
 metadata/_custom_type_script = "uid://b3847ss7drxqr"
 
-[node name="OpenGate" type="Node" parent="EventManager" node_paths=PackedStringArray("collectables", "interactables")]
+[node name="OpenGate" type="Node" parent="EventManager" node_paths=PackedStringArray("interactables")]
 script = ExtResource("14_vvk4n")
-collectables = [NodePath("../../NavigationRegion3D/Floor/Item")]
-interactables = [null]
+interactables = [NodePath("../../NavigationRegion3D/Floor/Item")]
 metadata/_custom_type_script = "uid://bm82iuswuo78r"
 
-[node name="LandmarkEvent" type="Node" parent="EventManager" node_paths=PackedStringArray("animation_player")]
+[node name="GateClosing" type="Node" parent="EventManager" node_paths=PackedStringArray("landmarks", "animation_player")]
 script = ExtResource("13_wgw5r")
-animation_player = NodePath("../../Area3D/AnimationPlayer")
+landmarks = {
+NodePath("../../GateClosing2"): ExtResource("10_jwmh8")
+}
+animation_player = NodePath("../../GateClosing/AnimationPlayer")
 metadata/_custom_type_script = "uid://bfi2ucmi3i3tx"
 
-[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
+[connection signal="body_entered" from="GateClosing" to="GateClosing" method="_on_body_entered"]

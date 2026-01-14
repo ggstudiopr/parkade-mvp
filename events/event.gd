@@ -31,21 +31,25 @@ enum EVENT_STATE {
 @export var interactables : Array[ItemDrop]
 
 func _ready():
-	for interact in interactables:
-		interact.interacted.connect(_on_interact)
-	pass
+	for interactable in interactables:
+		interactable.interacted.connect(_on_interact.bind(interactable))
+	run_event()
 
-func end_event(status : bool):
-	if status == true:
-		event_fulfilled.emit()
-	else:
-		event_failed.emit()
+func end_event(status : EVENT_STATE):
+	match status: 
+		EVENT_STATE.FULFILLED:
+			current_state = status
+			event_fulfilled.emit()
+		EVENT_STATE.FAILED:
+			current_state = EVENT_STATE.FAILED
+			event_failed.emit()
+
+func pause_event():
+	current_state = EVENT_STATE.PAUSED
 
 func run_event():
+	current_state = EVENT_STATE.RUNNING
 	event_started.emit()
-	pass
 	
 func _on_interact(interactable: ItemDrop):
-	var player
-	var event
 	interactable.interact()

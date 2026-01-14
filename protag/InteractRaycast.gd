@@ -49,7 +49,7 @@ func onCollide(collider):
 				label.text = "Car must be PARKED"
 	else:
 		if collider.show_interaction_prompt:
-			if collider is ItemDrop:
+			if collider is ItemDrop: #TODO: [Gabe] This is temp because what I need it to do goes against the current structure, rip
 				collider.interact()
 			if (collider.InteractType == ItemDrop.TYPE.CAR_INTERACT):
 				label.show()

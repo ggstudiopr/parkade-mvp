@@ -4,7 +4,7 @@ var jugs_collected = [false,false,false]
 
 func _process(delta: float) -> void:
 	if not jugs_collected.has(false):
-		end_event(true)
+		end_event(EVENT_STATE.FULFILLED)
 
 #func _on_interact(interactable: Interactable):
 #	match interactable.data['value']:
