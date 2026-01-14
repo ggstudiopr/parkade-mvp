@@ -16,3 +16,6 @@ func _on_interact(collectable:ItemDrop):
 		pass
 	else:
 		end_event(EVENT_STATE.FULFILLED)
+
+func pause_event():
+	pass

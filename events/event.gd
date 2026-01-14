@@ -9,6 +9,7 @@ class_name Event
 signal event_fulfilled
 signal event_failed
 signal event_started
+signal event_paused
 
 enum EVENT_TYPE {
 	COLLECTABLE, #Physically find 1> items in the world
@@ -45,7 +46,9 @@ func end_event(status : EVENT_STATE):
 			event_failed.emit()
 
 func pause_event():
+	#TODO: Implement general pause...maybe?
 	current_state = EVENT_STATE.PAUSED
+	event_paused.emit()
 
 func run_event():
 	current_state = EVENT_STATE.RUNNING

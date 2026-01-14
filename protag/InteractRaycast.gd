@@ -50,7 +50,7 @@ func onCollide(collider):
 	else:
 		if collider.show_interaction_prompt:
 			if collider is ItemDrop: #TODO: [Gabe] This is temp because what I need it to do goes against the current structure, rip
-				collider.interact()
+				collider.interact() #Just looking at something interacts with it, which is the desired effect
 			if (collider.InteractType == ItemDrop.TYPE.CAR_INTERACT):
 				label.show()
 				label.text = "Press "+currentInteract()+" to " + str(collider.TEXT[collider.ID])

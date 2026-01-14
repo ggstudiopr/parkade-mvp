@@ -12,3 +12,12 @@ func _on_landmark_entered(body: Node3D, landmark:Area3D):
 	if body is Protagonist:
 		if landmark in landmarks:
 			animation_player.play(landmarks[landmark].resource_name)
+			end_event(EVENT_STATE.FULFILLED)
+
+func pause_event():
+	for landmark in landmarks:
+		landmark.monitoring = false
+
+func unpause_event():
+	for landmark in landmarks:
+		landmark.monitoring = true	

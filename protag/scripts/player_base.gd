@@ -150,7 +150,7 @@ func _physics_process(delta: float) -> void:
 			#phone_is_looking_at.visible = false
 
 
-	
+#[Gabe] Implementing the state machine pattern here would probably get rid of a lot of clunk that will come up
 func _input(event):
 	if event.is_action_pressed("pause") and !PAUSE_MENU.input_locked():
 		PAUSE_MENU.pause()

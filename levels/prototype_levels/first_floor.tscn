@@ -294,7 +294,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.78584, 4.43437, -26.9839)
 
 [node name="EventManager" type="Node" parent="." node_paths=PackedStringArray("events")]
 script = ExtResource("11_48tto")
-events = [NodePath("OpenGate")]
+events = [NodePath("OpenGate"), NodePath("GateClosing")]
 metadata/_custom_type_script = "uid://b3847ss7drxqr"
 
 [node name="OpenGate" type="Node" parent="EventManager" node_paths=PackedStringArray("interactables")]
