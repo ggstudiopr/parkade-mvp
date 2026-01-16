@@ -1,16 +1,15 @@
 extends CharacterBody3D
 class_name Enemy
 
-#TODO: Add animations based on state
 #TODO: Should be used later on, either state machine or behaviour tree implementation
 #@export var behaviour = null
-
-@export var data : EnemyData
 
 enum ENEMY_STATE {
 	SEARCHING,
 	WAITING,
 }
+
+@export var data : EnemyData
 
 var text_mesh_instance : MeshInstance3D
 var enemy_mesh_instance : MeshInstance3D
@@ -21,8 +20,12 @@ var enemy_mesh_instance : MeshInstance3D
 
 @export var current_state : ENEMY_STATE = ENEMY_STATE.WAITING 
 
+@export_subgroup("Navigation")
 @onready var navigation_agent : NavigationAgent3D = $NavigationAgent3D
 var target : Node3D
+@export_subgroup("")
+
+@onready var animation_player := $AnimationPlayer
 
 func _ready() -> void:
 	#Debug, remove/hide in actual game
@@ -30,13 +33,13 @@ func _ready() -> void:
 	var text_mesh := TextMesh.new()
 	text_mesh.text = data.name
 	text_mesh_instance.mesh = text_mesh
+	animation_player.add_animation_library(data.animation_library.resource_name,data.animation_library)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if target and target.has_method("hurt"):
-
 		target.hurt(hurt_rate)
-		
+	
 func _physics_process(delta: float) -> void:
 	match current_state:
 		ENEMY_STATE.SEARCHING:
@@ -60,6 +63,7 @@ func _physics_process(delta: float) -> void:
 
 func change_state(new_state: ENEMY_STATE):
 	current_state = new_state
+	animation_player.play(current_state)
 
 #func on_body_entered(body: Node3D):
 	#if body.is_in_group("player"):

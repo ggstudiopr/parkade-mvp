@@ -20,4 +20,4 @@ func pause_event():
 
 func unpause_event():
 	for landmark in landmarks:
-		landmark.monitoring = true	
+		landmark.monitoring = true

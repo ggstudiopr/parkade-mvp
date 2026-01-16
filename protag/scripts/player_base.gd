@@ -7,6 +7,12 @@ class_name Protagonist
 @onready var VEHICLE := $"../Vehicle"
 @onready var ENEMY_MANAGER := $"../EnemyManager"
 
+enum PLAYER_STATE {
+	DRIVING,
+	WALKING,
+	PAUSED
+}
+
 signal killed
 signal LowHealth
 @onready var myHealth := $Stats/HealthBar

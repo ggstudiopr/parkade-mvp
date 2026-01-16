@@ -23,6 +23,10 @@ func _process(delta):
 	if fulfilled_events + failed_events == events.size():
 		all_events_finished.emit()
 
+func pause_events():
+	for event in events:
+		event.pause_event()
+
 func _on_event_started():
 	events_running += 1
 	

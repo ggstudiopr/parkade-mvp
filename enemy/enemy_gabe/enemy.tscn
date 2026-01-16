@@ -43,5 +43,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.14932, 0)
 layers = 513
 mesh = SubResource("TextMesh_fcani")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
 [connection signal="body_entered" from="HurtArea" to="." method="_on_interactable_area_body_entered"]
 [connection signal="body_exited" from="HurtArea" to="." method="_on_interactable_area_body_exited"]
