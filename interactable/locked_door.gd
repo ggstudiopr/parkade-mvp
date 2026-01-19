@@ -6,5 +6,5 @@ func unlock():
 	locked = false
 
 func doThing(node): #do nothing w node, only there to support DoThing logic across Objects
-	if $Item.ID == ItemDrop.Items.RemoteButton:
+	if $Item.ID == Interactable.IDs.RemoteButton:
 		unlock()

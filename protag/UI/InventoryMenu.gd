@@ -3,7 +3,7 @@ extends Control
 var inputlockout : bool = false
 var inventoryActive : bool = false
 @onready var myItemList := $Panel/ItemList
-var myItems : Array[ItemDrop] 
+var myItems : Array[Interactable] 
 
 var default_color = Color(1, 1, 0, 1)
 var active_color = Color(1, 0, 0, 0)

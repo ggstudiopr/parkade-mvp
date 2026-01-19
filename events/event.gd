@@ -29,7 +29,7 @@ enum EVENT_STATE {
 
 #Things you need to interact with the event.
 #They'll be fulfilled/spawned based on the int number. Same int numbers means spawning at the same time
-@export var interactables : Array[ItemDrop]
+@export var interactables : Array[Interactable]
 
 func _ready():
 	for interactable in interactables:
@@ -54,5 +54,6 @@ func run_event():
 	current_state = EVENT_STATE.RUNNING
 	event_started.emit()
 	
-func _on_interact(interactable: ItemDrop):
-	interactable.interact()
+func _on_interact(interactable: Interactable):
+	#interactable.interact() #[GR] recursive call?
+	pass

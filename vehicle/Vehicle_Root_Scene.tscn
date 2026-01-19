@@ -13,7 +13,7 @@
 [ext_resource type="Script" uid="uid://cpsflumb6m35a" path="res://vehicle/scripts/MirrorReflectionRear.gd" id="5_lm5gg"]
 [ext_resource type="Script" uid="uid://c7jlcfuxcwwnt" path="res://vehicle/scripts/HornAudio.gd" id="5_qtwpx"]
 [ext_resource type="Script" uid="uid://cu50voscq5c26" path="res://vehicle/scripts/BrakeLights.gd" id="8_iwtnb"]
-[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://interactable/Items/ItemDrop.tscn" id="8_oysj2"]
+[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://interactable/Items/Interactable.tscn" id="8_oysj2"]
 [ext_resource type="ArrayMesh" uid="uid://cod7ik8uvbmo1" path="res://vehicle/CarObj.obj" id="17_oysj2"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_vheon"]
@@ -172,11 +172,9 @@ transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.772581, 1.93214, -2.
 
 [node name="Item" parent="Interactables/InnerDoorHandle" instance=ExtResource("8_oysj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1236, -2.70428, 4.59198)
-InteractType = 6
+InteractType = 5
 ID = 11
 interaction_radius = 0.4
-despawnOnInteract = false
-obtainable = false
 
 [node name="OuterDoorHandle" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.969602, 1.93214, -1.70422)
@@ -186,11 +184,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05638, -5.97712, 4.61828)
 
 [node name="Item" parent="Interactables/OuterDoorHandle" instance=ExtResource("8_oysj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.04555, -2.57091, 4.45221)
-InteractType = 6
+InteractType = 5
 ID = 10
 interaction_radius = 0.4
-despawnOnInteract = false
-obtainable = false
 
 [node name="Radio" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.17454, 1.23165, -1.83505)
@@ -203,21 +199,18 @@ region_rect = Rect2(65, 240, 400, 250)
 
 [node name="Item" parent="Interactables/Radio" instance=ExtResource("8_oysj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.737598, -0.124634, 4.23399)
-InteractType = 6
+InteractType = 5
 ID = 12
 interaction_radius = 0.4
-despawnOnInteract = false
-obtainable = false
 
 [node name="Ignition" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.0440701, 1.10661, -1.62086)
 
 [node name="Item" parent="Interactables/Ignition" instance=ExtResource("8_oysj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.717979, -0.261034, 3.24907)
-InteractType = 6
+InteractType = 5
 ID = 13
 interaction_radius = 0.4
-obtainable = false
 
 [node name="AutoGearShiftToggle" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.332857, 0.931112, -0.797634)
@@ -228,22 +221,21 @@ mesh = SubResource("TextMesh_5gjb7")
 surface_material_override/0 = SubResource("StandardMaterial3D_7o0w8")
 
 [node name="Item" parent="Interactables/AutoGearShiftToggle" instance=ExtResource("8_oysj2")]
-InteractType = 6
+InteractType = 5
 ID = 15
 interaction_radius = 0.4
-obtainable = false
 
 [node name="AutoGearShiftPark" type="Node3D" parent="Interactables"]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.0485373, 0.951479, -1.97508)
 
 [node name="Item" parent="Interactables/AutoGearShiftPark" instance=ExtResource("8_oysj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.954223, -0.169366, 4.59198)
-InteractType = 6
+InteractType = 5
 ID = 14
-show_mesh = false
 interaction_radius = 0.4
-despawnOnInteract = false
-obtainable = false
+
+[node name="BaseMesh" parent="Interactables/AutoGearShiftPark/Item" index="1"]
+visible = false
 
 [node name="HighlightMesh" parent="Interactables/AutoGearShiftPark/Item" index="2"]
 transform = Transform3D(0.53, 0, 0, 0, 0.53, 0, 0, 0, 0.53, 0, -0.238526, 0)
@@ -254,11 +246,9 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.138041, 1.18558, -1.
 
 [node name="Item" parent="Interactables/CarHorn" instance=ExtResource("8_oysj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.927792, -0.413116, 3.83543)
-InteractType = 6
+InteractType = 5
 ID = 16
 interaction_radius = 0.4
-despawnOnInteract = false
-obtainable = false
 
 [node name="Mirrors" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.347759, 0, 0.502833)

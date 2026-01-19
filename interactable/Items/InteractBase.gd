@@ -1,31 +1,31 @@
-class_name ItemDrop #TODO: [Gabe] I really want to rename this [GR] Go ahead
+class_name Interactable #TODO: [Gabe] I really want to rename this [GR] Go ahead
 extends Area3D #TODO: Explain to Gabe why this is an Area3D pls [GR] Could be reparented to Collision Shap
 
 signal interacted
+signal observed
 
 @export var InteractType : TYPE
 ##Specific Item for interaction
-@export var ID : Items 
-#@export var stackable : bool
-#@export var count : int
-#@export var stack_limit : int
+@export var ID : IDs 
+
 ##Enable to make meshes visible.
 @export_group("Visiblity")
-@export var show_mesh : bool = true
-#@export var mesh_scale : float = 1
-#@export var default_sphere : bool = true
+#@export var show_mesh : bool = true #[GR] this is literally pointless, depricate
+
 @export_subgroup("Highlight")
 @export var show_highlight : bool = true
-@export var default_color = Color(1, 1, 0, 1)
-@export var active_color = Color(1, 0, 0, 0)
+#@export var default_color = Color(1, 1, 0, 1)
+#@export var active_color = Color(1, 0, 0, 0)
 @export_subgroup("")
 @export_subgroup("Interaction")
 @export var show_interaction_prompt: bool = true
 @export var interaction_radius: float = 0.5
-@export var despawnOnInteract : bool = true #logic only present for Objects rn
+
+#@export var despawnOnInteract : bool = true #logic only present for Objects rn
+##[GR] unless we wanted reusable buttons, pointless bool
 @export_group("")
 
-@export var obtainable : bool = true
+#@export var obtainable : bool = true #[GR] Pointless if an interact is type Item, deprecated
 #@export var data : Resource
 @export var randomizeLocation : bool = false #create children nodes to look at and randomly choose to take coordinates
 @export var animationPlayer : AnimationPlayer
@@ -37,41 +37,40 @@ const CATEGORY : Dictionary[int, String] = { # to get string > item.CATEGORY[ite
 	0 : "",
 	TYPE.MEMORY : "Memory",
 	TYPE.CAR_TREE : "Car Tree",
-	TYPE.KEY : "Key",
+	TYPE.ITEM : "Item",
 	TYPE.TOOL : "Tool",
-	TYPE.OBJECT : "Object",
-	TYPE.CAR_INTERACT : "Car Interactable",
+	TYPE.BUTTON : "Button",
+	#TYPE.CAR_INTERACT : "Car Interactable",
 	TYPE.LOCK : "Lock"
 }
 const TEXT : Dictionary[int, String] = { # to get string > item.TEXT[item.ID]
 	0 : "",
-	Items.Key_1A : "Entrance Key", #Key
-	Items.Key_1B : "Gate Key", #key
-	Items.Alt_Light : "Pocket Lantern", #Tool
-	Items.Memory_1 : "Worn Keychain", #Memory
-	Items.CarTree_1 : "Pine Scented Car Freshener", #Car_Tree
-	Items.HandleOuter : "Enter Car", #Car
-	Items.HandleInner : "Exit Car", #Car
-	Items.Horn : "Car Horn", #Car
-	Items.Power : "Toggle Engine", #Car
-	Items.AutoPark : "Park Car", #Car
-	Items.AutoToggle : "Drive/Reverse Toggle", #Car
-	Items.Radio : "Toggle Radio", #Car
-	Items.RemoteButton : "press button", #Object 
-	Items.KeypadButton : ""
+	IDs.Key_1A : "Entrance Key", #Key
+	IDs.Key_1B : "Gate Key", #key
+	IDs.Alt_Light : "Pocket Lantern", #Tool
+	IDs.Memory_1 : "Worn Keychain", #Memory
+	IDs.CarTree_1 : "Pine Scented Car Freshener", #Car_Tree
+	IDs.HandleOuter : "Enter Car", #Car
+	IDs.HandleInner : "Exit Car", #Car
+	IDs.Horn : "Car Horn", #Car
+	IDs.Power : "Toggle Engine", #Car
+	IDs.AutoPark : "Park Car", #Car
+	IDs.AutoToggle : "Drive/Reverse Toggle", #Car
+	IDs.Radio : "Toggle Radio", #Car
+	IDs.RemoteButton : "press button", #Object 
+	IDs.KeypadButton : ""
 }
 enum TYPE{
 	NULL,
-	KEY,
+	ITEM,
 	MEMORY,
 	CAR_TREE,
 	TOOL,
-	OBJECT,
-	CAR_INTERACT,
+	BUTTON,
 	LOCK
 }
 
-enum Items{
+enum IDs{
 	Null,
 	Key_1A, #Entrance Key Test
 	Key_1B,
@@ -101,17 +100,19 @@ func _init() -> void:
 	pass
 
 func _ready():
-	if not ItemDrop:
+	if not Interactable:
 		return
 	if not collision_shape:
 		collision_shape = CollisionShape3D.new()
 		self.add_child(collision_shape)
-	add_to_group("ItemInteract")
+	add_to_group("Interactable")
 	setup_interaction_area()
 	if randomizeLocation:
 		randomLocation()
-	if !show_mesh:
-		base_mesh.hide()
+	#if !show_mesh:
+		#print(self.name)
+		#print("what")
+		#base_mesh.hide()
 	if show_highlight:
 		highlight_mesh.hide()
 
@@ -135,5 +136,9 @@ func randomLocation():
 	
 func interact():
 	interacted.emit()
+	#data.interact()
+	pass #Let child decided what to do
+func is_being_observed():
+	observed.emit()
 	#data.interact()
 	pass #Let child decided what to do

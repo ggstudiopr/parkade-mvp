@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c8q88bnw4s6tv" path="res://interactable/locked_door.gd" id="1_mmo15"]
 [ext_resource type="ArrayMesh" uid="uid://bo72pwfwpl18p" path="res://AssetsTeam/fayren/pushdoor.obj" id="2_rtpcm"]
-[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://interactable/Items/ItemDrop.tscn" id="3_xonxh"]
+[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://interactable/Items/Interactable.tscn" id="3_xonxh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i7rg4"]
 size = Vector3(0.335938, 3.08984, 1.51074)

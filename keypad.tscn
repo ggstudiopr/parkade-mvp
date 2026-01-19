@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d4mof2mbyweaa"]
 
 [ext_resource type="Script" uid="uid://brvwm4jb5s24e" path="res://keypad.gd" id="1_4swqm"]
-[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://interactable/Items/ItemDrop.tscn" id="2_w41gr"]
+[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://interactable/Items/Interactable.tscn" id="2_w41gr"]
 
 [sub_resource type="TextMesh" id="TextMesh_gcv1m"]
 

@@ -81,6 +81,7 @@ mesh = SubResource("TextMesh_sdi3v")
 
 [node name="Item" parent="." instance=ExtResource("4_rk1w1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15404, -4.58885)
+visible = true
 InteractType = 1
 ID = 1
 randomizeLocation = true
@@ -95,8 +96,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35318, 0, 0)
 transform = Transform3D(-0.954157, 0, 0.299307, 0, 1, 0, -0.299307, 0, -0.954157, -1.16876, 0, -1.71528)
 
 [node name="Item" parent="Pushdoor/Pushdoor" index="2"]
-InteractType = 6
 ID = 1
+obtainable = true
 
 [node name="RemoteDoor" parent="." instance=ExtResource("6_rr2b4")]
 transform = Transform3D(0.940768, 0, 0.33905, 0, 1, 0, -0.33905, 0, 0.940768, -2.61046, 0, 3.1334)

@@ -49,75 +49,63 @@ func onCollide(collider):
 				label.text = "Car must be PARKED"
 	else:
 		if collider.show_interaction_prompt:
-			if collider is ItemDrop: #TODO: [Gabe] This is temp because what I need it to do goes against the current structure, rip
-				collider.interact() #Just looking at something interacts with it, which is the desired effect
-			if (collider.InteractType == ItemDrop.TYPE.CAR_INTERACT):
+			if collider is Interactable: #TODO: [Gabe] This is temp because what I need it to do goes against the current structure, rip
+				collider.is_being_observed() #Just looking at something interacts with it, which is the desired effect
+			
+			if (collider.InteractType == Interactable.TYPE.BUTTON):
 				label.show()
 				label.text = "Press "+currentInteract()+" to " + str(collider.TEXT[collider.ID])
-			elif (!PLAYER.isDriving() and (collider.obtainable)):
+			elif (collider.InteractType == Interactable.TYPE.ITEM):
 				#print("oops")
 				label.show()
-				label.text = "Press "+currentInteract()+" to take " + str(ItemDrop.TEXT[lastCollider.ID])
-			
-			elif (collider.InteractType == ItemDrop.TYPE.LOCK):
+				label.text = "Press "+currentInteract()+" to take " + str(Interactable.TEXT[lastCollider.ID])
+			elif (collider.InteractType == Interactable.TYPE.LOCK):
 				var myItems = PLAYER.INVENTORY_MENU.getMyItems()
 				if !myItems:
 					label.show()
-					label.text = "Need to find " + str(ItemDrop.TEXT[lastCollider.ID])
+					label.text = "Need to find " + str(Interactable.TEXT[lastCollider.ID])
 				for item in myItems:
 					if item.ID == collider.ID:
 						label.show()
-						label.text = "Press "+currentInteract()+" to use " + str(ItemDrop.TEXT[lastCollider.ID])
+						label.text = "Press "+currentInteract()+" to use " + str(Interactable.TEXT[lastCollider.ID])
+						#return
 					else:
 						label.show()
-						label.text = "Need to find " + str(ItemDrop.TEXT[lastCollider.ID])
+						label.text = "Need to find " + str(Interactable.TEXT[lastCollider.ID])
 			
-			elif (collider.InteractType == ItemDrop.TYPE.OBJECT):
-				label.show()
-				label.text = str(ItemDrop.TEXT[lastCollider.ID])
+			#elif (collider.InteractType == Interactable.TYPE.BUTTON):
+				#label.show()
+				#label.text = str(Interactable.TEXT[lastCollider.ID])
 	label.position = EntityScreenPositionSolver(collider)
 	
 	if collider.show_highlight:
 		collider.highlight()
 	
-'''
-TODO [GR] Change InteractNode to:
-	
-@export InteractID : InteractNode.InteractionTypes
-@export EventID : EVENT_MANAGER.Events
-#@export MethodID : FUNCTIONS.METHODS
-@export Obtainable : bool = false
-signal Event
-signal Method
-~~~~
-activate(myInteractNode)
-	if EventID:
-		Event.emit(EventID) #connect this signal to event handler,make simple car interacts emit signals to call VEHICLE.radioInteract(), refer to logic below
-	if myInteractNode.Obtainable and myInteractNode.InteractID:
-		PLAYER.INVENTORY_MENU.getItem(myInteractNode)
-		myInteractNode.process_mode = Node.PROCESS_MODE_DISABLED
-		myInteractNode.hide()
-		return
-	if  !myInteractNode.Obtainable:
-		badInput = inputError.myInteractNode.InteractID
-'''
 
 func activate(myInteractNode):
 	var _CarOn = PLAYER.VEHICLE.isOn()
 	var _playerDriving = PLAYER.isDriving()
 	var _CarParked = PLAYER.VEHICLE.isParked()
+	
+	#realistcally, if an item exists and is interacted with, if an animation is attached to it it should always call it
+	myInteractNode.interact()
+	if myInteractNode.animationPlayer:
+			myInteractNode.animationPlayer.play("state2") #TODO kys gabe
+	if myInteractNode.get_parent().has_method("doThing"):
+			myInteractNode.get_parent().doThing(myInteractNode)
+	
+	
+	## All Button Logic should be reworked to have its main call exported elsewhere
 	if !_playerDriving:
-		if myInteractNode.InteractType == ItemDrop.TYPE.CAR_INTERACT:
-			if myInteractNode.ID == ItemDrop.Items.HandleOuter:
-				PLAYER.playerEnterCar()
-				return
-		if myInteractNode.obtainable:
+		
+		if myInteractNode.InteractType == Interactable.TYPE.ITEM:
 			print("Taking "+ myInteractNode.CATEGORY[myInteractNode.InteractType] +" item : " + myInteractNode.TEXT[myInteractNode.ID])
 			PLAYER.INVENTORY_MENU.getItem(myInteractNode)
 			myInteractNode.process_mode = Node.PROCESS_MODE_DISABLED
 			myInteractNode.hide()
-			return
-		if myInteractNode.InteractType == ItemDrop.TYPE.LOCK:
+			#return
+			
+		if myInteractNode.InteractType == Interactable.TYPE.LOCK:
 			var myItems = PLAYER.INVENTORY_MENU.getMyItems()
 			if myItems:
 				for item in myItems:
@@ -130,36 +118,38 @@ func activate(myInteractNode):
 							print ("You can't unlock this door yet.")
 			else:
 				print ("You can't unlock this door yet, need: " + str(myInteractNode.TEXT[myInteractNode.ID]))
-		if myInteractNode.InteractType == ItemDrop.TYPE.OBJECT:		
-			if myInteractNode.animationPlayer:
-				myInteractNode.animationPlayer.play("state2") #TODO kys gabe
-			if myInteractNode.get_parent().has_method("doThing"):
-				myInteractNode.get_parent().doThing(myInteractNode)
-			if myInteractNode.despawnOnInteract:
-				myInteractNode.process_mode = Node.PROCESS_MODE_DISABLED
-				myInteractNode.hide()
+		
+		if myInteractNode.InteractType == Interactable.TYPE.BUTTON:		
+			if myInteractNode.ID == Interactable.IDs.HandleOuter:#[GR]need to move this out of here, make all car interacts independent function calls
+				PLAYER.playerEnterCar()
+				return
+			#if myInteractNode.despawnOnInteract:
+			myInteractNode.process_mode = Node.PROCESS_MODE_DISABLED
+			myInteractNode.hide()
+				
 	if _playerDriving:
-		if myInteractNode.ID == ItemDrop.Items.HandleInner:
-			PLAYER.playerExitCar()
-		if myInteractNode.ID == ItemDrop.Items.Horn:
-			PLAYER.VEHICLE.carHornPlay()
-		if myInteractNode.ID == ItemDrop.Items.Power:
-			if _CarParked:
-				PLAYER.VEHICLE.toggleEngine()
-			else:
-				badInput = inputError.carParked
-		if myInteractNode.ID == ItemDrop.Items.AutoPark:
-			if _CarOn:
-				PLAYER.VEHICLE.shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK)
-			else:
-				badInput = inputError.carOn
-		if myInteractNode.ID == ItemDrop.Items.Radio:
-			if _CarOn:
-				PLAYER.VEHICLE.radioInteract()
-			else:
-				badInput = inputError.carOn
-		if myInteractNode.ID == ItemDrop.Items.AutoToggle:
-			if _CarOn:
-				PLAYER.VEHICLE.shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.D_R_TOGGLE)
-			else:
-				badInput = inputError.carOn
+		if myInteractNode.InteractType == Interactable.TYPE.BUTTON:
+			if myInteractNode.ID == Interactable.IDs.HandleInner:
+				PLAYER.playerExitCar()
+			if myInteractNode.ID == Interactable.IDs.Horn:
+				PLAYER.VEHICLE.carHornPlay()
+			if myInteractNode.ID == Interactable.IDs.Power:
+				if _CarParked:
+					PLAYER.VEHICLE.toggleEngine()
+				else:
+					badInput = inputError.carParked
+			if myInteractNode.ID == Interactable.IDs.AutoPark:
+				if _CarOn:
+					PLAYER.VEHICLE.shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK)
+				else:
+					badInput = inputError.carOn
+			if myInteractNode.ID == Interactable.IDs.Radio:
+				if _CarOn:
+					PLAYER.VEHICLE.radioInteract()
+				else:
+					badInput = inputError.carOn
+			if myInteractNode.ID == Interactable.IDs.AutoToggle:
+				if _CarOn:
+					PLAYER.VEHICLE.shiftGears(CAR_CONSTS.CAR_TRANSMISSION_AUTO.D_R_TOGGLE)
+				else:
+					badInput = inputError.carOn

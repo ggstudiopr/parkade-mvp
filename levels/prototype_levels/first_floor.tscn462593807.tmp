@@ -203,10 +203,11 @@ size = Vector3(1.2, 2.4, 1.6)
 [node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor"]
 shape = SubResource("ConcavePolygonShape3D_a64jb")
 
-[node name="ItemButton" parent="NavigationRegion3D/Floor" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("4_qovcb")]
+[node name="Item" parent="NavigationRegion3D/Floor" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("4_qovcb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28119, 1.57324, -26.4996)
 InteractType = 5
 ID = 17
+obtainable = false
 animationPlayer = NodePath("../../../GateClosing/AnimationPlayer")
 
 [node name="gate" type="StaticBody3D" parent="NavigationRegion3D/Floor"]
@@ -298,7 +299,7 @@ metadata/_custom_type_script = "uid://b3847ss7drxqr"
 
 [node name="OpenGateButton" type="Node" parent="EventManager" node_paths=PackedStringArray("interactables")]
 script = ExtResource("14_vvk4n")
-interactables = [NodePath("../../NavigationRegion3D/Floor/ItemButton")]
+interactables = [NodePath("../../NavigationRegion3D/Floor/Item")]
 metadata/_custom_type_script = "uid://bm82iuswuo78r"
 
 [node name="CloseGateWhenApproached" type="Node" parent="EventManager" node_paths=PackedStringArray("landmarks", "animation_player")]

@@ -40,10 +40,10 @@ DisappearOnPictureTaken=""
 AMB_FLUO_LIGHT_SOUND="for light source static sounds"
 "UI Panel"=""
 Player=""
-ItemInteract=""
 RandomLocation=""
 CarInteractColliders="read name, bro"
 Car=""
+Interactable=""
 
 [input]
 
