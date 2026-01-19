@@ -123,10 +123,10 @@ func activate(myInteractNode):
 			if myInteractNode.ID == Interactable.IDs.HandleOuter:#[GR]need to move this out of here, make all car interacts independent function calls
 				PLAYER.playerEnterCar()
 				return
-			#if myInteractNode.despawnOnInteract:
-			myInteractNode.process_mode = Node.PROCESS_MODE_DISABLED
-			myInteractNode.hide()
-				
+			if !myInteractNode.ID == Interactable.IDs.KeypadButton:
+				myInteractNode.process_mode = Node.PROCESS_MODE_DISABLED
+				myInteractNode.hide()
+			
 	if _playerDriving:
 		if myInteractNode.InteractType == Interactable.TYPE.BUTTON:
 			if myInteractNode.ID == Interactable.IDs.HandleInner:

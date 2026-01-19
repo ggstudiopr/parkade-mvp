@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://0h75dvhksqhu"]
+[gd_scene load_steps=17 format=4 uid="uid://0h75dvhksqhu"]
 
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_3q8v2"]
 [ext_resource type="Script" uid="uid://cmdefqw8wrta5" path="res://AssetsTeam/fayren/gray_dev_room.gd" id="1_vipnq"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="3_bgx41"]
 [ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://interactable/Items/Interactable.tscn" id="4_rk1w1"]
 [ext_resource type="PackedScene" uid="uid://b5soknaor76y" path="res://interactable/lockedDoor.tscn" id="5_bgx41"]
-[ext_resource type="PackedScene" uid="uid://bbedgwwip5uwn" path="res://interactable/remoteDoor.tscn" id="6_rr2b4"]
 [ext_resource type="PackedScene" uid="uid://d4mof2mbyweaa" path="res://keypad.tscn" id="7_mh08m"]
 [ext_resource type="PackedScene" uid="uid://d5jn1ujaextl" path="res://enemy/enemy_gar/EnemyController.tscn" id="9_vipnq"]
 
@@ -93,13 +92,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35318, 0, 0)
 
 [node name="Pushdoor" parent="." instance=ExtResource("5_bgx41")]
 transform = Transform3D(-0.954157, 0, 0.299307, 0, 1, 0, -0.299307, 0, -0.954157, -1.16876, 0, -1.71528)
-
-[node name="Item" parent="Pushdoor/Pushdoor" index="2"]
-InteractType = 6
-ID = 1
-
-[node name="RemoteDoor" parent="." instance=ExtResource("6_rr2b4")]
-transform = Transform3D(0.940768, 0, 0.33905, 0, 1, 0, -0.33905, 0, 0.940768, -2.61046, 0, 3.1334)
+lockID = 1
 
 [node name="Keypad" parent="." instance=ExtResource("7_mh08m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.36272, 1.23866, 0)
@@ -107,4 +100,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.36272, 1.23866, 0)
 [node name="EnemyController" parent="." instance=ExtResource("9_vipnq")]
 
 [editable path="Item"]
-[editable path="Pushdoor"]

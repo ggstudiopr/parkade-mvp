@@ -44,9 +44,9 @@ _data = {
 }
 
 [node name="Pushdoor" type="Node3D"]
+script = ExtResource("1_kg8w2")
 
 [node name="Pushdoor" type="RigidBody3D" parent="."]
-script = ExtResource("1_kg8w2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pushdoor"]
 transform = Transform3D(0.7, 0, 5.21541e-09, 0, 0.7, 0, -5.21541e-09, 0, 0.7, 3.30898e-09, 1.07832, 0.444124)
@@ -57,13 +57,10 @@ transform = Transform3D(0.7, 0, 0.000513201, 0, 0.7, 0, -0.000513201, 0, 0.7, 3.
 mesh = ExtResource("1_i7rg4")
 skeleton = NodePath("../..")
 
-[node name="Item" parent="Pushdoor" instance=ExtResource("2_ihc62")]
+[node name="Item" parent="." instance=ExtResource("2_ihc62")]
 transform = Transform3D(1, 0, 7.45058e-09, 0, 1, 0, -7.45058e-09, 0, 1, 7.05781e-09, 1.07908, 0.947283)
-InteractType = 7
-obtainable = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Pushdoor"]
-root_node = NodePath("../..")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_gcxka")
 }

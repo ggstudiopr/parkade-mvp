@@ -40,6 +40,8 @@ func input(keyPress):
 			Display.text = "CORRECT"
 			#TODO GET PARENT AND doThing
 			taskComplete = true
+			for child in self.get_children():
+				child.process_mode = Node.PROCESS_MODE_DISABLED
 			return
 		else:
 			print("WRONG")

@@ -14,87 +14,75 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0884359, 0.540035, 0)
 [node name="1" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.0462421, 0.361834, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="2" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.115658, 0.355575, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="3" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.290011, 0.35804, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="4" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.050512, 0.182791, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="5" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.116607, 0.166015, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="6" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.29789, 0.179016, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="7" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.0399187, 0, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="8" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.125819, 0, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="9" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.312632, 0, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="0" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.141587, -0.176103, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 interaction_radius = 0.2
 
 [node name="E" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.304684, -0.176966, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="C" parent="." instance=ExtResource("2_w41gr")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.0545589, -0.180062, 0)
 InteractType = 5
-ID = 18
-obtainable = false
-despawnOnInteract = false
+ID = 17
+show_interaction_prompt = false
 
 [node name="Hint1" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.924692, -0.380715, 0, 0.380715, 0.924692, 0, 0, 0, 1, -0.349782, 0.383777, 0)

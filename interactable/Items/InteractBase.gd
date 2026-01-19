@@ -57,7 +57,7 @@ const TEXT : Dictionary[int, String] = { # to get string > item.TEXT[item.ID]
 	IDs.AutoPark : "Park Car", #Car
 	IDs.AutoToggle : "Drive/Reverse Toggle", #Car
 	IDs.Radio : "Toggle Radio", #Car
-	IDs.RemoteButton : "press button", #Object 
+	#IDs.RemoteButton : "press button", #Object 
 	IDs.KeypadButton : ""
 }
 enum TYPE{
@@ -88,7 +88,6 @@ enum IDs{
 	AutoPark,
 	AutoToggle,
 	Horn,
-	RemoteButton,
 	KeypadButton,
 }
 
