@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://cr2h8nfa22yn0"]
+[gd_scene load_steps=34 format=3 uid="uid://cr2h8nfa22yn0"]
 
 [ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="1_svkv0"]
 [ext_resource type="Texture2D" uid="uid://b1fw5rjq7hk4j" path="res://textures/red/texture_09.png" id="2_6nvsp"]
@@ -15,7 +15,9 @@
 [ext_resource type="Script" uid="uid://b3847ss7drxqr" path="res://events/event_manager.gd" id="11_48tto"]
 [ext_resource type="Animation" uid="uid://bn4ium06k82sa" path="res://Animations/state2.res" id="11_80j4d"]
 [ext_resource type="Script" uid="uid://bfi2ucmi3i3tx" path="res://events/landmark_event.gd" id="13_wgw5r"]
+[ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_gabe/enemy_manager.gd" id="14_k6dko"]
 [ext_resource type="Script" uid="uid://by65i8im0ejjw" path="res://events/interactable_event.gd" id="17_80j4d"]
+[ext_resource type="Animation" uid="uid://cxfqem0hhpqs6" path="res://Animations/spawn_enemy.res" id="18_00j00"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_a64jb"]
 vertices = PackedVector3Array(-49.5, 12.25, -49.5, -49.5, 12.25, 49.5, -46.25, 12.25, 49.5, -46.25, 12.25, -49.5, 27.75, 12.25, -49.5, 27.75, 12.25, 49.5, 49.5, 12.25, 49.5, 49.5, 12.25, -49.5, -0.75, 0.75, -13.25, -0.5, 0.75, -12.25, -0.25, 0.75, -12.25, 0, 0.75, -13.25, 5.5, 0.75, -27.25, 6.25, 0.75, -27.5, 6.25, 0.75, -48.75, 6.25, 0.75, -13.25, 6.25, 0.75, -25.5, 5.5, 0.75, -25.75, -45.25, 0.75, -12.25, -9.5, 0.75, -12.25, -9.25, 0.75, -13.25, -45.25, 0.75, -48.75, 6.75, 0.75, -27.5, 7.25, 0.75, -26.5, 26.75, 0.75, -26.5, 26.75, 0.75, -48.75, -8.5, 6.75, -29.25, -8.5, 6.75, -13.25, 8.5, 6.75, -13.25, 8.5, 6.75, -29.25, 6.75, 0.75, -25.5, 9.5, 0.75, -13.25, 9.75, 0.75, -12.25, 26.75, 0.75, -12.25, -9.5, 0.75, -1.25, -8.75, 0.75, -1.25, -8.5, 0.75, -11, -9.5, 0.75, -11.25, -45.25, 0.75, -1.5, -7.75, 0.75, 1.75, -8.75, 0.75, 2, -8.5, 0.75, 2.5, 9.25, 0.75, 2.5, 0, 0.75, -11, -0.75, 0.75, -11, -7.75, 0.75, -1, 9.25, 0.75, -11, 9.75, 0.75, 2.75, 26.75, 0.75, 3.75, 9.75, 0.75, -11.25, 9.75, 0.75, 3.75, -8.5, 6.75, -11, -8.5, 6.75, 2.5, 8.5, 6.75, 2.5, 8.5, 6.75, -11, -9.25, 0.75, 2.5, -10, 0.75, 1.75, -10, 0.75, -1, -45.25, 0.75, 3.25, -9.5, 0.75, 3, -9.5, 0.75, 4.5, -7.75, 0.75, 4.75, -45.25, 0.75, 49, -8, 0.75, 49, 9.5, 0.75, 4.75, 26.75, 0.75, 49)
@@ -118,6 +120,11 @@ _data = {
 _data = {
 &"ClosingGate": ExtResource("10_vvk4n"),
 &"OpenGate": SubResource("Animation_opr5c")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k6dko"]
+_data = {
+&"spawn_enemy": ExtResource("18_00j00")
 }
 
 [node name="FirstFloor" type="Node3D"]
@@ -291,6 +298,10 @@ libraries = {
 [node name="Fluo_Light_Bar" parent="." instance=ExtResource("10_33y2j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.78584, 4.43437, -26.9839)
 
+[node name="EnemyManager" type="Node" parent="."]
+script = ExtResource("14_k6dko")
+metadata/_custom_type_script = "uid://cniuus7u7udfb"
+
 [node name="EventManager" type="Node" parent="." node_paths=PackedStringArray("events")]
 script = ExtResource("11_48tto")
 events = [NodePath("OpenGate_Button"), NodePath("CloseGateWhenApproached")]
@@ -311,5 +322,18 @@ NodePath("../../NavigationRegion3D/Floor/ItemButton"): ExtResource("10_jwmh8")
 }
 animation_player = NodePath("../../GateClosing2/AnimationPlayer")
 metadata/_custom_type_script = "uid://by65i8im0ejjw"
+
+[node name="SpawnAntlion" type="Node" parent="EventManager" node_paths=PackedStringArray("landmarks", "animation_player")]
+script = ExtResource("13_wgw5r")
+landmarks = {
+NodePath("../../GateClosing2"): ExtResource("18_00j00")
+}
+animation_player = NodePath("../../EnemyAnimations")
+metadata/_custom_type_script = "uid://bfi2ucmi3i3tx"
+
+[node name="EnemyAnimations" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_k6dko")
+}
 
 [connection signal="body_entered" from="GateClosing" to="GateClosing" method="_on_body_entered"]

@@ -33,7 +33,7 @@ func _ready() -> void:
 	var text_mesh := TextMesh.new()
 	text_mesh.text = data.name
 	text_mesh_instance.mesh = text_mesh
-	animation_player.add_animation_library(data.animation_library.resource_name,data.animation_library)
+	#animation_player.add_animation_library(data.animation_library.resource_name,data.animation_library)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

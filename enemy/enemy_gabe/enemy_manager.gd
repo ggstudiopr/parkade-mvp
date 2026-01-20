@@ -36,10 +36,12 @@ func spawn_initial_enemies(spawn_positions: Array[Node3D]) -> Array[Enemy]:
 ## 
 ## $EnemyManager.add_child($EnemyManager.spawn_enemy(antlion_data, spawn_nodes[0].global_position))
 func spawn_enemy(type: EnemyData, position: Vector3) -> Enemy:
+	print("Spawning enemy:", type, position)
 	var new_enemy = enemy_scene.instantiate()
 	new_enemy.data = type
 	new_enemy.global_position = position
 	_enemies.append(new_enemy)
+	#add_child(new_enemy) #Ahhhhh this needs to be here for animation call to work
 	return new_enemy
 
 func delete_enemy(e : Enemy):
