@@ -5,6 +5,7 @@ class_name Event
 #Timed - Recurring or time sensitive event
 #Enemy - Spawn enemy
 
+
 #State of Events
 signal event_fulfilled
 signal event_failed
@@ -55,5 +56,5 @@ func run_event():
 	event_started.emit()
 	
 func _on_interact(interactable: Interactable):
-	#interactable.interact() #[GR] recursive call?
+	#interactable.interact() #[GR] recursive call? #[Gabe] Tru, good catch. I'll delete on next catch up.
 	pass
