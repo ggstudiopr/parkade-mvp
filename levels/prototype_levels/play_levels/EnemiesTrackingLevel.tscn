@@ -1,13 +1,16 @@
-[gd_scene load_steps=21 format=3 uid="uid://heeroj1isx3v"]
+[gd_scene load_steps=24 format=3 uid="uid://heeroj1isx3v"]
 
 [ext_resource type="Script" uid="uid://dlaqd2dovajl5" path="res://levels/level.gd" id="1_vfu3g"]
 [ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_gabe/enemy_manager.gd" id="2_b2ruq"]
 [ext_resource type="Script" uid="uid://b3847ss7drxqr" path="res://events/event_manager.gd" id="2_nxsom"]
-[ext_resource type="Script" uid="uid://12vilyhpeeo7" path="res://enemy/enemy_gabe/enemy_types/enemy_data.gd" id="3_7dwmy"]
 [ext_resource type="Script" uid="uid://bljy3dd1c2lg8" path="res://events/milk_collecting.gd" id="3_gxqag"]
-[ext_resource type="Resource" uid="uid://chjlv46hxiqi1" path="res://enemy/enemy_gabe/enemy_types/Freddy.tres" id="4_4x0c0"]
+[ext_resource type="Script" uid="uid://bfi2ucmi3i3tx" path="res://events/landmark_event.gd" id="4_gxqag"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="5_0b86u"]
+[ext_resource type="Animation" uid="uid://cxfqem0hhpqs6" path="res://Animations/spawn_enemy.res" id="5_piywk"]
 [ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="6_0elsm"]
+[ext_resource type="Script" uid="uid://by65i8im0ejjw" path="res://events/interactable_event.gd" id="6_xgrnf"]
+[ext_resource type="AnimationLibrary" uid="uid://mmaqtk5brq3q" path="res://Animations/test_anims.res" id="7_nxsom"]
+[ext_resource type="PackedScene" uid="uid://bfk7ettywb7mx" path="res://interactable/Items/Interactable.tscn" id="9_gxqag"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_yw2b2"]
 vertices = PackedVector3Array(-12.25, -0.21662, -16, -11, -0.21662, -16, -11, -0.21662, -24.25, -13.75, -0.21662, -14.5, -24.25, -0.21662, -24.25, -24.25, -0.21662, -12.25, -14, -0.21662, -12.25, -9.75, -0.21662, -16, 10.75, -0.21662, -15.25, 12, -0.21662, -15.25, 12, -0.21662, -24.25, 9.75, -0.21662, -14.5, -8, -0.21662, -14.5, 9, -0.21662, -13.25, -7.75, -0.21662, -12, 9, -0.21662, -11.75, 13.5, -0.21662, -15.25, 15.25, -0.21662, -13.25, 15.25, -0.21662, -11.5, 24.25, -0.21662, -11.5, 14.5, -0.21662, -14.5, 24.25, -0.21662, -24.25, -12.5, -0.21662, -10.75, -11.25, -0.21662, -9.75, -10, -0.21662, -10, -10.5, -0.21662, -14.75, -11.75, -0.21662, -14.5, -12.75, -0.21662, -13.25, -9, -0.21662, -11.5, -9, -0.21662, -13, 13.75, -0.21662, -13, 12.75, -0.21662, -14, 11.25, -0.21662, -13.75, 10.25, -0.21662, -10.75, 11.25, -0.21662, -9.25, 13, -0.21662, -9.25, 10.25, -0.21662, -12.25, 14, -0.21662, -10.75, -11.75, 11.2834, -13, -11.75, 11.2834, -11.5, -11, 11.0334, -10.75, -10, 11.2834, -12.25, -10.5, 11.0334, -13.5, -10.5, 11.2834, -11.5, 11.5, 11.2834, -10.5, 12.25, 11.0334, -10.25, 13, 11.2834, -11, 13, 11.2834, -12.25, 12.5, 11.2834, -12.75, 11.25, 11.2834, -12.25, -13.75, -0.21662, -10, -24.25, -0.21662, 12, -14, -0.21662, 12, -13, -0.21662, 9, -12.5, -0.21662, -8.75, -11.75, -0.21662, 8.25, -10.5, -0.21662, 8.25, -10.75, -0.21662, -8.5, 12.5, -0.21662, 8, 12.25, -0.21662, -7.75, 11, -0.21662, -7.75, 11.25, -0.21662, 8.25, -8, -0.21662, 9.5, -7.5, -0.21662, 12, 9.75, -0.21662, 11.75, 10.25, -0.21662, 9.25, -9.75, -0.21662, -8.5, -9.5, -0.21662, 8.25, -8.25, -0.21662, -9.75, 9.5, -0.21662, -9, 16, -0.21662, 9.75, 16.25, -0.21662, 11.75, 24.25, -0.21662, 11.75, 15, -0.21662, -9.25, 14.75, -0.21662, 8.25, 13.75, -0.21662, -8, 11.75, -0.21662, 13.75, 12.5, -0.21662, 14.25, 14.25, -0.21662, 13.75, 14.25, -0.21662, 9.75, 13.5, -0.21662, 9.25, 11.75, -0.21662, 9.75, 11, -0.21662, 11.5, 15, -0.21662, 12, -10.5, -0.21662, 9.5, -11.5, -0.21662, 9.75, -12.5, -0.21662, 11, -12.5, -0.21662, 13, -11.25, -0.21662, 14.5, -9.75, -0.21662, 14.25, -8.75, -0.21662, 12.5, -9, -0.21662, 10.75, 12.25, 11.2834, 10.75, 12.25, 11.2834, 12.75, 13.75, 11.2834, 12.75, 13.75, 11.2834, 10.75, -10, 11.2834, 11, -11, 11.0334, 10.75, -11.5, 11.2834, 11.25, -11.25, 11.0334, 13.25, -10.25, 11.0334, 13.25, -10, 11.2834, 12.25, -9.5, -0.21662, 15.75, -10.75, -0.21662, 15.75, -10.75, -0.21662, 24.25, 13, -0.21662, 24.25, 13, -0.21662, 15.5, 11.75, -0.21662, 15.5, -8, -0.21662, 14.5, 10.25, -0.21662, 14.25, 14.25, -0.21662, 15.5, 15.5, -0.21662, 14.5, 24.25, -0.21662, 24.25, -12, -0.21662, 15.75, -13.25, -0.21662, 14.75, -24.25, -0.21662, 24.25)
@@ -36,18 +39,13 @@ size = Vector3(50, 1, 50)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_eyeoc"]
 
-[sub_resource type="Resource" id="Resource_u3fgk"]
-script = ExtResource("3_7dwmy")
-name = "Default Enemy"
-type = 0
-hurt_rate = -1.0
-accel = 0.0
-metadata/_custom_type_script = "uid://12vilyhpeeo7"
+[sub_resource type="BoxShape3D" id="BoxShape3D_kk6vi"]
 
-[node name="Level" type="Node3D" node_paths=PackedStringArray("enemy_manager", "enemy_spawns")]
+[node name="Level" type="Node3D" node_paths=PackedStringArray("enemy_manager", "enemy_spawns", "event_manager")]
 script = ExtResource("1_vfu3g")
 enemy_manager = NodePath("EnemyManager")
 enemy_spawns = NodePath("SpawnPoints")
+event_manager = NodePath("EventManager")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.856267, -0.516533, -2.25784e-08, 0, -4.37114e-08, 1, -0.516533, 0.856267, 3.74286e-08, 0, 0.933587, 11.8233)
@@ -102,7 +100,6 @@ mesh = SubResource("CapsuleMesh_ttfx8")
 
 [node name="MilkJug_2" type="Area3D" parent="EventManager/MilkCollecting"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.16821, 0.735461, 7.49717)
-metadata/_custom_type_script = "uid://t1y565kg8oxy"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="EventManager/MilkCollecting/MilkJug_2"]
 shape = SubResource("CapsuleShape3D_xm276")
@@ -127,9 +124,21 @@ metadata/_custom_type_script = "uid://t1y565kg8oxy"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="EventManager/MilkCollecting/Interactable"]
 
+[node name="LandmarkEvent" type="Node" parent="EventManager" node_paths=PackedStringArray("landmarks", "animation_player")]
+script = ExtResource("4_gxqag")
+landmarks = {
+NodePath("../../Area3D"): ExtResource("5_piywk")
+}
+animation_player = NodePath("../../Area3D/EnemyPlayer")
+metadata/_custom_type_script = "uid://bfi2ucmi3i3tx"
+
+[node name="InteractableEvent" type="Node" parent="EventManager" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("6_xgrnf")
+animation_player = NodePath("../../Area3D/EnemyPlayer")
+metadata/_custom_type_script = "uid://by65i8im0ejjw"
+
 [node name="EnemyManager" type="Node" parent="."]
 script = ExtResource("2_b2ruq")
-enemies = Array[ExtResource("3_7dwmy")]([SubResource("Resource_u3fgk"), ExtResource("4_4x0c0")])
 
 [node name="SpawnPoints" type="Node" parent="."]
 
@@ -146,5 +155,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.451973, -6.6784)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.348474, 0, -0.937319, 0, 1, 0, 0.937319, 0, 0.348474, -1.3291, 1.0488, -6.90061)
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -18.3609, 0.34766, 0)
+
+[node name="EnemyPlayer" type="AnimationPlayer" parent="Area3D"]
+root_node = NodePath("../..")
+libraries = {
+&"test_anims": ExtResource("7_nxsom")
+}
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41767, 0)
+shape = SubResource("BoxShape3D_kk6vi")
+
+[node name="Interactable" parent="." instance=ExtResource("9_gxqag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.14743, 0.944373, 0)
 
 [connection signal="MaxStrikes" from="Protagonist" to="." method="_on_protagonist_max_strikes"]

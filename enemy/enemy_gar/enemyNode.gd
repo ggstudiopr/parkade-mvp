@@ -61,7 +61,9 @@ func move2player(delta):
 		move_and_slide()
 		return
 	move_and_slide()
-	
+
+#TODO: [Gabe] Misleading function. It just sets to default values from resource.
+#Function name doesn't explain what its setting to, and lack of parameteres requires looking inside the code to understand.
 func setVisibility():
 	if self.data.show_mesh:
 		if self.data.overworld_visible:
@@ -92,6 +94,7 @@ func setVisibility():
 		self.hide()
 
 func setModel():
+	#TODO: [Gabe] You can include the mesh and the function to set it IN the Resource itself.
 	if self.data.CATEGORY == EnemyBase.ID.Reaper:
 		mesh.mesh = load("res://enemy/enemy_gar/meshes/slender.obj")
 		mesh.global_position.y = mesh.global_position.y -1
