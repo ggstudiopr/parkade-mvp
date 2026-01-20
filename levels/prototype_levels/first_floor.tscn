@@ -293,7 +293,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.78584, 4.43437, -26.9839)
 
 [node name="EventManager" type="Node" parent="." node_paths=PackedStringArray("events")]
 script = ExtResource("11_48tto")
-events = [NodePath("InteractableEvent"), NodePath("CloseGateWhenApproached")]
+events = [NodePath("OpenGate_Button"), NodePath("CloseGateWhenApproached")]
 metadata/_custom_type_script = "uid://b3847ss7drxqr"
 
 [node name="CloseGateWhenApproached" type="Node" parent="EventManager" node_paths=PackedStringArray("landmarks", "animation_player")]
@@ -304,7 +304,7 @@ NodePath("../../GateClosing2"): ExtResource("10_jwmh8")
 animation_player = NodePath("../../GateClosing/AnimationPlayer")
 metadata/_custom_type_script = "uid://bfi2ucmi3i3tx"
 
-[node name="InteractableEvent" type="Node" parent="EventManager" node_paths=PackedStringArray("event_interactables", "animation_player")]
+[node name="OpenGate_Button" type="Node" parent="EventManager" node_paths=PackedStringArray("event_interactables", "animation_player")]
 script = ExtResource("17_80j4d")
 event_interactables = {
 NodePath("../../NavigationRegion3D/Floor/ItemButton"): ExtResource("10_jwmh8")
