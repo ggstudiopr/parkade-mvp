@@ -323,14 +323,6 @@ NodePath("../../NavigationRegion3D/Floor/ItemButton"): ExtResource("10_jwmh8")
 animation_player = NodePath("../../GateClosing2/AnimationPlayer")
 metadata/_custom_type_script = "uid://by65i8im0ejjw"
 
-[node name="SpawnAntlion" type="Node" parent="EventManager" node_paths=PackedStringArray("landmarks", "animation_player")]
-script = ExtResource("13_wgw5r")
-landmarks = {
-NodePath("../../GateClosing2"): ExtResource("18_00j00")
-}
-animation_player = NodePath("../../EnemyAnimations")
-metadata/_custom_type_script = "uid://bfi2ucmi3i3tx"
-
 [node name="EnemyAnimations" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_k6dko")
