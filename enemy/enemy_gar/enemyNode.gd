@@ -1,7 +1,7 @@
 extends CharacterBody3D
 class_name EnemyNode
 @onready var mesh := $CollisionShape3D/MeshInstance3D
-@export var data = EnemyBase
+@export var data: EnemyBase
 var aggro_level : int = 1
 var spawn_ID : int
 var player: Node3D
