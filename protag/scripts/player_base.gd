@@ -136,6 +136,17 @@ func _ready():
 	
 func _process(delta) -> void:
 	Global.player_position = global_position
+	
+	match(player_state):
+		PLAYER_STATE.DRIVING:
+			#Ignore movement input
+			pass
+		PLAYER_STATE.WALKING:
+			pass
+		PLAYER_STATE.PAUSED:
+			pass
+			
+
 
 func _physics_process(delta: float) -> void:
 	_walking_player_movement(delta) #phone animations handled within this due to needing input_dir
