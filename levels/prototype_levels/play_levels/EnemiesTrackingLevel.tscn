@@ -1,9 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://heeroj1isx3v"]
+[gd_scene load_steps=17 format=3 uid="uid://heeroj1isx3v"]
 
 [ext_resource type="Script" uid="uid://dlaqd2dovajl5" path="res://levels/level.gd" id="1_vfu3g"]
 [ext_resource type="Script" uid="uid://cniuus7u7udfb" path="res://enemy/enemy_gabe/enemy_manager.gd" id="2_b2ruq"]
 [ext_resource type="Script" uid="uid://b3847ss7drxqr" path="res://events/event_manager.gd" id="2_nxsom"]
-[ext_resource type="Script" uid="uid://bljy3dd1c2lg8" path="res://events/milk_collecting.gd" id="3_gxqag"]
 [ext_resource type="Script" uid="uid://bfi2ucmi3i3tx" path="res://events/landmark_event.gd" id="4_gxqag"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="5_0b86u"]
 [ext_resource type="Animation" uid="uid://cxfqem0hhpqs6" path="res://Animations/spawn_enemy.res" id="5_piywk"]
@@ -26,18 +25,6 @@ friction = 0.1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jtvp2"]
 size = Vector3(50, 1, 50)
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xgrnf"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_ttfx8"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xm276"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_nngke"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_enp5q"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_eyeoc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kk6vi"]
 
@@ -85,45 +72,6 @@ shape = SubResource("BoxShape3D_jtvp2")
 [node name="EventManager" type="Node" parent="."]
 script = ExtResource("2_nxsom")
 
-[node name="MilkCollecting" type="Node" parent="EventManager"]
-script = ExtResource("3_gxqag")
-
-[node name="MilkJug_1" type="Area3D" parent="EventManager/MilkCollecting"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.6049, 0.972616, -10.8226)
-metadata/_custom_type_script = "uid://t1y565kg8oxy"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="EventManager/MilkCollecting/MilkJug_1"]
-shape = SubResource("CapsuleShape3D_xgrnf")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="EventManager/MilkCollecting/MilkJug_1"]
-mesh = SubResource("CapsuleMesh_ttfx8")
-
-[node name="MilkJug_2" type="Area3D" parent="EventManager/MilkCollecting"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.16821, 0.735461, 7.49717)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="EventManager/MilkCollecting/MilkJug_2"]
-shape = SubResource("CapsuleShape3D_xm276")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="EventManager/MilkCollecting/MilkJug_2"]
-mesh = SubResource("CapsuleMesh_nngke")
-
-[node name="MilkJug_3" type="Area3D" parent="EventManager/MilkCollecting"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.3768, 0.895779, 7.00563)
-metadata/_custom_type_script = "uid://t1y565kg8oxy"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="EventManager/MilkCollecting/MilkJug_3"]
-shape = SubResource("CapsuleShape3D_enp5q")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="EventManager/MilkCollecting/MilkJug_3"]
-mesh = SubResource("CapsuleMesh_eyeoc")
-
-[node name="Interactable" type="Area3D" parent="EventManager/MilkCollecting"]
-metadata/_custom_type_script = "uid://t1y565kg8oxy"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="EventManager/MilkCollecting/Interactable"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="EventManager/MilkCollecting/Interactable"]
-
 [node name="LandmarkEvent" type="Node" parent="EventManager" node_paths=PackedStringArray("landmarks", "animation_player")]
 script = ExtResource("4_gxqag")
 landmarks = {
@@ -170,6 +118,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41767, 0)
 shape = SubResource("BoxShape3D_kk6vi")
 
 [node name="Interactable" parent="." instance=ExtResource("9_gxqag")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.14743, 0.944373, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.3257, 0.944373, 4.51489)
 
 [connection signal="MaxStrikes" from="Protagonist" to="." method="_on_protagonist_max_strikes"]
