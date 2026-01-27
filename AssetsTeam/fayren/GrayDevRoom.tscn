@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://0h75dvhksqhu"]
+[gd_scene format=4 uid="uid://0h75dvhksqhu"]
 
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_3q8v2"]
 [ext_resource type="Script" uid="uid://cmdefqw8wrta5" path="res://AssetsTeam/fayren/gray_dev_room.gd" id="1_vipnq"]
@@ -44,59 +44,59 @@ material = SubResource("StandardMaterial3D_sdi3v")
 [sub_resource type="TextMesh" id="TextMesh_sdi3v"]
 text = "SPOTLIGHT"
 
-[node name="DevRoom" type="Node3D"]
+[node name="DevRoom" type="Node3D" unique_id=259233180]
 script = ExtResource("1_vipnq")
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=711209117]
 navigation_mesh = SubResource("NavigationMesh_bisag")
 
-[node name="Floor" type="StaticBody3D" parent="NavigationRegion3D"]
+[node name="Floor" type="StaticBody3D" parent="NavigationRegion3D" unique_id=733049998]
 physics_material_override = SubResource("PhysicsMaterial_bisag")
 
-[node name="CollisionShape" type="CollisionShape3D" parent="NavigationRegion3D/Floor"]
+[node name="CollisionShape" type="CollisionShape3D" parent="NavigationRegion3D/Floor" unique_id=1544916699]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.499711, 0)
 shape = SubResource("ConcavePolygonShape3D_uqre4")
 
-[node name="FloorMesh" type="MeshInstance3D" parent="NavigationRegion3D/Floor"]
+[node name="FloorMesh" type="MeshInstance3D" parent="NavigationRegion3D/Floor" unique_id=972231845]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.499711, 0)
 mesh = SubResource("ArrayMesh_6apdb")
 
-[node name="Protagonist" parent="." instance=ExtResource("1_3q8v2")]
+[node name="Protagonist" parent="." unique_id=156551329 instance=ExtResource("1_3q8v2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.26341, 0.00534999, 0)
 
-[node name="Vehicle" parent="." instance=ExtResource("2_rk1w1")]
+[node name="Vehicle" parent="." unique_id=1007999569 instance=ExtResource("2_rk1w1")]
 transform = Transform3D(0.840415, 0, 0.541943, 0, 1, 0, -0.541943, 0, 0.840415, 0, 0, -8)
 
-[node name="Spotlight" type="SpotLight3D" parent="." groups=["AMB_FLUO_LIGHT_SOUND"]]
+[node name="Spotlight" type="SpotLight3D" parent="." unique_id=1781092564 groups=["AMB_FLUO_LIGHT_SOUND"]]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.44071, -18)
 
-[node name="Sphere" type="MeshInstance3D" parent="Spotlight"]
+[node name="Sphere" type="MeshInstance3D" parent="Spotlight" unique_id=1017364919]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.433232)
 mesh = SubResource("SphereMesh_2vbnh")
 
-[node name="Text" type="MeshInstance3D" parent="Spotlight/Sphere"]
+[node name="Text" type="MeshInstance3D" parent="Spotlight/Sphere" unique_id=1823726207]
 transform = Transform3D(1, 0, 0, 0, -0.234124, -0.972207, 0, 0.972207, -0.234124, 0, -0.392776, -0.495697)
 mesh = SubResource("TextMesh_sdi3v")
 
-[node name="Item" parent="." instance=ExtResource("4_rk1w1")]
+[node name="Item" parent="." unique_id=948460230 instance=ExtResource("4_rk1w1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15404, -4.58885)
 InteractType = 1
 ID = 1
 randomizeLocation = true
 
-[node name="RandomLocation1" parent="Item" index="3"]
+[node name="RandomLocation1" parent="Item" index="3" unique_id=646174505]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05798, 0, 0)
 
-[node name="RandomLocation3" parent="Item" index="5"]
+[node name="RandomLocation3" parent="Item" index="5" unique_id=1891398041]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35318, 0, 0)
 
-[node name="Pushdoor" parent="." instance=ExtResource("5_bgx41")]
+[node name="Pushdoor" parent="." unique_id=175777279 instance=ExtResource("5_bgx41")]
 transform = Transform3D(-0.954157, 0, 0.299307, 0, 1, 0, -0.299307, 0, -0.954157, -1.16876, 0, -1.71528)
 lockID = 1
 
-[node name="Keypad" parent="." instance=ExtResource("7_mh08m")]
+[node name="Keypad" parent="." unique_id=1342189802 instance=ExtResource("7_mh08m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.36272, 1.23866, 0)
 
-[node name="EnemyController" parent="." instance=ExtResource("9_vipnq")]
+[node name="EnemyController" parent="." unique_id=1157776052 instance=ExtResource("9_vipnq")]
 
 [editable path="Item"]

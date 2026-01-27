@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://cinwh5wb4ct5u"]
+[gd_scene format=4 uid="uid://cinwh5wb4ct5u"]
 
 [ext_resource type="PackedScene" uid="uid://dug687n3bkdyt" path="res://csg_map_blocks/car_space_obstacles/wheel_stopper.tscn" id="1_p8bgh"]
 [ext_resource type="Texture2D" uid="uid://l332ldiqi0q7" path="res://textures/concrete/concrete_floor_worn_001_disp_4k.png" id="2_2idyx"]
@@ -34,41 +34,41 @@ _surfaces = [{
 "vertex_data": PackedByteArray("AAD4QAAAAAAAAKA/AADwQAAAAAAAAMA/AAAIQQAAAAAAAMA/AADwQAAAwD8AAEA/AADwQAAAAAAAAAA/AADwQAAAkEAAAAA/AAD4QAAAAAAAAKA/AAAIQQAAAAAAAMA/AAAIQQAAAAAAAAA/AADwQAAAAAAAAKA/AADwQAAAAAAAAMA/AAD4QAAAAAAAAKA/AAAIQQAAAAAAAAA/AADwQAAAkEAAAAA/AADwQAAAAAAAAAA/AAAIQQAAAAAAAAA/AAD4QAAAAAAAAEA/AAD4QAAAAAAAAKA/AADwQAAAAAAAAMA/AADwQAAAAAAAAKA/AADwQAAAwD8AAKA/AAAIQQAAkEAAAMA/AADwQAAAkEAAAMA/AADwQAAAkEAAAAA/AAAIQQAAAAAAAMA/AAAIQQAAkEAAAMA/AAAIQQAAAAAAAAA/AADwQAAAAAAAAMA/AAAIQQAAkEAAAMA/AAAIQQAAAAAAAMA/AADwQAAAwD8AAKA/AADwQAAAkEAAAMA/AADwQAAAAAAAAMA/AAAIQQAAAAAAAAA/AAAIQQAAkEAAAAA/AADwQAAAkEAAAAA/AAAIQQAAkEAAAMA/AAAIQQAAkEAAAAA/AAAIQQAAAAAAAAA/AADwQAAAkEAAAMA/AADwQAAAwD8AAEA/AADwQAAAkEAAAAA/AAAIQQAAkEAAAAA/AAAIQQAAkEAAAMA/AADwQAAAkEAAAAA/AADwQAAAkEAAAMA/AADwQAAAwD8AAKA/AADwQAAAwD8AAEA/AADwQAAAkEAAAMA/AAAIQQAAkEAAAMA/AADwQAAAAAAAAMA/AAAAwQAAAAAAAAA/AADowAAAAAAAAEA/AADgwAAAAAAAAAA/AAAAwQAAAAAAAMA/AADgwAAAkEAAAMA/AADgwAAAAAAAAMA/AADowAAAAAAAAEA/AADgwAAAAAAAAEA/AADgwAAAAAAAAAA/AADgwAAAAAAAAAA/AADgwAAAAAAAAEA/AADgwAAAwD8AAEA/AADowAAAAAAAAEA/AAAAwQAAAAAAAAA/AAAAwQAAAAAAAMA/AADgwAAAAAAAAAA/AAAAwQAAkEAAAAA/AAAAwQAAAAAAAAA/AADgwAAAwD8AAEA/AADgwAAAkEAAAAA/AADgwAAAAAAAAAA/AAAAwQAAkEAAAAA/AAAAwQAAAAAAAMA/AAAAwQAAAAAAAAA/AAAAwQAAAAAAAMA/AADowAAAAAAAAKA/AADowAAAAAAAAEA/AADowAAAAAAAAKA/AADgwAAAAAAAAMA/AADgwAAAAAAAAKA/AADgwAAAAAAAAKA/AADgwAAAAAAAAMA/AADgwAAAwD8AAKA/AADowAAAAAAAAKA/AAAAwQAAAAAAAMA/AADgwAAAAAAAAMA/AADwQAAAAAAAAEA/AADwQAAAAAAAAAA/AADwQAAAwD8AAEA/AADgwAAAwD8AAKA/AADgwAAAAAAAAMA/AADgwAAAkEAAAMA/AADgwAAAAAAAAAA/AADgwAAAkEAAAAA/AAAAwQAAkEAAAAA/AADgwAAAkEAAAAA/AADgwAAAwD8AAEA/AADgwAAAwD8AAKA/AADgwAAAkEAAAAA/AADgwAAAkEAAAMA/AAAAwQAAkEAAAAA/AAAAwQAAkEAAAAA/AAAAwQAAkEAAAMA/AAAAwQAAAAAAAMA/AAAAwQAAkEAAAMA/AADgwAAAkEAAAMA/AAAAwQAAAAAAAMA/AADgwAAAkEAAAAA/AADgwAAAwD8AAKA/AADgwAAAkEAAAMA/AADgwAAAkEAAAMA/AAAAwQAAkEAAAMA/AAAAwQAAkEAAAAA/AAD4QAAAAAAAAEA/AAAIQQAAAAAAAAA/AADwQAAAAAAAAAA/AAD4QAAAAAAAAEA/AADwQAAAAAAAAAA/AADwQAAAAAAAAEA//38AAP//AAD/fwAA//8AAP9/AAD//wAAAAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8//38AAP//AAD/fwAA//8AAP9/AAD//wAAAAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//////wAA/z//////AAD/P/////8AAP8/////f/9//n////9//3/+f////3//f/5/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//////AAD/f/////8AAP9//////wAAAAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8//38AAP//AAD/fwAA//8AAP9/AAD//wAA////f/9//n////9//3/+f////3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/////f/9//n////9//3/+f////3//f/5/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA////f/9//n////9//3/+f////3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAAAAD/f/9//n8AAP9//3/+fwAA/3//f/5/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8/////f/9//n////9//3/+f////3//f/5//3//////AAD/f/////8AAP9//////wAAAAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA")
 }]
 
-[node name="4CarSpace" type="Node3D"]
+[node name="4CarSpace" type="Node3D" unique_id=921838458]
 
-[node name="WheelStoppers" parent="." instance=ExtResource("1_p8bgh")]
+[node name="WheelStoppers" parent="." unique_id=122420176 instance=ExtResource("1_p8bgh")]
 
-[node name="WheelStopper2" parent="WheelStoppers" instance=ExtResource("1_p8bgh")]
+[node name="WheelStopper2" parent="WheelStoppers" unique_id=1170281366 instance=ExtResource("1_p8bgh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
 
-[node name="WheelStopper3" parent="WheelStoppers" instance=ExtResource("1_p8bgh")]
+[node name="WheelStopper3" parent="WheelStoppers" unique_id=32231161 instance=ExtResource("1_p8bgh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
 
-[node name="WheelStopper4" parent="WheelStoppers" instance=ExtResource("1_p8bgh")]
+[node name="WheelStopper4" parent="WheelStoppers" unique_id=1917184983 instance=ExtResource("1_p8bgh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=464390246]
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="StaticBody3D"]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="StaticBody3D" unique_id=1654497104]
 visible = false
 
-[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D" unique_id=71738674]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.75, 1)
 size = Vector3(15, 1.5, 0.5)
 material = SubResource("StandardMaterial3D_bsqc0")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D" unique_id=1147196200]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2.25, 1)
 size = Vector3(1, 4.5, 1)
 material = SubResource("StandardMaterial3D_yby1a")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D/CSGBox3D2"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D/CSGBox3D2" unique_id=1408436447]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5, 0, 0)
 size = Vector3(1, 4.5, 1)
 material = SubResource("StandardMaterial3D_yby1a")
 
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1437496976]
 shape = SubResource("ConcavePolygonShape3D_4863s")
 
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=711877981]
 mesh = SubResource("ArrayMesh_sn06a")

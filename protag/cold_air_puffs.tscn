@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://rotxwcdcvhym"]
+[gd_scene format=3 uid="uid://rotxwcdcvhym"]
 
 [ext_resource type="Texture2D" uid="uid://couerrwoow0kb" path="res://textures/cold_air/snowflakes.png" id="1_ankim"]
 
@@ -26,9 +26,9 @@ albedo_texture = ExtResource("1_ankim")
 material = SubResource("StandardMaterial3D_lr5hy")
 size = Vector2(0.5, 0.5)
 
-[node name="ColdAirPuffs" type="Node3D"]
+[node name="ColdAirPuffs" type="Node3D" unique_id=43387468]
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=2144978111]
 transform = Transform3D(1, 0, -4.37114e-08, -4.37114e-08, 1.91069e-15, -1, 0, 1, 1.91069e-15, 0, 0, 0)
 amount_ratio = 0.1
 process_material = SubResource("ParticleProcessMaterial_qtrcy")

@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="Event" load_steps=3 format=3 uid="uid://cvsw8kqp77ie4"]
+[gd_resource type="Resource" script_class="Event" format=3 uid="uid://cvsw8kqp77ie4"]
 
 [ext_resource type="Script" uid="uid://db34122kkhgvf" path="res://interactable/Items/InteractBase.gd" id="1_obtaw"]
 [ext_resource type="Script" uid="uid://cdcxf274pvtql" path="res://events/event.gd" id="2_kdafr"]
 
 [resource]
 script = ExtResource("2_kdafr")
-interactables = Array[ExtResource("1_obtaw")]([])

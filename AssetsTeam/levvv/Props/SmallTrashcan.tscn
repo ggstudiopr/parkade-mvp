@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c6tqv1ncsblsd"]
+[gd_scene format=3 uid="uid://c6tqv1ncsblsd"]
 
 [ext_resource type="ArrayMesh" uid="uid://mqnm3tedh54" path="res://AssetsTeam/levvv/Assets/SmallTrashcan/SmallTrashcan.obj" id="1_a5q3i"]
 [ext_resource type="Texture2D" uid="uid://mt0ubcl4f5i7" path="res://AssetsTeam/levvv/Assets/SmallTrashcan/Can.png" id="2_88wo3"]
@@ -15,13 +15,13 @@ clearcoat = 0.1
 [sub_resource type="BoxShape3D" id="BoxShape3D_a5q3i"]
 size = Vector3(0.973083, 0.97644, 0.733391)
 
-[node name="SmallTrashcan" type="Node3D"]
+[node name="SmallTrashcan" type="Node3D" unique_id=1902652835]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2137092662]
 mesh = ExtResource("1_a5q3i")
 surface_material_override/0 = SubResource("StandardMaterial3D_u77vg")
 surface_material_override/1 = SubResource("StandardMaterial3D_tyquy")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D" unique_id=1895037409]
 transform = Transform3D(2.1, 0, 0, 0, 2.1, 0, 0, 0, 2.1, -0.000704956, 1.03587, -0.00271568)
 shape = SubResource("BoxShape3D_a5q3i")

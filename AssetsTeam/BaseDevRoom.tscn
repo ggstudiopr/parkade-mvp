@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://dkmry5mmbqv04"]
+[gd_scene format=4 uid="uid://dkmry5mmbqv04"]
 
 [ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="1_6apdb"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="2_sdi3v"]
@@ -32,31 +32,31 @@ material = SubResource("StandardMaterial3D_sdi3v")
 [sub_resource type="TextMesh" id="TextMesh_sdi3v"]
 text = "SPOTLIGHT"
 
-[node name="DevRoom" type="Node3D"]
+[node name="DevRoom" type="Node3D" unique_id=794016368]
 
-[node name="Protagonist" parent="." instance=ExtResource("2_sdi3v")]
+[node name="Protagonist" parent="." unique_id=1686927737 instance=ExtResource("2_sdi3v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00534999, 0)
 
-[node name="Vehicle" parent="." instance=ExtResource("3_sdi3v")]
+[node name="Vehicle" parent="." unique_id=411813617 instance=ExtResource("3_sdi3v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
 
-[node name="Floor" type="StaticBody3D" parent="."]
+[node name="Floor" type="StaticBody3D" parent="." unique_id=678048277]
 
-[node name="CollisionShape" type="CollisionShape3D" parent="Floor"]
+[node name="CollisionShape" type="CollisionShape3D" parent="Floor" unique_id=1826659900]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.499711, 0)
 shape = SubResource("ConcavePolygonShape3D_uqre4")
 
-[node name="FloorMesh" type="MeshInstance3D" parent="Floor"]
+[node name="FloorMesh" type="MeshInstance3D" parent="Floor" unique_id=289907104]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.499711, 0)
 mesh = SubResource("ArrayMesh_6apdb")
 
-[node name="Spotlight" type="SpotLight3D" parent="." groups=["AMB_FLUO_LIGHT_SOUND"]]
+[node name="Spotlight" type="SpotLight3D" parent="." unique_id=1991448819 groups=["AMB_FLUO_LIGHT_SOUND"]]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.44071, -18)
 
-[node name="Sphere" type="MeshInstance3D" parent="Spotlight"]
+[node name="Sphere" type="MeshInstance3D" parent="Spotlight" unique_id=747237553]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.433232)
 mesh = SubResource("SphereMesh_2vbnh")
 
-[node name="Text" type="MeshInstance3D" parent="Spotlight/Sphere"]
+[node name="Text" type="MeshInstance3D" parent="Spotlight/Sphere" unique_id=514719885]
 transform = Transform3D(1, 0, 0, 0, -0.234124, -0.972207, 0, 0.972207, -0.234124, 0, -0.392776, -0.495697)
 mesh = SubResource("TextMesh_sdi3v")

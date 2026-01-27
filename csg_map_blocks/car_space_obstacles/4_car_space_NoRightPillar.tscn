@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://krk434vv0gbs"]
+[gd_scene format=4 uid="uid://krk434vv0gbs"]
 
 [ext_resource type="PackedScene" uid="uid://dug687n3bkdyt" path="res://csg_map_blocks/car_space_obstacles/wheel_stopper.tscn" id="1_5s65y"]
 [ext_resource type="Texture2D" uid="uid://l332ldiqi0q7" path="res://textures/concrete/concrete_floor_worn_001_disp_4k.png" id="2_6qlbm"]
@@ -48,48 +48,48 @@ _surfaces = [{
 "vertex_data": PackedByteArray("AAD4QAAAAAAAAEA/AAAIQQAAAAAAAAA/AADwQAAAAAAAAAA/AADwQAAAAAAAAEA/AADwQAAAAAAAAAA/AADwQAAAwD8AAEA/AAD4QAAAAAAAAKA/AAAIQQAAAAAAAMA/AAAIQQAAAAAAAAA/AAD4QAAAAAAAAKA/AADwQAAAAAAAAMA/AAAIQQAAAAAAAMA/AADwQAAAAAAAAKA/AADwQAAAAAAAAMA/AAD4QAAAAAAAAKA/AAAIQQAAAAAAAAA/AAD4QAAAAAAAAEA/AAD4QAAAAAAAAKA/AAAAwQAAkEAAAMA/AADgwAAAkEAAAMA/AAAAwQAAAAAAAMA/AADwQAAAAAAAAMA/AADwQAAAAAAAAKA/AADwQAAAwD8AAKA/AAAIQQAAAAAAAAA/AADwQAAAkEAAAAA/AADwQAAAAAAAAAA/AAAIQQAAAAAAAMA/AAAIQQAAkEAAAMA/AAAIQQAAAAAAAAA/AADwQAAAAAAAAMA/AAAIQQAAkEAAAMA/AAAIQQAAAAAAAMA/AADwQAAAwD8AAEA/AADwQAAAAAAAAAA/AADwQAAAkEAAAAA/AADwQAAAwD8AAKA/AADwQAAAkEAAAMA/AADwQAAAAAAAAMA/AAAIQQAAAAAAAAA/AAAIQQAAkEAAAAA/AADwQAAAkEAAAAA/AADwQAAAkEAAAMA/AADwQAAAwD8AAKA/AADwQAAAwD8AAEA/AAAIQQAAkEAAAMA/AAAIQQAAkEAAAAA/AAAIQQAAAAAAAAA/AADwQAAAkEAAAMA/AAAIQQAAkEAAAMA/AADwQAAAAAAAAMA/AADwQAAAkEAAAMA/AADwQAAAwD8AAEA/AADwQAAAkEAAAAA/AAAIQQAAkEAAAAA/AAAIQQAAkEAAAMA/AADwQAAAkEAAAAA/AAAIQQAAkEAAAMA/AADwQAAAkEAAAMA/AADwQAAAkEAAAAA/AADowAAAAAAAAEA/AADgwAAAAAAAAEA/AADgwAAAAAAAAAA/AADgwAAAwD8AAEA/AADgwAAAkEAAAAA/AADgwAAAAAAAAAA/AAAAwQAAAAAAAMA/AADgwAAAkEAAAMA/AADgwAAAAAAAAMA/AAAAwQAAkEAAAAA/AAAAwQAAAAAAAMA/AAAAwQAAAAAAAAA/AADgwAAAAAAAAAA/AAAAwQAAkEAAAAA/AAAAwQAAAAAAAAA/AADgwAAAAAAAAKA/AADgwAAAAAAAAMA/AADgwAAAwD8AAKA/AADgwAAAAAAAAAA/AADgwAAAAAAAAEA/AADgwAAAwD8AAEA/AADowAAAAAAAAKA/AADgwAAAAAAAAMA/AADgwAAAAAAAAKA/AADowAAAAAAAAKA/AAAAwQAAAAAAAMA/AADgwAAAAAAAAMA/AAAAwQAAAAAAAMA/AADowAAAAAAAAKA/AADowAAAAAAAAEA/AAD4QAAAAAAAAEA/AADwQAAAAAAAAAA/AADwQAAAAAAAAEA/AAAAwQAAAAAAAAA/AADowAAAAAAAAEA/AADgwAAAAAAAAAA/AADowAAAAAAAAEA/AAAAwQAAAAAAAAA/AAAAwQAAAAAAAMA/AADgwAAAAAAAAAA/AADgwAAAkEAAAAA/AAAAwQAAkEAAAAA/AAAAwQAAkEAAAAA/AAAAwQAAkEAAAMA/AAAAwQAAAAAAAMA/AADgwAAAwD8AAKA/AADgwAAAAAAAAMA/AADgwAAAkEAAAMA/AADgwAAAkEAAAAA/AADgwAAAwD8AAEA/AADgwAAAwD8AAKA/AADgwAAAkEAAAAA/AADgwAAAwD8AAKA/AADgwAAAkEAAAMA/AADgwAAAkEAAAAA/AADgwAAAkEAAAMA/AAAAwQAAkEAAAAA/AADgwAAAkEAAAMA/AAAAwQAAkEAAAMA/AAAAwQAAkEAAAAA//38AAP//AAD/fwAA//8AAP9/AAD//wAAAAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//////wAA/z//////AAD/P/////8AAP8/////f/9//n////9//3/+f////3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5/////f/9//n////9//3/+f////3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//////AAD/f/////8AAP9//////wAA/3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA////f/9//n////9//3/+f////3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//////wAA/z//////AAD/P/////8AAP8/////f/9//n////9//3/+f////3//f/5/////f/9//n////9//3/+f////3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5/////f/9//n////9//3/+f////3//f/5/////f/9//n////9//3/+f////3//f/5/////f/9//n////9//3/+f////3//f/5//3//////AAD/f/////8AAP9//////wAA/3//////AAD/f/////8AAP9//////wAA")
 }]
 
-[node name="4CarSpace_NoRightPillar" type="Node3D"]
+[node name="4CarSpace_NoRightPillar" type="Node3D" unique_id=10792048]
 
-[node name="WheelStoppers" parent="." instance=ExtResource("1_5s65y")]
+[node name="WheelStoppers" parent="." unique_id=1875578228 instance=ExtResource("1_5s65y")]
 
-[node name="WheelStopper2" parent="WheelStoppers" instance=ExtResource("1_5s65y")]
+[node name="WheelStopper2" parent="WheelStoppers" unique_id=1107939452 instance=ExtResource("1_5s65y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
 
-[node name="WheelStopper3" parent="WheelStoppers" instance=ExtResource("1_5s65y")]
+[node name="WheelStopper3" parent="WheelStoppers" unique_id=1728753937 instance=ExtResource("1_5s65y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
 
-[node name="WheelStopper4" parent="WheelStoppers" instance=ExtResource("1_5s65y")]
+[node name="WheelStopper4" parent="WheelStoppers" unique_id=588078025 instance=ExtResource("1_5s65y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1519718389]
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="StaticBody3D"]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="StaticBody3D" unique_id=1856157901]
 visible = false
 
-[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D" unique_id=361635211]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.75, 1)
 size = Vector3(15, 1.5, 0.5)
 material = SubResource("StandardMaterial3D_bsqc0")
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="StaticBody3D/CSGCombiner3D"]
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="StaticBody3D/CSGCombiner3D" unique_id=8116568]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.25, 2.5, -5)
 radius = 0.85
 height = 5.0
 sides = 12
 material = SubResource("StandardMaterial3D_xdbxt")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D" unique_id=1223966824]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2.25, 1)
 size = Vector3(1, 4.5, 1)
 material = SubResource("StandardMaterial3D_5s65y")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D/CSGBox3D2"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D/CSGBox3D2" unique_id=617770491]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5, 0, 0)
 size = Vector3(1, 4.5, 1)
 material = SubResource("StandardMaterial3D_5s65y")
 
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1049750686]
 shape = SubResource("ConcavePolygonShape3D_6qlbm")
 
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=2028221875]
 mesh = SubResource("ArrayMesh_8o1um")

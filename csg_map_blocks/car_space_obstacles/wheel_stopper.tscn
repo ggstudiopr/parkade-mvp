@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://dug687n3bkdyt"]
+[gd_scene format=4 uid="uid://dug687n3bkdyt"]
 
 [ext_resource type="Texture2D" uid="uid://ths56okiqs02" path="res://textures/concrete/Concrete.png" id="1_5poan"]
 [ext_resource type="Texture2D" uid="uid://8vdofhsnxhpp" path="res://textures/concrete_pxl/brushed_concrete.png" id="1_gxekc"]
@@ -75,47 +75,47 @@ _surfaces = [{
 "vertex_data": PackedByteArray("AAAAALgeBT0AAIC+AAAAAI7C9TsAAIC+CtejPbgeBT0AAIC+CtejPbgeBT0AAIC+AAAAALgeBT0AAEC/AAAAALgeBT0AAIC+AAAAAI7C9TsAAIC+AAAAAI7C9TsAAEC/OkSiPo7C9TsAAIC+CtejPQjXIzwAAIC+CtejPbgeBT0AAIC+AAAAAI7C9TsAAIC+CtejPbgeBT0AAIC+QNavPbgeBT2jPYe+AAAAALgeBT0AAEC/QNavPbgeBT2jPYe+zczMPbgeBT1xPYq+AAAAALgeBT0AAEC/zczMPbgeBT1xPYq+WsPpPbgeBT2jPYe+AAAAALgeBT0AAEC/AAAAALgeBT0AAEC/WsPpPbgeBT2jPYe+kML1PbgeBT0AAIC+kML1PQjXIzwAAIC+OkSiPo7C9TsAAIC+3H2aPrgeBT0AAIC+CtejPQjXIzwAAIC+AAAAAI7C9TsAAIC+OkSiPo7C9TsAAIC+kML1PbgeBT0AAIC+3H2aPrgeBT0AAIC+AAAAALgeBT0AAEC/OkSiPo7C9TsAAEC/AAAAAI7C9TsAAEC/AAAAALgeBT0AAEC/kML1PbgeBT0AAIC+kML1PQjXIzwAAIC+3H2aPrgeBT0AAIC+OkSiPo7C9TsAAIC+kML1PQjXIzwAAIC+CtejPQjXIzwAAIC+AAAAALgeBT0AAEC/3H2aPrgeBT0AAIC+3H2aPrgeBT0AAEC/AAAAALgeBT0AAEC/3H2aPrgeBT0AAEC/OkSiPo7C9TsAAEC/OkSiPo7C9TsAAEC/OkSiPo7C9TsAAIC+AAAAAI7C9TsAAEC//////wAA/7//////AAD/v/////8AAP+//38AAAAA/v//fwAAAAD+//9/AAAAAP7//3///wAA/v//f///AAD+//9///8AAP7//////wAA/7//////AAD/v/////8AAP+//38AAAAA/v//fwAAAAD+//9/AAAAAP7//38AAAAA/v//fwAAAAD+//9/AAAAAP7//38AAAAA/v//fwAA//////9/AAAAAP7//38AAAAA/v//fwAA//////9/AAAAAP7//////wAA/7//////AAD/v/////8AAP+//////wAA/7//////AAD/v/////8AAP+//38AAAAA/v//fwAAAAD+//9/AAAAAP7//3//fwAA/7//f/9/AAD/v/9//38AAP+//////wAA/7//////AAD/v/////8AAP+//////wAA/7//////AAD/v/////8AAP+//38AAAAA/v//fwAAAAD+//9/AAAAAP7//3//fwAA/7//f/9/AAD/v/9//38AAP+//3///wAA/v//f///AAD+//9///8AAP7/")
 }]
 
-[node name="WheelStopper" type="StaticBody3D"]
+[node name="WheelStopper" type="StaticBody3D" unique_id=874324684]
 collision_layer = 4
 collision_mask = 0
 
-[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="." unique_id=1761822055]
 transform = Transform3D(-4.37114e-08, 0, 1.25, 0, 1, 0, -1, 0, -5.46392e-08, 0, 0, 0)
 visible = false
 polygon = PackedVector2Array(0, 0, 0, 0.2, 0.2, 0.2, 0.319944, 0.00253266)
 depth = 2.0
 material = SubResource("StandardMaterial3D_c1qde")
 
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGPolygon3D"]
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGPolygon3D" unique_id=1335703195]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.11, -1.75)
 operation = 2
 radius = 0.02
 height = 0.2
 material = SubResource("StandardMaterial3D_cfk7l")
 
-[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="CSGPolygon3D"]
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="CSGPolygon3D" unique_id=526968181]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.11, -0.25)
 operation = 2
 radius = 0.02
 height = 0.2
 material = SubResource("StandardMaterial3D_rls87")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="CSGPolygon3D"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGPolygon3D" unique_id=281213938]
 transform = Transform3D(1, 0, 3.90224e-07, 0, 1, 0, 0, 0, 1, 0.146, 0.02, -1.5)
 operation = 2
 size = Vector3(0.35, 0.025, 0.5)
 material = SubResource("StandardMaterial3D_5poan")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="CSGPolygon3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGPolygon3D" unique_id=725629778]
 transform = Transform3D(1, 0, 3.27826e-07, 0, 1, 0, 0, 0, 1, 0.143, 0.02, -0.5)
 operation = 2
 size = Vector3(0.35, 0.025, 0.5)
 material = SubResource("StandardMaterial3D_fxxpm")
 
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="." unique_id=1955072534]
 transform = Transform3D(-4.37114e-08, 0, 1.25, 0, 1, 0, -1, 0, -5.46392e-08, 0, 0, 0)
 shape = SubResource("ConcavePolygonShape3D_5poan")
 
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="." unique_id=582062372]
 transform = Transform3D(-4.37114e-08, 0, 1.25, 0, 1, 0, -1, 0, -5.46392e-08, 0, 0, 0)
 mesh = SubResource("ArrayMesh_c1qde")

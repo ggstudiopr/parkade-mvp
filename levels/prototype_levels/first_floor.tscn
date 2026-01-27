@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://cr2h8nfa22yn0"]
+[gd_scene format=3 uid="uid://cr2h8nfa22yn0"]
 
 [ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="1_svkv0"]
 [ext_resource type="Texture2D" uid="uid://b1fw5rjq7hk4j" path="res://textures/red/texture_09.png" id="2_6nvsp"]
@@ -127,139 +127,139 @@ _data = {
 &"spawn_enemy": ExtResource("18_00j00")
 }
 
-[node name="FirstFloor" type="Node3D"]
+[node name="FirstFloor" type="Node3D" unique_id=731089395]
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1837670830]
 navigation_mesh = SubResource("NavigationMesh_a64jb")
 
-[node name="Floor" type="StaticBody3D" parent="NavigationRegion3D"]
+[node name="Floor" type="StaticBody3D" parent="NavigationRegion3D" unique_id=4215353]
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="NavigationRegion3D/Floor"]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="NavigationRegion3D/Floor" unique_id=1713537620]
 
-[node name="shell" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D"]
+[node name="shell" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D" unique_id=1692144471]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.67456, 0)
 size = Vector3(100, 12.3491, 100)
 material = SubResource("StandardMaterial3D_qovcb")
 
-[node name="hollow" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/shell"]
+[node name="hollow" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/shell" unique_id=1029729026]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.26552, 0.877565, 0)
 operation = 2
 size = Vector3(73.2, 12.3, 99)
 material = SubResource("StandardMaterial3D_qovcb")
 
-[node name="middle area" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D"]
+[node name="middle area" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D" unique_id=530448806]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
 size = Vector3(18, 13, 100)
 material = SubResource("StandardMaterial3D_iotuo")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/middle area"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/middle area" unique_id=1679851698]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 operation = 2
 size = Vector3(17, 13, 100)
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/middle area"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/middle area" unique_id=369045754]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.5, -39)
 operation = 2
 size = Vector3(18, 7, 20)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/middle area"]
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/middle area" unique_id=979947489]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.195065, -29.2653)
 size = Vector3(18, 12, 1)
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/middle area/CSGBox3D"]
+[node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/middle area/CSGBox3D" unique_id=811241095]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.25, -3)
 size = Vector3(18, 1.5, 1)
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/middle area"]
+[node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D/middle area" unique_id=1638374372]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.71262, -4.49496, 0.3)
 operation = 2
 size = Vector3(1, 2.6, 1.6)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D" unique_id=574644977]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.75, 3.51751)
 size = Vector3(18, 12.5, 1)
 material = SubResource("StandardMaterial3D_uo07b")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D"]
+[node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D" unique_id=2060019165]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.75, -12.0855)
 size = Vector3(18, 12.5, 1)
 material = SubResource("StandardMaterial3D_uo07b")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D" unique_id=1421392480]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 5.75, -12.6451)
 size = Vector3(17.8, 34, 1)
 material = SubResource("StandardMaterial3D_uo07b")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D" unique_id=1505868697]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 3.9, 2.69595, -28.7852)
 operation = 2
 size = Vector3(8.1, 4.2, 2.5)
 material = SubResource("StandardMaterial3D_uo07b")
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D"]
+[node name="CSGBox3D6" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D" unique_id=1885623450]
 transform = Transform3D(0.00848219, -0.999964, 4.37098e-08, 0, -4.37114e-08, -1, 0.999964, 0.00848219, -3.70768e-10, 7.24225, 2.74886, -20.1588)
 operation = 2
 size = Vector3(15.9, 4.2, 2.5)
 material = SubResource("StandardMaterial3D_uo07b")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D"]
+[node name="CSGBox3D5" type="CSGBox3D" parent="NavigationRegion3D/Floor/CSGCombiner3D" unique_id=1634486063]
 transform = Transform3D(0.0200525, 0, 0.999799, 0, 1, 0, -0.999799, 0, 0.0200525, -0.438222, 1.60504, -12.0597)
 operation = 2
 size = Vector3(1.2, 2.4, 1.6)
 
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor"]
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor" unique_id=1249155317]
 shape = SubResource("ConcavePolygonShape3D_a64jb")
 
-[node name="ItemButton" parent="NavigationRegion3D/Floor" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("4_qovcb")]
+[node name="ItemButton" parent="NavigationRegion3D/Floor" unique_id=1293535535 node_paths=PackedStringArray("animationPlayer") instance=ExtResource("4_qovcb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28119, 1.57324, -26.4996)
 InteractType = 5
 ID = 17
 animationPlayer = NodePath("../../../GateClosing/AnimationPlayer")
 
-[node name="gate" type="StaticBody3D" parent="NavigationRegion3D/Floor"]
+[node name="gate" type="StaticBody3D" parent="NavigationRegion3D/Floor" unique_id=618451814]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.28914, 5.48245, -39.2744)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Floor/gate"]
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Floor/gate" unique_id=1429215068]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, -1.65)
 size = Vector3(1, 6.8, 17.3)
 material = SubResource("StandardMaterial3D_33y2j")
 
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor/gate"]
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor/gate" unique_id=64613097]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, -1.65)
 shape = SubResource("ConcavePolygonShape3D_4rgcm")
 
-[node name="gate2" type="StaticBody3D" parent="NavigationRegion3D/Floor"]
+[node name="gate2" type="StaticBody3D" parent="NavigationRegion3D/Floor" unique_id=1021147497]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 19.7878, 0.897163, -22.6169)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Floor/gate2"]
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Floor/gate2" unique_id=1581662851]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, -1.65)
 size = Vector3(1, 6.8, 17.3)
 material = SubResource("StandardMaterial3D_33y2j")
 
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor/gate2"]
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor/gate2" unique_id=1810680610]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, -1.65)
 shape = SubResource("ConcavePolygonShape3D_4rgcm")
 
-[node name="door" type="StaticBody3D" parent="NavigationRegion3D/Floor"]
+[node name="door" type="StaticBody3D" parent="NavigationRegion3D/Floor" unique_id=2124302857]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.82917, 0, -0.981095)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Floor/door"]
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/Floor/door" unique_id=1557835802]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 1.32529)
 size = Vector3(1, 2.4, 1.8)
 material = SubResource("StandardMaterial3D_48tto")
 
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor/door"]
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor/door" unique_id=1436077943]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 1.34317)
 shape = SubResource("ConcavePolygonShape3D_wgw5r")
 
-[node name="Protagonist" parent="." instance=ExtResource("2_vcgrp")]
+[node name="Protagonist" parent="." unique_id=1492888117 instance=ExtResource("2_vcgrp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.089, 1.65742, 46.9886)
 SPEED_DEFAULT = 10.0
 
-[node name="Vehicle" parent="." instance=ExtResource("3_6nvsp")]
+[node name="Vehicle" parent="." unique_id=427143966 instance=ExtResource("3_6nvsp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.0316, 1.2966, 42.7598)
 
-[node name="GateClosing" type="Area3D" parent="."]
+[node name="GateClosing" type="Area3D" parent="." unique_id=2030197354]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.99343, 0, -40.7205)
 collision_layer = 17
 collision_mask = 16
@@ -267,47 +267,43 @@ monitoring = false
 monitorable = false
 script = ExtResource("9_a64jb")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GateClosing"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GateClosing" unique_id=1703562999]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0858042, 2.75, -0.299999)
 shape = SubResource("BoxShape3D_33y2j")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="GateClosing"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GateClosing" unique_id=1720709912]
 process_mode = 3
-libraries = {
-&"": SubResource("AnimationLibrary_vvk4n"),
-&"level_1": SubResource("AnimationLibrary_jwmh8")
-}
+libraries/ = SubResource("AnimationLibrary_vvk4n")
+libraries/level_1 = SubResource("AnimationLibrary_jwmh8")
 
-[node name="GateClosing2" type="Area3D" parent="."]
+[node name="GateClosing2" type="Area3D" parent="." unique_id=706422491]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.6647, 0, -40.7205)
 collision_layer = 17
 collision_mask = 16
 script = ExtResource("9_a64jb")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GateClosing2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GateClosing2" unique_id=1261391627]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0858042, 2.75, -0.299999)
 shape = SubResource("BoxShape3D_33y2j")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="GateClosing2"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GateClosing2" unique_id=1573029505]
 process_mode = 3
-libraries = {
-&"": SubResource("AnimationLibrary_vvk4n"),
-&"level_1": SubResource("AnimationLibrary_jwmh8")
-}
+libraries/ = SubResource("AnimationLibrary_vvk4n")
+libraries/level_1 = SubResource("AnimationLibrary_jwmh8")
 
-[node name="Fluo_Light_Bar" parent="." instance=ExtResource("10_33y2j")]
+[node name="Fluo_Light_Bar" parent="." unique_id=1637121208 instance=ExtResource("10_33y2j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.78584, 4.43437, -26.9839)
 
-[node name="EnemyManager" type="Node" parent="."]
+[node name="EnemyManager" type="Node" parent="." unique_id=1564042989]
 script = ExtResource("14_k6dko")
 metadata/_custom_type_script = "uid://cniuus7u7udfb"
 
-[node name="EventManager" type="Node" parent="." node_paths=PackedStringArray("events")]
+[node name="EventManager" type="Node" parent="." unique_id=2085943546 node_paths=PackedStringArray("events")]
 script = ExtResource("11_48tto")
 events = [NodePath("OpenGate_Button"), NodePath("CloseGateWhenApproached")]
 metadata/_custom_type_script = "uid://b3847ss7drxqr"
 
-[node name="CloseGateWhenApproached" type="Node" parent="EventManager" node_paths=PackedStringArray("landmarks", "animation_player")]
+[node name="CloseGateWhenApproached" type="Node" parent="EventManager" unique_id=1738221032 node_paths=PackedStringArray("landmarks", "animation_player")]
 script = ExtResource("13_wgw5r")
 landmarks = {
 NodePath("../../GateClosing2"): ExtResource("10_jwmh8")
@@ -315,7 +311,7 @@ NodePath("../../GateClosing2"): ExtResource("10_jwmh8")
 animation_player = NodePath("../../GateClosing/AnimationPlayer")
 metadata/_custom_type_script = "uid://bfi2ucmi3i3tx"
 
-[node name="OpenGate_Button" type="Node" parent="EventManager" node_paths=PackedStringArray("event_interactables", "animation_player")]
+[node name="OpenGate_Button" type="Node" parent="EventManager" unique_id=326588626 node_paths=PackedStringArray("event_interactables", "animation_player")]
 script = ExtResource("17_80j4d")
 event_interactables = {
 NodePath("../../NavigationRegion3D/Floor/ItemButton"): ExtResource("10_jwmh8")
@@ -323,9 +319,7 @@ NodePath("../../NavigationRegion3D/Floor/ItemButton"): ExtResource("10_jwmh8")
 animation_player = NodePath("../../GateClosing2/AnimationPlayer")
 metadata/_custom_type_script = "uid://by65i8im0ejjw"
 
-[node name="EnemyAnimations" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_k6dko")
-}
+[node name="EnemyAnimations" type="AnimationPlayer" parent="." unique_id=1777150915]
+libraries/ = SubResource("AnimationLibrary_k6dko")
 
 [connection signal="body_entered" from="GateClosing" to="GateClosing" method="_on_body_entered"]

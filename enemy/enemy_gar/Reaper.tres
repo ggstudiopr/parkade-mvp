@@ -1,12 +1,10 @@
-[gd_resource type="Resource" script_class="EnemyBase" load_steps=2 format=3 uid="uid://b6bgj0tb0sabb"]
+[gd_resource type="Resource" script_class="EnemyBase" format=3 uid="uid://b6bgj0tb0sabb"]
 
 [ext_resource type="Script" uid="uid://buw5mpm20is3d" path="res://enemy/enemy_gar/enemyBase.gd" id="1_jvr47"]
 
 [resource]
 script = ExtResource("1_jvr47")
 CATEGORY = 1
-show_mesh = true
-overworld_visible = true
 player_visible = false
 mirror_visible = false
 camera_visible = false

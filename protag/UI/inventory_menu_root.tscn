@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cbn8a4pe4nskn"]
+[gd_scene format=3 uid="uid://cbn8a4pe4nskn"]
 
 [ext_resource type="Script" uid="uid://bi5vn1v8k0e7q" path="res://protag/UI/InventoryMenu.gd" id="1_5egfc"]
 
@@ -103,7 +103,7 @@ _data = {
 &"menu_blur": SubResource("Animation_agdq1")
 }
 
-[node name="InventoryMenu" type="Control"]
+[node name="InventoryMenu" type="Control" unique_id=587347474]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -114,7 +114,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_5egfc")
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Panel" type="PanelContainer" parent="." unique_id=347329777]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -128,11 +128,9 @@ offset_bottom = 275.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Panel"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Panel" unique_id=969712534]
 root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_5v5jn")
-}
+libraries/ = SubResource("AnimationLibrary_5v5jn")
 
-[node name="ItemList" type="ItemList" parent="Panel"]
+[node name="ItemList" type="ItemList" parent="Panel" unique_id=520921781]
 layout_mode = 2

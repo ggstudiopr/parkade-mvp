@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=4 uid="uid://ddrwvjwtx7306"]
+[gd_scene format=4 uid="uid://ddrwvjwtx7306"]
 
 [ext_resource type="Texture2D" uid="uid://dgxaed0whgfeo" path="res://vehicle/piku.jpg" id="1_7k807"]
 
@@ -30,29 +30,29 @@ albedo_texture = ExtResource("1_7k807")
 uv1_scale = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
 
-[node name="Node3D" type="Node3D"]
+[node name="Node3D" type="Node3D" unique_id=1580946970]
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=1497229370]
 transform = Transform3D(0.999941, 0.00844505, -0.00689378, -0.00840881, 0.999951, 0.00526879, 0.00693795, -0.00521049, 0.999962, 5.88156, 0.740755, -2.86166)
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCombiner3D"]
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCombiner3D" unique_id=1286337189]
 transform = Transform3D(0.999912, 0.013299, 0, -0.013299, 0.999912, 0, 0, 0, 1, 0.148134, 0.955726, 0.377234)
 radius = 1.634
 height = 6.536
 material = SubResource("StandardMaterial3D_hqd6a")
 
-[node name="CSGTorus3D" type="CSGTorus3D" parent="CSGCombiner3D/CSGCylinder3D"]
+[node name="CSGTorus3D" type="CSGTorus3D" parent="CSGCombiner3D/CSGCylinder3D" unique_id=1346439582]
 transform = Transform3D(0.999912, -0.013299, 0, 0.013299, 0.999912, 0, 0, 0, 1, -0.0113077, 3.29995, -0.00323907)
 operation = 2
 inner_radius = 2.123
 outer_radius = 1.482
 
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGCombiner3D"]
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGCombiner3D" unique_id=1426124979]
 transform = Transform3D(0.265817, -0.713857, 0.647881, 0.942491, 0.0511923, -0.330286, 0.202611, 0.698418, 0.686412, 0.0175787, 4.27271, 0.959466)
 radius = 0.152
 height = 0.613
 
-[node name="can" type="MeshInstance3D" parent="."]
+[node name="can" type="MeshInstance3D" parent="." unique_id=798154955]
 transform = Transform3D(0.878128, 0.0630419, -0.474254, -0.0298308, 0.996566, 0.0772376, 0.477495, -0.0536771, 0.876993, -0.393916, -0.191183, -0.723657)
 mesh = SubResource("ArrayMesh_l5yod")
 surface_material_override/0 = SubResource("StandardMaterial3D_67nka")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://crwtxl054tv0g"]
+[gd_scene format=4 uid="uid://crwtxl054tv0g"]
 
 [ext_resource type="Texture2D" uid="uid://rgb6l13pt86j" path="res://textures/concrete/concrete_pavement_02_disp_1k.png" id="1_ih3ff"]
 [ext_resource type="Texture2D" uid="uid://ths56okiqs02" path="res://textures/concrete/Concrete.png" id="1_mlrba"]
@@ -37,21 +37,21 @@ _surfaces = [{
 "vertex_data": PackedByteArray("vtIevwAAgD7Kyom/AACAvwAAgL6YIIC/vtIevwAAgL7Kyom/mKycvQAAgL5gac+/mKycvQAAgD5gac+/DraWvgAAgD6EraW/uVyCugAAgL4AAADAuVyCugAAgD4AAADAmKycvQAAgD5gac+/vtIevwAAgD7Kyom/DraWvgAAgL6EraW/DraWvgAAgD6EraW/AACAvwAAgD6YIIC/AACAvwAAgL6YIIC/vtIevwAAgD7Kyom/DraWvgAAgD6EraW/DraWvgAAgL6EraW/mKycvQAAgL5gac+/mKycvQAAgD5gac+/mKycvQAAgL5gac+/uVyCugAAgL4AAADAvtIevwAAgD7Kyom/vtIevwAAgL7Kyom/DraWvgAAgL6EraW/AACB2n0l/z8AAMLqPBX/PwAAgdp9Jf8/AABTqqtV/z8AAGCgnl//PwAAwLs+RP8/AAA7lcNq/z8AADuVw2r/PwAAYKCeX/8/AACB2n0l/z8AAD3EwTv/PwAAwLs+RP8/AADC6jwV/z8AAMLqPBX/PwAAgdp9Jf8/AADAuz5E/z8AAD3EwTv/PwAAU6qrVf8/AABgoJ5f/z8AAFOqq1X/PwAAO5XDav8/AACB2n0l/z8AAIHafSX/PwAAPcTBO/8/")
 }]
 
-[node name="SidewalkCornerInnerS" type="Node3D"]
+[node name="SidewalkCornerInnerS" type="Node3D" unique_id=151140473]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1750970729]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="StaticBody3D"]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="StaticBody3D" unique_id=1162644701]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 visible = false
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D" unique_id=615859490]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -0.5)
 size = Vector3(3, 0.5, 3)
 material = SubResource("StandardMaterial3D_i2se0")
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="StaticBody3D/CSGCombiner3D"]
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="StaticBody3D/CSGCombiner3D" unique_id=1872175892]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.005, -0.003, -2.005)
 operation = 2
 radius = 1.005
@@ -59,10 +59,10 @@ height = 0.51
 sides = 16
 material = SubResource("StandardMaterial3D_xri60")
 
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=194245171]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 shape = SubResource("ConcavePolygonShape3D_mlrba")
 
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=436979676]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 mesh = SubResource("ArrayMesh_ih3ff")

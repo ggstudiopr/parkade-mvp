@@ -1,16 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://d5jn1ujaextl"]
+[gd_scene format=3 uid="uid://d5jn1ujaextl"]
 
 [ext_resource type="Script" uid="uid://dlno7h23ck81x" path="res://enemy/EnemyController.gd" id="1_aetqx"]
 [ext_resource type="PackedScene" uid="uid://bkx7tbnt7eqpx" path="res://enemy/enemy_gar/EnemyNode.tscn" id="2_1f52s"]
 
-[node name="EnemyController" type="Node"]
+[node name="EnemyController" type="Node" unique_id=1692567416]
 script = ExtResource("1_aetqx")
 EnemyScene = ExtResource("2_1f52s")
 metadata/_custom_type_script = "uid://dlno7h23ck81x"
 
-[node name="ReaperDespawn" type="Timer" parent="."]
+[node name="ReaperDespawn" type="Timer" parent="." unique_id=1272445124]
 wait_time = 15.0
 one_shot = true
 
-[node name="ReaperSpawn" type="Timer" parent="."]
+[node name="ReaperSpawn" type="Timer" parent="." unique_id=897222689]
 one_shot = true

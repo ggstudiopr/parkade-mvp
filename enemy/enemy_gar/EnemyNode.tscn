@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bkx7tbnt7eqpx"]
+[gd_scene format=3 uid="uid://bkx7tbnt7eqpx"]
 
 [ext_resource type="Script" uid="uid://fr5u00tn3mfq" path="res://enemy/enemy_gar/enemyNode.gd" id="1_ko8q6"]
 [ext_resource type="Resource" uid="uid://b624v0x85xex2" path="res://enemy/enemy_gar/Invader.tres" id="2_wvecs"]
@@ -7,20 +7,20 @@
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ko8q6"]
 
-[node name="EnemyNode" type="CharacterBody3D"]
+[node name="EnemyNode" type="CharacterBody3D" unique_id=1795799163]
 script = ExtResource("1_ko8q6")
 data = ExtResource("2_wvecs")
 
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1518823874]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1559936719]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_ko8q6")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=1036049383]
 mesh = SubResource("CapsuleMesh_ko8q6")
 skeleton = NodePath("../..")
 
-[node name="Label3D" type="Label3D" parent="CollisionShape3D/MeshInstance3D"]
+[node name="Label3D" type="Label3D" parent="CollisionShape3D/MeshInstance3D" unique_id=797982014]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17693, 0)
 visible = false

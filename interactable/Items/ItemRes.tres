@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ItemRes" load_steps=2 format=3 uid="uid://ct84mdf1mo0pj"]
+[gd_resource type="Resource" format=3 uid="uid://ct84mdf1mo0pj"]
 
 [ext_resource type="Script" uid="uid://lad12c5wu3ok" path="res://interactable/Items/ItemResourceBase.gd" id="1_1n7jq"]
 

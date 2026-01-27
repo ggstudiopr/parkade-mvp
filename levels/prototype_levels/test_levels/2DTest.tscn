@@ -1,32 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://dvvmwq2frp88d"]
+[gd_scene format=3 uid="uid://dvvmwq2frp88d"]
 
 [ext_resource type="Script" uid="uid://daw2033rqljyx" path="res://levels/prototype_levels/test_levels/2d_test.gd" id="1_b2aea"]
 [ext_resource type="Texture2D" uid="uid://dgxaed0whgfeo" path="res://vehicle/piku.jpg" id="2_42rol"]
 
-[node name="Test" type="Node2D"]
+[node name="Test" type="Node2D" unique_id=1922733978]
 script = ExtResource("1_b2aea")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1869078440]
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=617595602]
 handle_input_locally = false
 render_target_update_mode = 4
 
-[node name="Sprite2D" type="Sprite2D" parent="SubViewportContainer/SubViewport"]
+[node name="Sprite2D" type="Sprite2D" parent="SubViewportContainer/SubViewport" unique_id=1628910715]
 position = Vector2(244, 218)
 scale = Vector2(1.38546, 1.38546)
 texture = ExtResource("2_42rol")
 
-[node name="TextEdit" type="Label" parent="SubViewportContainer/SubViewport"]
+[node name="TextEdit" type="Label" parent="SubViewportContainer/SubViewport" unique_id=1739446410]
 offset_left = 197.0
 offset_top = 7.0
 offset_right = 285.0
 offset_bottom = 30.0
 text = "MIKU MIKU"
 
-[node name="ProgressBar" type="ProgressBar" parent="SubViewportContainer/SubViewport"]
+[node name="ProgressBar" type="ProgressBar" parent="SubViewportContainer/SubViewport" unique_id=2119630673]
 offset_left = 244.0
 offset_top = 409.0
 offset_right = 248.0

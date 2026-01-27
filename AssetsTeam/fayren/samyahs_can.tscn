@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://bsvmulqreswyc"]
+[gd_scene format=4 uid="uid://bsvmulqreswyc"]
 
 [ext_resource type="Texture2D" uid="uid://dgxaed0whgfeo" path="res://vehicle/piku.jpg" id="1_y026y"]
 
@@ -45,9 +45,9 @@ albedo_texture = ExtResource("1_y026y")
 uv1_scale = Vector3(1.5, 1.5, 1.5)
 uv1_triplanar = true
 
-[node name="SamyahsCan" type="Node3D"]
+[node name="SamyahsCan" type="Node3D" unique_id=938071594]
 
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="." unique_id=889713038]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 mesh = SubResource("ArrayMesh_dhkpm")
 surface_material_override/0 = SubResource("StandardMaterial3D_0axva")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=4 uid="uid://h7ofamxkvx3a"]
+[gd_scene format=4 uid="uid://h7ofamxkvx3a"]
 
 [ext_resource type="Texture2D" uid="uid://bxghp3iqf27o8" path="res://textures/concrete_pxl/tiles_concrete.png" id="1_ihicc"]
 
@@ -27,24 +27,24 @@ _surfaces = [{
 "vertex_data": PackedByteArray("AACAvwAAgL4AAAAAAACAvwAAgL4AAADAAACAvwAAgD4AAADAAACAPwAAgL4AAADAAACAvwAAgL4AAADAAACAvwAAgL4AAAAAAACAvwAAgD4AAADAAACAvwAAgL4AAADAAACAPwAAgL4AAADAAACAvwAAgD4AAADAAACAvwAAgD4AAAAAAACAvwAAgL4AAAAAAACAvwAAgL4AAAAAAACAvwAAgD4AAAAAAACAPwAAgD4AAAAAAACAPwAAgD4AAAAAAACAvwAAgD4AAAAAAACAvwAAgD4AAADAAACAvwAAgL4AAAAAAACAPwAAgL4AAAAAAACAPwAAgL4AAADAAACAPwAAgD4AAAAAAACAPwAAgL4AAAAAAACAvwAAgL4AAAAAAACAPwAAgL4AAADAAACAPwAAgL4AAAAAAACAPwAAgD4AAAAAAACAPwAAgL4AAADAAACAPwAAgD4AAADAAACAvwAAgD4AAADAAACAvwAAgD4AAADAAACAPwAAgD4AAADAAACAPwAAgD4AAAAAAACAPwAAgD4AAAAAAACAPwAAgD4AAADAAACAPwAAgL4AAADAAAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/")
 }]
 
-[node name="SidewalkBase" type="Node3D"]
+[node name="SidewalkBase" type="Node3D" unique_id=385849630]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=960498304]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="StaticBody3D"]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="StaticBody3D" unique_id=948617659]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 visible = false
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="StaticBody3D/CSGCombiner3D" unique_id=1440926510]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 size = Vector3(2, 0.5, 2)
 material = SubResource("StandardMaterial3D_i2se0")
 
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=672883052]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 shape = SubResource("ConcavePolygonShape3D_t84v5")
 
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1779746563]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 mesh = SubResource("ArrayMesh_sii8h")

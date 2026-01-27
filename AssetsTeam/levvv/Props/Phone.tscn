@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://crvnvq6t4fixb"]
+[gd_scene format=3 uid="uid://crvnvq6t4fixb"]
 
 [ext_resource type="ArrayMesh" uid="uid://ddp21tou3whip" path="res://AssetsTeam/levvv/Assets/Phone/Phone.obj" id="1_3e6b5"]
 
@@ -8,9 +8,9 @@ roughness = 0.3
 clearcoat_enabled = true
 clearcoat_roughness = 0.45
 
-[node name="Phone" type="Node3D"]
+[node name="Phone" type="Node3D" unique_id=1992815572]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1044931724]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 mesh = ExtResource("1_3e6b5")
 surface_material_override/0 = SubResource("StandardMaterial3D_aylof")

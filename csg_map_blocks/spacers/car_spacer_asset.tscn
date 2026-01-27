@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://d2aj53y47hmjq"]
+[gd_scene format=3 uid="uid://d2aj53y47hmjq"]
 
 [ext_resource type="ArrayMesh" uid="uid://cod7ik8uvbmo1" path="res://vehicle/CarObj.obj" id="1_d6hnd"]
 [ext_resource type="Texture2D" uid="uid://cykyglsebfc7r" path="res://textures/orange/texture_02.png" id="2_j24f6"]
@@ -17,43 +17,43 @@ uv1_triplanar = true
 albedo_color = Color(1, 0.35, 0.35, 1)
 albedo_texture = ExtResource("4_j24f6")
 
-[node name="SpacerAsset" type="Node3D"]
+[node name="SpacerAsset" type="Node3D" unique_id=769094245]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0)
 
-[node name="CarObj" type="MeshInstance3D" parent="."]
+[node name="CarObj" type="MeshInstance3D" parent="." unique_id=231908370]
 transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
 mesh = ExtResource("1_d6hnd")
 
-[node name="CarObj2" type="MeshInstance3D" parent="."]
+[node name="CarObj2" type="MeshInstance3D" parent="." unique_id=145709046]
 transform = Transform3D(-1.1, 0, -9.61651e-08, 0, 1.1, 0, 9.61651e-08, 0, -1.1, -3, 0, 0)
 mesh = ExtResource("1_d6hnd")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=951415481]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.25, 0)
 size = Vector3(6, 0.5, 5)
 material = SubResource("StandardMaterial3D_gjm7x")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=1659088028]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1, 0)
 size = Vector3(0.5, 0.5, 5)
 material = SubResource("StandardMaterial3D_vamke")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=344761792]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1, 0)
 size = Vector3(0.5, 0.5, 5)
 material = SubResource("StandardMaterial3D_vamke")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+[node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=446067420]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1, 0)
 size = Vector3(0.5, 0.5, 5)
 material = SubResource("StandardMaterial3D_vamke")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+[node name="CSGBox3D5" type="CSGBox3D" parent="." unique_id=196230094]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 0)
 size = Vector3(0.5, 0.5, 5)
 material = SubResource("StandardMaterial3D_gb05f")
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+[node name="CSGBox3D6" type="CSGBox3D" parent="." unique_id=1166681346]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 0)
 size = Vector3(0.5, 0.5, 5)
 material = SubResource("StandardMaterial3D_gb05f")

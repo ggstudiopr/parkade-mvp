@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxq7npomagabg"]
+[gd_scene format=3 uid="uid://bxq7npomagabg"]
 
 [ext_resource type="ArrayMesh" uid="uid://c7d76vlrks5l5" path="res://AssetsTeam/levvv/Assets/LargeTrashcan/Large Trashcan.obj" id="1_u07lx"]
 [ext_resource type="Texture2D" uid="uid://b8i0j103sf43d" path="res://AssetsTeam/levvv/Assets/LargeTrashcan/TrashcanBase.png" id="2_15mmn"]
@@ -16,13 +16,13 @@ clearcoat_roughness = 1.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_u07lx"]
 size = Vector3(1, 2.09599, 1)
 
-[node name="LargeTrashcan" type="Node3D"]
+[node name="LargeTrashcan" type="Node3D" unique_id=1615930767]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1351849738]
 mesh = ExtResource("1_u07lx")
 surface_material_override/0 = SubResource("StandardMaterial3D_u33vd")
 surface_material_override/1 = SubResource("StandardMaterial3D_komym")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D" unique_id=1865253505]
 transform = Transform3D(2.015, 0, 0, 0, 2.015, 0, 0, 0, 2.015, 0, 2.09767, 0)
 shape = SubResource("BoxShape3D_u07lx")
