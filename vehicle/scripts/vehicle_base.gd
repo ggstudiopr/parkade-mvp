@@ -46,11 +46,21 @@ var speed_ratio
 var _is_car_sprinting = false
 
 #Car Transmission
-var gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK
+var gear_shift := CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK
 var text_mesh := TextMesh.new()
 
 var vehicle_engine = CAR_CONSTS.ENGINE_STATE.OFF
 var seat = CAR_CONSTS.SEAT_STATUS.OPEN
+enum CAR_SEATS {
+	DRIVER,
+	PASSENGER,
+	BACK
+}
+var seats : Dictionary[CAR_SEATS, Protagonist] = {
+	CAR_SEATS.DRIVER: null,
+	CAR_SEATS.PASSENGER : null,
+	CAR_SEATS.BACK : null
+}
 
 
 func _ready():
@@ -122,6 +132,31 @@ func shiftGears(new_gear_state):
 		print("bad gear shift")
 		engine_force = 0.0
 		brake = BRAKE_FORCE
+	
+	#TODO: [Gabe] Haven't checked if it works, will do so later
+	#match(new_gear_state):
+		#CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK:
+			#gear_shift = new_gear_state
+			#text_mesh.text = "PARK"
+			#GEAR_SHIFT_TEXT.mesh = text_mesh
+		#CAR_CONSTS.CAR_TRANSMISSION_AUTO.NEUTRAL:
+			#gear_shift = new_gear_state
+			#text_mesh.text = "NEUTRAL"
+			#GEAR_SHIFT_TEXT.mesh = text_mesh
+		#CAR_CONSTS.CAR_TRANSMISSION_AUTO.D_R_TOGGLE:
+			#match(new_gear_state):
+				#CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE:
+					#gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE
+					#text_mesh.text = "REVERSE"
+					#GEAR_SHIFT_TEXT.mesh = text_mesh
+					#VEHICLE_REAR_CAM.CamOn()
+					#RADIO_SCREEN.show()				
+					#VEHICLE_BRAKELIGHT.light_ON()
+				#_:
+					#gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE
+					#text_mesh.text = "DRIVE"
+					#GEAR_SHIFT_TEXT.mesh = text_mesh
+			
 	if new_gear_state == CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK:
 		self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK
 		text_mesh.text = "PARK"
@@ -211,5 +246,7 @@ func isSeatAvailable():
 func setSeatStatus(new_state):
 	if new_state == "OPEN":
 		seat = CAR_CONSTS.SEAT_STATUS.OPEN
+		seats[CAR_SEATS.DRIVER] = PLAYER
 	if new_state == "TAKEN":
 		seat = CAR_CONSTS.SEAT_STATUS.TAKEN
+		seats[CAR_SEATS.DRIVER] = null
