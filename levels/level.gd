@@ -37,8 +37,6 @@ enum LEVEL_STATE {
 	END
 }
 
-var PLAYER_COUNT = Global.PLAYER_COUNT
-
 var current_state : LEVEL_STATE :
 	set(value):
 		current_state = on_level_state_change(value)
@@ -53,15 +51,15 @@ func _init() -> void:
 func _ready() -> void:
 	
 	#Give Player to UI
-	
 	vehicle = vehicle if vehicle else vehicle_scene.instantiate() 
 	
-	for player in range(PLAYER_COUNT):
-		if players.size() < PLAYER_COUNT:
+	for player in range(Global.PLAYER_COUNT):
+		if players.size() < Global.PLAYER_COUNT:
 			var new_player: Protagonist = player_scene.instantiate()
 			new_player.killed.connect(on_player_killed)
-			#TODO: Car should handle assigning and positioning players to specific seats.
-			#vehicle.add_occupant(new_player) #PSEUDOCODE
+			for seat in vehicle.seats:
+				pass
+			vehicle.assign_seat(new_player)
 	
 	#players.append(vehicle.occupants as Array[Player]) #PSEUDOCODE
 	

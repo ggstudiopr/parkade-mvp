@@ -51,15 +51,17 @@ var text_mesh := TextMesh.new()
 
 var vehicle_engine = CAR_CONSTS.ENGINE_STATE.OFF
 var seat = CAR_CONSTS.SEAT_STATUS.OPEN
+
 enum CAR_SEATS {
-	DRIVER,
-	PASSENGER,
-	BACK
+	DRIVER,  ## Moves car and changes gears
+	PASSENGER, ## Handles car screen and mirros
+	BACK ## Hears the trunk and sees behind car
 }
+
 var seats : Dictionary[CAR_SEATS, Protagonist] = {
 	CAR_SEATS.DRIVER: null,
-	CAR_SEATS.PASSENGER : null,
-	CAR_SEATS.BACK : null
+	CAR_SEATS.PASSENGER : null, 
+	CAR_SEATS.BACK : null 
 }
 
 
@@ -250,3 +252,14 @@ func setSeatStatus(new_state):
 	if new_state == "TAKEN":
 		seat = CAR_CONSTS.SEAT_STATUS.TAKEN
 		seats[CAR_SEATS.DRIVER] = null
+
+func assign_seat(player : Protagonist, seat = CAR_SEATS.DRIVER):
+	match(seat):
+		CAR_SEATS.PASSENGER:
+			seats[CAR_SEATS.PASSENGER] = player
+		CAR_SEATS.BACK:
+			seats[CAR_SEATS.BACK] = player
+		_:
+			for seat_ in seats.keys():
+				if seats[seat_] == null:
+					seats[seat_] = player
