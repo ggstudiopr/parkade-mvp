@@ -87,7 +87,6 @@ metadata/_custom_type_script = "uid://by65i8im0ejjw"
 
 [node name="EnemyManager" type="Node" parent="." unique_id=2120181397]
 script = ExtResource("6_kww4b")
-enemies = null
 
 [node name="SpawnPoints" type="Node" parent="." unique_id=244277878]
 

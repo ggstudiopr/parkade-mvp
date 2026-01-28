@@ -5,9 +5,9 @@ class_name Level
 ##TODO: Detailed Level Description
 ##Level Needs SpawnPoints to function, and EnemyManager
 
-var player_scene = preload("res://protag/Protag_Root_Scene.tscn")
-var vehicle_scene = preload("res://vehicle/Vehicle_Root_Scene.tscn")
-var enemy_scene = preload("res://engine/enemy/enemy.tscn")
+var player_scene = preload("uid://dl60tvwy1elkf")
+var vehicle_scene = preload("uid://ykg03vys3buy")
+var enemy_scene = preload("uid://dfg3xoqxo8tr7")
 
 @export_subgroup("Enemies")
 @export var enemy_manager : EnemyManager

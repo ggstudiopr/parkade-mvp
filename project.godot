@@ -23,6 +23,7 @@ Global="*res://global.gd"
 
 folder_colors={
 "res://AssetsTeam/": "purple",
+"res://docs/": "green",
 "res://enemy/": "red",
 "res://engine/": "gray",
 "res://parkade/Global Classes/": "gray",
