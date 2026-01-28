@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://ck6asukqtn4x7"]
 
-[ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="1_k0tv4"]
-[ext_resource type="Texture2D" uid="uid://bmn6rwt3t468g" path="res://textures/purple/texture_09.png" id="2_572l0"]
+[ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://parkade/textures/orange/texture_09.png" id="1_k0tv4"]
+[ext_resource type="Texture2D" uid="uid://bmn6rwt3t468g" path="res://parkade/textures/purple/texture_09.png" id="2_572l0"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="2_espy8"]
-[ext_resource type="Texture2D" uid="uid://b4c850uvd3bja" path="res://textures/red/texture_08.png" id="3_572l0"]
-[ext_resource type="Texture2D" uid="uid://baj4nd4ayuy16" path="res://textures/green/texture_08.png" id="4_805u0"]
-[ext_resource type="Texture2D" uid="uid://bjg60i85bybsw" path="res://textures/orange/texture_08.png" id="5_h5as0"]
-[ext_resource type="Texture2D" uid="uid://blin641akv8d8" path="res://textures/orange/texture_04.png" id="6_hk123"]
-[ext_resource type="Texture2D" uid="uid://wk0to6ij51ek" path="res://textures/green/texture_09.png" id="7_mlf8b"]
-[ext_resource type="Texture2D" uid="uid://cy6u2gi30680x" path="res://textures/red/texture_07.png" id="8_r0euv"]
+[ext_resource type="Texture2D" uid="uid://b4c850uvd3bja" path="res://parkade/textures/red/texture_08.png" id="3_572l0"]
+[ext_resource type="Texture2D" uid="uid://baj4nd4ayuy16" path="res://parkade/textures/green/texture_08.png" id="4_805u0"]
+[ext_resource type="Texture2D" uid="uid://bjg60i85bybsw" path="res://parkade/textures/orange/texture_08.png" id="5_h5as0"]
+[ext_resource type="Texture2D" uid="uid://blin641akv8d8" path="res://parkade/textures/orange/texture_04.png" id="6_hk123"]
+[ext_resource type="Texture2D" uid="uid://wk0to6ij51ek" path="res://parkade/textures/green/texture_09.png" id="7_mlf8b"]
+[ext_resource type="Texture2D" uid="uid://cy6u2gi30680x" path="res://parkade/textures/red/texture_07.png" id="8_r0euv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_572l0"]
 albedo_texture = ExtResource("1_k0tv4")

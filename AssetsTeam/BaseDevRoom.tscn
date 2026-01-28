@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://dkmry5mmbqv04"]
 
-[ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="1_6apdb"]
+[ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://parkade/textures/orange/texture_09.png" id="1_6apdb"]
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="2_sdi3v"]
 [ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="3_sdi3v"]
 

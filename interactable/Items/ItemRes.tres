@@ -1,8 +1,0 @@
-[gd_resource type="Resource" format=3 uid="uid://ct84mdf1mo0pj"]
-
-[ext_resource type="Script" uid="uid://lad12c5wu3ok" path="res://interactable/Items/ItemResourceBase.gd" id="1_1n7jq"]
-
-[resource]
-script = ExtResource("1_1n7jq")
-type = 1
-items = 1

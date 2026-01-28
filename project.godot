@@ -23,11 +23,11 @@ Global="*res://global.gd"
 
 folder_colors={
 "res://AssetsTeam/": "purple",
-"res://Global Classes/": "gray",
 "res://enemy/": "red",
-"res://levels/": "green",
+"res://engine/": "gray",
+"res://parkade/Global Classes/": "gray",
+"res://parkade/sounds/": "teal",
 "res://protag/": "blue",
-"res://sounds/": "teal",
 "res://vehicle/": "orange"
 }
 

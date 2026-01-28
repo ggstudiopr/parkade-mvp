@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bbjn3y1e0snb2"
+path="res://.godot/imported/Foot steps_Walk 1.wav-9f21f7f201cc906527cd8384d8d0cb13.sample"
+
+[deps]
+
+source_file="res://parkade/sounds/protagonist-tied-ambient/Foot steps_Walk 1.wav"
+dest_files=["res://.godot/imported/Foot steps_Walk 1.wav-9f21f7f201cc906527cd8384d8d0cb13.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

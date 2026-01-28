@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dl60tvwy1elkf" path="res://protag/Protag_Root_Scene.tscn" id="1_kkmk6"]
 [ext_resource type="PackedScene" uid="uid://ykg03vys3buy" path="res://vehicle/Vehicle_Root_Scene.tscn" id="2_dwanc"]
-[ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://textures/orange/texture_09.png" id="3_uixvn"]
+[ext_resource type="Texture2D" uid="uid://uk870vn7ogv8" path="res://parkade/textures/orange/texture_09.png" id="3_uixvn"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_uqre4"]
 data = PackedVector3Array(-25, -0.5, 25, -25, -0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, -0.5, -25, -25, -0.5, 25, -25, 0.5, -25, -25, -0.5, -25, 25, -0.5, -25, -25, 0.5, -25, -25, 0.5, 25, -25, -0.5, 25, -25, -0.5, 25, -25, 0.5, 25, 25, 0.5, 25, 25, 0.5, 25, -25, 0.5, 25, -25, 0.5, -25, -25, -0.5, 25, 25, -0.5, 25, 25, -0.5, -25, 25, 0.5, 25, 25, -0.5, 25, -25, -0.5, 25, 25, -0.5, -25, 25, -0.5, 25, 25, 0.5, 25, 25, -0.5, -25, 25, 0.5, -25, -25, 0.5, -25, -25, 0.5, -25, 25, 0.5, -25, 25, 0.5, 25, 25, 0.5, 25, 25, 0.5, -25, 25, -0.5, -25)

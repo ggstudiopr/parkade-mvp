@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://rotxwcdcvhym"]
 
-[ext_resource type="Texture2D" uid="uid://couerrwoow0kb" path="res://textures/cold_air/snowflakes.png" id="1_ankim"]
+[ext_resource type="Texture2D" uid="uid://couerrwoow0kb" path="res://parkade/textures/cold_air/snowflakes.png" id="1_ankim"]
 
 [sub_resource type="CurveTexture" id="CurveTexture_ankim"]
 
