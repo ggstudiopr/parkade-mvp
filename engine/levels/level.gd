@@ -9,6 +9,9 @@ var player_scene = preload("uid://dl60tvwy1elkf")
 var vehicle_scene = preload("uid://ykg03vys3buy")
 var enemy_scene = preload("uid://dfg3xoqxo8tr7")
 
+@export_category("Init")
+@export var StartInCar := false
+
 @export_subgroup("Enemies")
 @export var enemy_manager : EnemyManager
 @export var enemy_spawns : Node
@@ -16,7 +19,7 @@ var spawn_points : Array[Node3D] ## Node3D's to be used as enemy spawn points
 
 @export_subgroup("Players")
 @export var vehicle : CAR
-@export var players : Array[Protagonist] = []  
+@export var players : Array[Protagonist] = []
 
 @export_subgroup("Events")
 @export var event_manager : EventManager
@@ -57,9 +60,11 @@ func _ready() -> void:
 		if players.size() < Global.PLAYER_COUNT:
 			var new_player: Protagonist = player_scene.instantiate()
 			new_player.killed.connect(on_player_killed)
-			for seat in vehicle.seats:
+			if StartInCar:
+				vehicle.assign_seat(new_player)
+			else:
 				pass
-			vehicle.assign_seat(new_player)
+				#TODO: Assign player position here on player spawn_points
 	
 	#players.append(vehicle.occupants as Array[Player]) #PSEUDOCODE
 	

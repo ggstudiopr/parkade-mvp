@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://b3frr7kf7gj1a"]
+
+[ext_resource type="Script" uid="uid://dy5hjkcj4cd4s" path="res://engine/levels/title/title_level.gd" id="1_ryamc"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tyc1r"]
+viewport_path = NodePath("World3D/SubViewport")
+
+[sub_resource type="BoxMesh" id="BoxMesh_tyc1r"]
+
+[node name="TitleScreen" type="Node2D" unique_id=636053334]
+script = ExtResource("1_ryamc")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2020555665]
+position = Vector2(579, 323)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1754744528]
+position = Vector2(362, 307)
+texture = SubResource("ViewportTexture_tyc1r")
+
+[node name="Control" type="Control" parent="." unique_id=1681696741]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 579.0
+offset_top = 323.0
+offset_right = 619.0
+offset_bottom = 363.0
+
+[node name="StartButton" type="Button" parent="Control" unique_id=1679978429]
+layout_mode = 0
+offset_left = 251.0
+offset_top = -132.0
+offset_right = 465.0
+offset_bottom = -47.0
+text = "START GAME
+"
+
+[node name="QuitButton" type="Button" parent="Control" unique_id=212418322]
+layout_mode = 0
+offset_left = 249.0
+offset_top = -16.0
+offset_right = 450.0
+offset_bottom = 76.0
+text = "EXIT
+"
+
+[node name="World3D" type="Node3D" parent="." unique_id=83415217]
+
+[node name="SubViewport" type="SubViewport" parent="World3D" unique_id=1961716953]
+
+[node name="Camera3D" type="Camera3D" parent="World3D/SubViewport" unique_id=972222983]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26720214, 15, 27.942348)
+current = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World3D/SubViewport" unique_id=465669925]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.37507212, 15.286015, 23.589)
+mesh = SubResource("BoxMesh_tyc1r")
+
+[connection signal="pressed" from="Control/QuitButton" to="." method="_on_quit_button_pressed"]
