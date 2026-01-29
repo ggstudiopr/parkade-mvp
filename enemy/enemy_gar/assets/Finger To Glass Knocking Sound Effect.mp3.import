@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dg0ycedkjhgw4"
+path="res://.godot/imported/Finger To Glass Knocking Sound Effect.mp3-7f27812ba648dc5b009460bf5d28f46f.mp3str"
+
+[deps]
+
+source_file="res://enemy/enemy_gar/assets/Finger To Glass Knocking Sound Effect.mp3"
+dest_files=["res://.godot/imported/Finger To Glass Knocking Sound Effect.mp3-7f27812ba648dc5b009460bf5d28f46f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

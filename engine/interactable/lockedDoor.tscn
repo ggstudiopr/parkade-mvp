@@ -46,7 +46,7 @@ _data = {
 [node name="Pushdoor" type="Node3D" unique_id=1204812571]
 script = ExtResource("1_kg8w2")
 
-[node name="Pushdoor" type="RigidBody3D" parent="." unique_id=1874897664]
+[node name="Pushdoor" type="StaticBody3D" parent="." unique_id=1032226730]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pushdoor" unique_id=198691447]
 transform = Transform3D(0.7, 0, 5.21541e-09, 0, 0.7, 0, -5.21541e-09, 0, 0.7, 3.30898e-09, 1.07832, 0.444124)

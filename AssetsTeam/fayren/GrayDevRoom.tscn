@@ -62,7 +62,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.499711, 0)
 mesh = SubResource("ArrayMesh_6apdb")
 
 [node name="Protagonist" parent="." unique_id=156551329 instance=ExtResource("1_3q8v2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.26341, 0.00534999, 0)
+transform = Transform3D(-0.79574835, 0, -0.6056274, 0, 1, 0, 0.6056274, 0, -0.79574835, 5.26341, 0.00534999, 0)
 
 [node name="Vehicle" parent="." unique_id=1007999569 instance=ExtResource("2_rk1w1")]
 transform = Transform3D(0.840415, 0, 0.541943, 0, 1, 0, -0.541943, 0, 0.840415, 0, 0, -8)
