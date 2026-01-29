@@ -101,6 +101,7 @@ text = "GAS"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5)
 stream = ExtResource("3_p2q0p")
 volume_db = -30.0
+max_polyphony = 5
 script = ExtResource("2_echwb")
 
 [node name="RadioAudio" type="AudioStreamPlayer3D" parent="Sounds" unique_id=1670505802]

@@ -76,14 +76,22 @@ func _ready():
 	MIRROR_REAR.CamOn()
 	center_of_mass_mode = VehicleBody3D.CENTER_OF_MASS_MODE_CUSTOM
 	center_of_mass = Vector3(0, -0.5, 0)
-	
+
 func _physics_process(delta):
 	_driving_car_movement(delta)
 	_drain_gas()
 	if PLAYER:
 		if PLAYER.isDriving():
 			playerClampToCar()
+			checkForMovement()
 	speed_ratio = linear_velocity.length() / max_speed
+	
+var moving : bool = true
+func checkForMovement ():
+	if linear_velocity.length() > 1.0 and !moving:
+		moving = true
+	elif moving and linear_velocity.length() < 1.0:
+		moving = false
 
 func _driving_car_movement(delta):
 	if PLAYER:
@@ -136,51 +144,53 @@ func shiftGears(new_gear_state):
 		brake = BRAKE_FORCE
 	
 	#TODO: [Gabe] Haven't checked if it works, will do so later
-	#match(new_gear_state):
-		#CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK:
-			#gear_shift = new_gear_state
-			#text_mesh.text = "PARK"
-			#GEAR_SHIFT_TEXT.mesh = text_mesh
-		#CAR_CONSTS.CAR_TRANSMISSION_AUTO.NEUTRAL:
-			#gear_shift = new_gear_state
-			#text_mesh.text = "NEUTRAL"
-			#GEAR_SHIFT_TEXT.mesh = text_mesh
-		#CAR_CONSTS.CAR_TRANSMISSION_AUTO.D_R_TOGGLE:
-			#match(new_gear_state):
-				#CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE:
-					#gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE
-					#text_mesh.text = "REVERSE"
-					#GEAR_SHIFT_TEXT.mesh = text_mesh
-					#VEHICLE_REAR_CAM.CamOn()
-					#RADIO_SCREEN.show()				
-					#VEHICLE_BRAKELIGHT.light_ON()
-				#_:
-					#gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE
-					#text_mesh.text = "DRIVE"
-					#GEAR_SHIFT_TEXT.mesh = text_mesh
+	#gj gab
+	match(new_gear_state):
+		CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK:
+			gear_shift = new_gear_state
+			text_mesh.text = "PARK"
+			GEAR_SHIFT_TEXT.mesh = text_mesh
+		CAR_CONSTS.CAR_TRANSMISSION_AUTO.NEUTRAL:
+			gear_shift = new_gear_state
+			text_mesh.text = "NEUTRAL"
+			GEAR_SHIFT_TEXT.mesh = text_mesh
+		CAR_CONSTS.CAR_TRANSMISSION_AUTO.D_R_TOGGLE:
+			match(gear_shift):
+				CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE:
+					gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE
+					text_mesh.text = "REVERSE"
+					GEAR_SHIFT_TEXT.mesh = text_mesh
+					VEHICLE_REAR_CAM.CamOn()
+					RADIO_SCREEN.show()				
+					VEHICLE_BRAKELIGHT.light_ON()
+				_:
+					gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE
+					text_mesh.text = "DRIVE"
+					GEAR_SHIFT_TEXT.mesh = text_mesh
 			
-	if new_gear_state == CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK:
-		self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK
-		text_mesh.text = "PARK"
-		GEAR_SHIFT_TEXT.mesh = text_mesh
-	elif new_gear_state == CAR_CONSTS.CAR_TRANSMISSION_AUTO.D_R_TOGGLE:
-		var cond1 = (self.gear_shift !=  CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE) and (self.gear_shift != CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE)
-		if (self.gear_shift == CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE) or cond1:
-			self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE
-			text_mesh.text = "DRIVE"
-			GEAR_SHIFT_TEXT.mesh = text_mesh
-		elif self.gear_shift == CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE:
-			self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE
-			text_mesh.text = "REVERSE"
-			GEAR_SHIFT_TEXT.mesh = text_mesh
-			VEHICLE_REAR_CAM.CamOn()
-			RADIO_SCREEN.show()				
-			VEHICLE_BRAKELIGHT.light_ON()
-	elif new_gear_state == CAR_CONSTS.CAR_TRANSMISSION_AUTO.NEUTRAL:
-		self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.NEUTRAL
-		text_mesh.text = "NEUTRAL"
-		GEAR_SHIFT_TEXT.mesh = text_mesh
+	#if new_gear_state == CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK:
+		#self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.PARK
+		#text_mesh.text = "PARK"
+		#GEAR_SHIFT_TEXT.mesh = text_mesh
+	#elif new_gear_state == CAR_CONSTS.CAR_TRANSMISSION_AUTO.D_R_TOGGLE:
+		#var cond1 = (self.gear_shift !=  CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE) and (self.gear_shift != CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE)
+		#if (self.gear_shift == CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE) or cond1:
+			#self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE
+			#text_mesh.text = "DRIVE"
+			#GEAR_SHIFT_TEXT.mesh = text_mesh
+		#elif self.gear_shift == CAR_CONSTS.CAR_TRANSMISSION_AUTO.DRIVE:
+			#self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE
+			#text_mesh.text = "REVERSE"
+			#GEAR_SHIFT_TEXT.mesh = text_mesh
+			#VEHICLE_REAR_CAM.CamOn()
+			#RADIO_SCREEN.show()				
+			#VEHICLE_BRAKELIGHT.light_ON()
+	#elif new_gear_state == CAR_CONSTS.CAR_TRANSMISSION_AUTO.NEUTRAL:
+		#self.gear_shift = CAR_CONSTS.CAR_TRANSMISSION_AUTO.NEUTRAL
+		#text_mesh.text = "NEUTRAL"
+		#GEAR_SHIFT_TEXT.mesh = text_mesh
 
+##this should be handled by the screen itself
 	var isReversing = true  if gear_shift == CAR_CONSTS.CAR_TRANSMISSION_AUTO.REVERSE else false
 	if (!isReversing and VEHICLE_REAR_CAM.isOn()):
 		VEHICLE_REAR_CAM.CamOff()

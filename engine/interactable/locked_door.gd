@@ -8,7 +8,7 @@ func _ready():
 	$Item.ID = lockID
 
 func unlock():
-	$RemoteDoor/AnimationPlayer.play("open")
+	$AnimationPlayer.play("open")
 	locked = false
 
 func doThing(node): #do nothing w node, only there to support DoThing logic across Objects
